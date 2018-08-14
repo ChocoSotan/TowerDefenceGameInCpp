@@ -72,7 +72,6 @@ void MortarTurret::upgrade() {
 int MortarTurret::destroy() {
 	return (int)round(getCostSpent()*0.7);
 }
-
 void BlastTurret::attack(std::vector<EnemyBase> &targetlist) {
 	for (auto i = 0; i < targetlist.size(); i++) {
 		if (this->getRange() > this->getPosition().getAbsTo(targetlist[i].getPosition())) {
