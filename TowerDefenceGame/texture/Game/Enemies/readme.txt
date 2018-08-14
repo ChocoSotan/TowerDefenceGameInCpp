@@ -1,0 +1,1 @@
+These size must be set smaller than 64 * 64.

@@ -127,6 +127,8 @@
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="WaveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -144,6 +146,8 @@
     <ClInclude Include="Turret.h" />
     <ClInclude Include="TurretBarrel.h" />
     <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="Wave.h" />
+    <ClInclude Include="WaveSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
