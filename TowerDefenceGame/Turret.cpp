@@ -13,6 +13,7 @@ bool TurretBase::canUpgrade(long long resource) {
 void BasicTurret::attack(std::vector<EnemyBase> &targetlist) {
 	int targetindex;
 	targetindex = this->target->decisionOrder(targetlist, *this);
+	if (targetindex == -1)return;
 	// there is no enemy in stage
 
 	/* attack */
@@ -44,6 +45,7 @@ void MortarTurret::attack(std::vector<EnemyBase> &targetlist) {
 	//set target
 	int targetindex;
 	targetindex = this->target->decisionOrder(targetlist, *this);
+	if (targetindex == -1)return;
 	//set barrel angle
 	this->turretbarrel.setAngle(this->getPosition().getAngleTo(targetlist[targetindex].getPosition()));
 	//attack to the target
