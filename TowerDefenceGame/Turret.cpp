@@ -23,7 +23,7 @@ void BasicTurret::attack(std::vector<EnemyBase> &targetlist) {
 	targetlist[targetindex].setHitpoint(targetlist[targetindex].getHitpoint() - this->damage);
 
 }
-void BasicTurret::changePriority(TargetPriority* target) {
+void TurretBase::changePriority(TargetPriority* target) {
 	delete this->target;
 	this->target = target;
 }
@@ -56,10 +56,6 @@ void MortarTurret::attack(std::vector<EnemyBase> &targetlist) {
 			targetlist[i].setHitpoint(targetlist[i].getHitpoint() - this->getSplashDamage());
 		}
 	}
-}
-void MortarTurret::changePriority(TargetPriority* target) {
-	delete this->target;
-	this->target = target;
 }
 void MortarTurret::upgrade() {
 	setSplashDamage(getSplashDamage()*1.5);

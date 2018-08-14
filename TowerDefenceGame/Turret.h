@@ -31,6 +31,7 @@ public:
 	virtual void upgrade() = 0;
 	bool canUpgrade(long long resource);
 	virtual int destroy() = 0;
+	void changePriority(TargetPriority* target);
 
 	std::string getName() const { return this->name; }
 	double getDamage() const { return this->damage; }
@@ -86,7 +87,6 @@ public:
 		this->minrange = 0;
 	}
 	~BasicTurret() {}
-	void changePriority(TargetPriority* target);
 	void attack(std::vector<EnemyBase> &targetlist) override;
 	void upgrade()override;
 	int destroy()override;
@@ -106,7 +106,6 @@ public:
 		this->minrange = minrange;
 	}
 	~MortarTurret() {}
-	void changePriority(TargetPriority* target);
 	void upgrade()override;
 	int destroy()override;
 	void attack(std::vector<EnemyBase> &targetlist) override;
