@@ -11,7 +11,7 @@ Wave::Wave(EnemyType type, short number, double hitpoint, short attackpower, dou
 Wave::~Wave() {
 }
 
-std::vector<EnemyBase*> Wave::execute() {
+void Wave::execute(std::vector<EnemyBase*> &venemy) {
 	for (int i = 0; i < number; i++) {
 		switch (type) {
 		case Normal:

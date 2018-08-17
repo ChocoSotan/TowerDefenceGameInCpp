@@ -20,7 +20,7 @@ public:
 	Wave(EnemyType type, short number, double hitpoint, short attackpower, double movespeed, long long resourcereward, bool isboss);
 	~Wave();
 
-	std::vector<EnemyBase*> execute();
+	void execute(std::vector<EnemyBase*> &venemy);
 
 	
 private:
