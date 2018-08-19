@@ -41,9 +41,6 @@ public:
 	~FieldLoader() {}
 
 	bool load(std::string filename, std::vector<TerrainBase*> &vec);
-private:
-	// create and store instance of T
-	void stock(std::vector<TerrainBase*> &vec);
 };
 
 class TurretLoader : public Loader {
@@ -52,7 +49,4 @@ public:
 	~TurretLoader() {}
 
 	bool load(std::string filename, std::vector<TurretBase*> &vec);
-
-private:
-	void stock(std::vector<TurretBase> &vturret);
 };
