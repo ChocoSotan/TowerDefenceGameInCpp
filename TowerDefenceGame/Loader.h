@@ -3,7 +3,7 @@
 #include "Enemy.h"
 #include "Terrain.h"
 #include "Turret.h"
-
+#include "Wave.h"
 
 
 #include <string>
@@ -49,4 +49,21 @@ public:
 	~TurretLoader() {}
 
 	bool load(std::string filename, std::vector<TurretBase*> &vec);
+};
+
+
+class [[deprecated("please use WaveLoader class.")]] EnemyLoader : public Loader {
+public:
+	EnemyLoader() {}
+	~EnemyLoader() {}
+
+	bool load(std::string filename, std::vector<EnemyBase*> &vec);
+};
+
+class WaveLoader : public Loader {
+public:
+	WaveLoader() {}
+	~WaveLoader() {}
+
+	bool load(std::string filename, std::vector<Wave*> &vec);
 };
