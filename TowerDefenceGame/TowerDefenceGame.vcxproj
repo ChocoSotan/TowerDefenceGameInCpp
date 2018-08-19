@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="Turret.h" />
     <ClInclude Include="TurretBarrel.h" />
+    <ClInclude Include="TurretFactory.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -34,6 +34,7 @@ public:
 
 private:
 	std::vector<TurretBase*> vturret;
+	std::vector<TurretBase> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;

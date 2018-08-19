@@ -1,28 +1,31 @@
 #pragma once
 
+#include "Enemy.h"
+#include "Terrain.h"
+#include "Turret.h"
+
+
+
 #include <string>
 #include <sstream>
 #include <vector>
 #include <fstream>
 
 
-class ILoader {
+class Loader {
 public:
-	ILoader() {}
-	virtual ~ILoader() {}
-
-	template <typename T>
-	virtual bool load(std::string filename, std::vector<T> &vec) = 0;
+	Loader() {}
+	virtual ~Loader() {}
 
 protected:
 	// split string by delimiter and store to container
 	void splitString(const std::string &line, std::vector<std::string> &container, const char delim = ',');
-
-
+	
+	
 };
 
 // split string by delimiter and store to container
-void ILoader::splitString(const std::string &line, std::vector<std::string> &container, const char delim) {
+void Loader::splitString(const std::string &line, std::vector<std::string> &container, const char delim) {
 	std::istringstream iss(line);
 	std::string str;
 	
@@ -32,18 +35,24 @@ void ILoader::splitString(const std::string &line, std::vector<std::string> &con
 }
 
 
-class FieldLoader : public ILoader {
+class FieldLoader : public Loader {
 public:
 	FieldLoader() {}
 	~FieldLoader() {}
 
-	template <typename T>
-	bool load(std::string filename, std::vector<T> &vec) override;
-
+	bool load(std::string filename, std::vector<TerrainBase*> &vec);
+private:
+	// create and store instance of T
+	void stock(std::vector<TerrainBase*> &vec);
 };
 
-template <typename T>
-bool FieldLoader::load(std::string filename, std::vector<T> &vec) {
-	write
-}
+class TurretLoader : public Loader {
+public:
+	TurretLoader() {}
+	~TurretLoader() {}
 
+	bool load(std::string filename, std::vector<TurretBase*> &vec);
+
+private:
+	void stock(std::vector<TurretBase> &vturret);
+};
