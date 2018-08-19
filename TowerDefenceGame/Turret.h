@@ -1,12 +1,15 @@
-#pragma once
+﻿#pragma once
 
-#include "Vector2D.h"
-#include "Enemy.h"
-#include "TurretBarrel.h"
+
 
 #include <vector>
 #include <string>
 
+#include "Vector2D.h"
+#include "Enemy.h"
+#include "TurretBarrel.h"
+#include "Attack.h"
+class TargetPriority;
 class TurretBase {
 public:
 	TurretBase(std::string name, double damage, double firerate, double range) {
@@ -27,25 +30,18 @@ public:
 	std::string getName() const { return this->name; }
 	double getDamage() const { return this->damage; }
 	double getFireRate() const { return this->firerate; }
-	double getRange() const { this->range; }
+	double getRange() const { return this->range; }
 	Vector2D getPosition() const { return this->position; }
 
 	void setAttackPower(double damage) { this->damage = damage; }
 	void setFireRate(double firerate) { this->firerate = firerate; }
 	void setAttackRange(double range) { this->range = range; }
+	void setTarget(TargetPriority* priority) {this->target = priority;}
+	
+
 
 
 protected:
-	typedef enum {
-		ClosestTurret,
-		FarthestTurret,
-		ClosestBase,
-		FarthestBase,
-		LowestHealth,
-		HighestHealth,
-
-		Random,
-	}eTargetPriority;
 
 	std::string name;
 	int constructcost;
@@ -55,9 +51,8 @@ protected:
 	double firerate;
 	double range;
 	Vector2D position;
-	eTargetPriority targetpriority;
 	TurretBarrel turretbarrel;
-
+	TargetPriority* target;
 	int texturehandle;
 
 	

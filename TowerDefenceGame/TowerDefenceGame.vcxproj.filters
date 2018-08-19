@@ -27,6 +27,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Attack.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="Loader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
