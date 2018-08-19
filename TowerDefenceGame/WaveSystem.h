@@ -7,16 +7,16 @@
 
 class WaveSystem final {
 public:
-	WaveSystem();
+	WaveSystem(std::vector<EnemyBase*> *venemy);
 	~WaveSystem();
 
-	bool init();
+	void init(std::string filename);
 	void update(std::vector<EnemyBase*> &venemy);
 	void draw();
-	bool finalize();
 
 private:
-	std::vector<Wave> vwaves;
+	std::vector<EnemyBase*> *venemy;
+	std::vector<Wave> vwave;
 	short currentwave;
 	long long count;
 	short interval;
