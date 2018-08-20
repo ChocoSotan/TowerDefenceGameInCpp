@@ -7,7 +7,7 @@
 
 class WaveSystem final {
 public:
-	WaveSystem(std::vector<EnemyBase*> *venemy);
+	WaveSystem(std::vector<EnemyBase*> *venemy, short interval);
 	~WaveSystem();
 
 	void init(std::string filename);

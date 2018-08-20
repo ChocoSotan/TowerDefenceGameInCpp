@@ -7,11 +7,11 @@
 #include <sstream>
 
 
-WaveSystem::WaveSystem(std::vector<EnemyBase*> *venemy) {
+WaveSystem::WaveSystem(std::vector<EnemyBase*> *venemy, short interval) {
 	this->venemy = venemy;
 	count = 0;
 	currentwave = 0;
-	interval = 600;
+	this->interval = interval;
 }
 
 

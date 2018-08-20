@@ -7,14 +7,13 @@
 
 class Wave {
 public:
-	Wave();
+	Wave(std::vector<EnemyBase*> &venemy);
 	~Wave();
 
-	void init();
-	void execute(std::vector<EnemyBase*> &venemy);
+	void push(std::vector<EnemyBase*> &venemy);
 
 	
 private:
-	std::vector<EnemyBase> venemy;
+	std::vector<EnemyBase*> venemy;
 };
 
