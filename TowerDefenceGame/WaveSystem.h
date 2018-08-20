@@ -2,6 +2,7 @@
 
 #include "Wave.h"
 #include "Enemy.h"
+#include "Loader.h"
 
 #include <vector>
 
@@ -15,8 +16,9 @@ public:
 	void draw();
 
 private:
-	std::vector<EnemyBase*> *venemy;
-	std::vector<Wave> vwave;
+	WaveLoader wl;
+	std::vector<EnemyBase*> *pvenemy;
+	std::vector<Wave*> vwave;
 	short currentwave;
 	long long count;
 	short interval;

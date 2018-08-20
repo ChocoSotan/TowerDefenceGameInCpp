@@ -8,7 +8,7 @@
 
 
 WaveSystem::WaveSystem(std::vector<EnemyBase*> *venemy, short interval) {
-	this->venemy = venemy;
+	this->pvenemy = venemy;
 	count = 0;
 	currentwave = 0;
 	this->interval = interval;
@@ -19,7 +19,7 @@ WaveSystem::~WaveSystem() {
 }
 
 void WaveSystem::init(std::string filename) {
-	
+	wl.load(filename, this->vwave);
 }
 
 void WaveSystem::update(std::vector<EnemyBase*> &venemy) {
@@ -28,7 +28,7 @@ void WaveSystem::update(std::vector<EnemyBase*> &venemy) {
 		return;
 	}
 
-	vwave[currentwave].execute(venemy);
+	vwave[currentwave]->push(venemy);
 
 
 	currentwave++;
