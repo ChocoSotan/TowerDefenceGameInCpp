@@ -26,7 +26,7 @@ public:
 	}
 	virtual ~TurretBase() {}
 
-	virtual void attack(std::vector<EnemyBase> &targetlist) = 0;
+	virtual void attack(std::vector<EnemyBase*> &targetlist) = 0;
 	bool canConstruct(long long resource);
 	virtual void upgrade() = 0;
 	bool canUpgrade(long long resource);
@@ -37,24 +37,24 @@ public:
 	double getDamage() const { return this->damage; }
 	double getFireRate() const { return this->firerate; }
 	double getRange() const { return this->range; }
-	double getWaiting()const { return this->waiting; }
+	//double getWaiting()const { return this->waiting; }
 	double getMinRange() { return this->minrange; }
 	int getGrade()const { return this->grade; }
 	int getConstructCost()const { return this->constructcost; }
 	int getUpgradeCost()const { return this->upgradecost; }
-	int getCostSpent()const { return this->costspent; }
+	//int getCostSpent()const { return this->costspent; }
 	Vector2D getPosition() const { return this->position; }
 
-	void setAttackPower(double damage) { this->damage = damage; }
-	void setFireRate(double firerate) { this->firerate = firerate; }
-	void setAttackRange(double range) { this->range = range; }
-	void setTarget(TargetPriority* priority) {this->target = priority;}
-	void setWaiting(double waiting) { this->waiting = waiting; }
-	void setGrade(int grade) { this->grade = grade; }
-	void setDamage(double damage) { this->damage = damage; }
-	void setCostSpent(int coatspent) { this->costspent = costspent; }
-	void setUpgradeCost(int upgradecost) { this->upgradecost = upgradecost; }
-	void setRange(double range) { this->range = range; }
+	//void setAttackPower(double damage) { this->damage = damage; }
+	//void setFireRate(double firerate) { this->firerate = firerate; }
+	//void setAttackRange(double range) { this->range = range; }
+	//void setTarget(TargetPriority* priority) {this->target = priority;}
+	//void setWaiting(double waiting) { this->waiting = waiting; }
+	//void setGrade(int grade) { this->grade = grade; }
+	//void setDamage(double damage) { this->damage = damage; }
+	//void setCostSpent(int coatspent) { this->costspent = costspent; }
+	//void setUpgradeCost(int upgradecost) { this->upgradecost = upgradecost; }
+	//void setRange(double range) { this->range = range; }
 
 
 
@@ -87,7 +87,7 @@ public:
 		this->minrange = 0;
 	}
 	~BasicTurret() {}
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
 	void upgrade()override;
 	int destroy()override;
 
@@ -108,7 +108,7 @@ public:
 	~MortarTurret() {}
 	void upgrade()override;
 	int destroy()override;
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
 	double getSplashDamage() { return this->splashdamage; }
 	double getSplashRange() { return this->splashrange; }
 	void setSplashDamage(double splashdamage) {this->splashdamage=splashdamage; }
@@ -131,7 +131,7 @@ public:
 	virtual ~BlastTurret() {}
 	void upgrade()override;
 	int destroy()override;
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
 
 protected:
 	
@@ -147,7 +147,7 @@ public:
 	}
 	~DotTurret() {}
 
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
 
 protected:
 	double effectvalue;

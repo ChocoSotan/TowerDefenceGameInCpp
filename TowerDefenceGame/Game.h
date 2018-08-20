@@ -141,7 +141,10 @@ void Game::Update() {
 		}
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-
+		(*i)->attack(venemy);
+		if (isFFed) {
+			(*i)->attack(venemy);
+		}
 	}
 
 
