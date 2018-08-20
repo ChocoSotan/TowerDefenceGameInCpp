@@ -9,23 +9,22 @@ public:
 	TurretFactory() {}
 	~TurretFactory() {}
 
-	BasicTurret* create(std::string name, double damage, double firerate, double range);
+	TurretBase* create(const BasicTurret &turret);
+	TurretBase* create(const MortarTurret &turret);
+	TurretBase* create(const BlastTurret &turret);
 
 private:
 
 };
 
-BasicTurret* TurretFactory::create(std::string name, double damage, double firerate, double range) {
-	return new BasicTurret(name, damage, firerate, range);
+TurretBase* TurretFactory::create(const BasicTurret &turret) {
+	return new BasicTurret(turret);
 }
 
-BlastTurret* TurretFactory::create(std::string name, double damage, double firerate, double range) {
-
+TurretBase* TurretFactory::create(const MortarTurret &turret) {
+	return new MortarTurret(turret);
 }
 
-MortarTurret* TurretFactory::create(std::string name, double damage, double firerate, double range, double splashdamage, double splashrange, double minrange) {
-
+TurretBase* TurretFactory::create(const BlastTurret &turret) {
+	return new BlastTurret(turret);
 }
-
-
-
