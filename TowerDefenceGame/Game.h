@@ -58,7 +58,7 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 
 void Game::Initialize() {
 	// for debug
-	NormalEnemy *normalenemy = new NormalEnemy(20,8,2,10);
+	NormalEnemy *normalenemy = new NormalEnemy(20,2,2,10);
 	Vector2D *vec = new Vector2D(80, 408);
 	venemy.push_back(normalenemy);
 	venemy[0]->setPosition(*vec);
