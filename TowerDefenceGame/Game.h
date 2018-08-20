@@ -14,6 +14,8 @@
 
 #include <vector>
 
+#include "TargetPriority.h"
+
 // for DxLib's Color Code
 #define White GetColor(255,255,255)
 #define Black GetColor(0,0,0)
@@ -65,8 +67,9 @@ void Game::Initialize() {
 	ws = new WaveSystem(&this->venemy, 300);
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
 	ws->update(this->venemy);
-	
 
+
+	/* Pooling to Texture Pool */
 	texture.pool("texture/Game/Buttons/Stop.png");
 	texture.pool("texture/Game/Buttons/Start.png");
 	texture.pool("texture/Game/Buttons/NotFastForward.png");
@@ -75,24 +78,27 @@ void Game::Initialize() {
 	texture.pool("texture/Game/Turrets/TurretBases/default.png");
 	texture.pool("texture/Game/Turrets/TurretBases/default(selected).png");
 
+	// Start/Stop Button
 	std::vector<std::string> vfilename;
 	vfilename.push_back("texture/Game/Buttons/Stop.png");
 	vfilename.push_back("texture/Game/Buttons/Start.png");
 	button.push_back(new Button(8, 8));
 	button[0]->init(&texture, vfilename);
 
-	
+	// FastForward Button
 	vfilename.clear();
 	vfilename.push_back("texture/Game/Buttons/NotFastForward.png");
 	vfilename.push_back("texture/Game/Buttons/FastForward.png");
 	button.push_back(new Button(56, 8));
 	button[1]->init(&texture, vfilename);
 
+	// NextWave Button
 	vfilename.clear();
 	vfilename.push_back("texture/Game/Buttons/NextWave.png");
 	button.push_back(new Button(104, 8));
 	button[2]->init(&texture, vfilename);
 
+	// Buying Turret Button(Toggle)
 	vfilename.clear();
 	vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
 	vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
@@ -103,9 +109,10 @@ void Game::Initialize() {
 }
 
 void Game::Update() {
-	// mouse
+	/* Mouse */
 	this->mouse.update();
 
+	/* Button */
 	// button update
 	for (auto i = button.begin(); i != button.end(); i++) {
 		(*i)->update(this->mouse);

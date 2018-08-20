@@ -37,7 +37,7 @@ public:
 	double getDamage() const { return this->damage; }
 	double getFireRate() const { return this->firerate; }
 	double getRange() const { return this->range; }
-	//double getWaiting()const { return this->waiting; }
+	double getWaitTime()const { return this->waittime; }
 	double getMinRange() { return this->minrange; }
 	int getGrade()const { return this->grade; }
 	int getConstructCost()const { return this->constructcost; }
@@ -49,7 +49,7 @@ public:
 	//void setFireRate(double firerate) { this->firerate = firerate; }
 	//void setAttackRange(double range) { this->range = range; }
 	//void setTarget(TargetPriority* priority) {this->target = priority;}
-	//void setWaiting(double waiting) { this->waiting = waiting; }
+	void setWaitTime(double waittime) { this->waittime = waittime; }
 	//void setGrade(int grade) { this->grade = grade; }
 	//void setDamage(double damage) { this->damage = damage; }
 	//void setCostSpent(int coatspent) { this->costspent = costspent; }
@@ -68,7 +68,7 @@ protected:
 	double damage;
 	double firerate;
 	double range;
-	double waiting;
+	double waittime;
 	double minrange;
 	Vector2D position;
 	TurretBarrel turretbarrel;
