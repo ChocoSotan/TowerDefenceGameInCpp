@@ -11,12 +11,14 @@ public:
 	WaveSystem(std::vector<EnemyBase*> *venemy, short interval);
 	~WaveSystem();
 
-	void init(std::string filename);
+	void init(std::string filename, Vector2D &pos);
 	void update(std::vector<EnemyBase*> &venemy);
-	void draw();
-
+	long long getCount() { return this->count; }
+	void nextWave();
+	
 private:
-	WaveLoader wl;
+
+	
 	std::vector<EnemyBase*> *pvenemy;
 	std::vector<Wave*> vwave;
 	short currentwave;

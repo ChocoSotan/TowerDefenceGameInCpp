@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "Button.h"
 #include "Mouse.h"
+#include "Loader.h"
 
 #include <vector>
 
@@ -40,9 +41,11 @@ private:
 	std::vector<TurretBase*> vturret;
 	std::vector<TurretBase> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
+	std::vector<Wave*> vwave;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
+	WaveSystem *ws;
 	Texture texture;
 
 	std::vector<Button*> button;
@@ -57,46 +60,12 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 }
 
 void Game::Initialize() {
-	// for debug
-	NormalEnemy *normalenemy = new NormalEnemy(20,2,2,10);
-	Vector2D *vec = new Vector2D(80, 408);
-	venemy.push_back(normalenemy);
-	venemy[0]->setPosition(*vec);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*1, 408);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*1, 408 - 64*3);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*3, 408 - 64*3);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*3, 408 + 64*2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*1, 408 + 64*2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*1, 408 + 64*4);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*9, 408 + 64*4);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*9, 408 + 64*2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*6, 408 + 64*2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64*6, 408 - 64*2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64 * 5, 408 - 64 * 2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64 * 5, 408 - 64 * 4);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64 * 9, 408 - 64 * 4);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64 * 9, 408 - 64 * 2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64 * 8, 408 - 64 * 2);
-	vpath.push_back(*vec);
-	vec = new Vector2D(112 + 64 * 8, 408 - 64 * 0);
-	vpath.push_back(*vec);
-	vec = new Vector2D(144 + 64 * 10, 408 - 64 * 0);
-	vpath.push_back(*vec);
+	PathLoader pl;
+	pl.load("data\\stage\\01\\path.csv", this->vpath);
+	ws = new WaveSystem(&this->venemy, 300);
+	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
+	ws->update(this->venemy);
+	
 
 	texture.pool("texture/Game/Buttons/Stop.png");
 	texture.pool("texture/Game/Buttons/Start.png");
@@ -106,58 +75,70 @@ void Game::Initialize() {
 	texture.pool("texture/Game/Turrets/TurretBases/default.png");
 	texture.pool("texture/Game/Turrets/TurretBases/default(selected).png");
 
-	std::vector<std::string> *vfilename = new std::vector<std::string>();
-	vfilename->push_back("texture/Game/Buttons/Stop.png");
-	vfilename->push_back("texture/Game/Buttons/Start.png");
+	std::vector<std::string> vfilename;
+	vfilename.push_back("texture/Game/Buttons/Stop.png");
+	vfilename.push_back("texture/Game/Buttons/Start.png");
 	button.push_back(new Button(8, 8));
-	button[0]->init(&texture, *vfilename);
+	button[0]->init(&texture, vfilename);
 
 	
-	vfilename->clear();
-	vfilename->push_back("texture/Game/Buttons/NotFastForward.png");
-	vfilename->push_back("texture/Game/Buttons/FastForward.png");
+	vfilename.clear();
+	vfilename.push_back("texture/Game/Buttons/NotFastForward.png");
+	vfilename.push_back("texture/Game/Buttons/FastForward.png");
 	button.push_back(new Button(56, 8));
-	button[1]->init(&texture, *vfilename);
+	button[1]->init(&texture, vfilename);
 
-	vfilename->clear();
-	vfilename->push_back("texture/Game/Buttons/NextWave.png");
+	vfilename.clear();
+	vfilename.push_back("texture/Game/Buttons/NextWave.png");
 	button.push_back(new Button(104, 8));
-	button[2]->init(&texture, *vfilename);
+	button[2]->init(&texture, vfilename);
 
-	vfilename->clear();
-	vfilename->push_back("texture/Game/Turrets/TurretBases/default.png");
-	vfilename->push_back("texture/Game/Turrets/TurretBases/default(selected).png");
+	vfilename.clear();
+	vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
+	vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
 	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
 		button.push_back(new Button(808 + j * 64, 132 + i * 64));
 	}
-	for(int i = 0;i<9;i++)button[3 + i]->init(&texture, *vfilename);
+	for(int i = 0;i<9;i++)button[3 + i]->init(&texture, vfilename);
 }
 
 void Game::Update() {
+	// mouse
 	this->mouse.update();
+
+	// button update
 	for (auto i = button.begin(); i != button.end(); i++) {
 		(*i)->update(this->mouse);
 	}
+
+	// toggle pause
 	if (button[0]->isClicked()) {
 		isPaused ? isPaused = false : isPaused = true;
 	}
+
+	// toggle fast forward
 	if (button[1]->isClicked()) {
 		isFFed ? isFFed = false : isFFed = true;
 	}
+
+	// next wave
 	if (button[2]->isClicked()) {
-		// next wave
-	}
-	for (int i = 0; i < 9; i++) {
-		if (button[3 + i]->isClicked()) {
-			printfDx("clicked\n");
-		}
+		ws->nextWave();
 	}
 	
 	
 	if (isPaused) return;
+
+	/* Not Paused */
+
+	ws->update(this->venemy);
+	if(isFFed)ws->update(this->venemy);
+
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		(*i)->move(vpath);
-		if(isFFed)(*i)->move(vpath);
+		if (isFFed) {
+			(*i)->move(vpath);
+		}
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 
@@ -172,11 +153,11 @@ void Game::Draw() {
 	for (auto i = button.begin(); i != button.end(); i++) {
 		(*i)->draw();
 	}
-	
+
 	// Stop/Start
 	DrawString(8, 8, "S/S", White);
 	DrawBox(8, 8, 48, 48, White, FALSE);
-	
+
 	// FastForward
 	DrawString(56, 8, "FF", White);
 	DrawBox(56, 8, 96, 48, White, FALSE);
@@ -227,7 +208,10 @@ void Game::Draw() {
 	DrawString(160 + 10 * Boxsize, 340, "Information", White);
 	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
 
-	DrawCircle((int)venemy[0]->getPosition().getX(), (int)venemy[0]->getPosition().getY(), 4, White);
+	for (int i = 0; i < venemy.size(); i++) {
+		DrawCircle((int)venemy[i]->getPosition().getX(), (int)venemy[i]->getPosition().getY(), 4, White);
+	}
+	DrawFormatString(0, 60, White, "%d", (int)ws->getCount());
 }
 
 void Game::Finalize() {

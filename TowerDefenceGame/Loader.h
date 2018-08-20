@@ -4,6 +4,7 @@
 #include "Terrain.h"
 #include "Turret.h"
 #include "Wave.h"
+#include "WaveSystem.h"
 
 
 #include <string>
@@ -35,6 +36,14 @@ public:
 	bool load(std::string filename, std::vector<TerrainBase*> &vec);
 };
 
+class PathLoader : public Loader {
+public:
+	PathLoader() {}
+	~PathLoader() {}
+
+	bool load(std::string filename, std::vector<Vector2D> &vpath);
+};
+
 class TurretLoader : public Loader {
 public:
 	TurretLoader() {}
@@ -44,18 +53,12 @@ public:
 };
 
 
-class [[deprecated("please use WaveLoader class.")]] EnemyLoader : public Loader {
-public:
-	EnemyLoader() {}
-	~EnemyLoader() {}
-
-	bool load(std::string filename, std::vector<EnemyBase*> &vec);
-};
 
 class WaveLoader : public Loader {
 public:
 	WaveLoader() {}
 	~WaveLoader() {}
 
-	bool load(std::string filename, std::vector<Wave*> &vec);
+	bool load(std::string filename, std::vector<Wave*> &vec, Vector2D &pos);
 };
+
