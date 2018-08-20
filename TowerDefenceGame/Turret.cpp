@@ -1,6 +1,7 @@
+
+//#include <vector>
 #include "Turret.h"
 
-#include <vector>
 
 bool TurretBase::canConstruct(long long resource) {
 	return resource >= constructcost;
@@ -11,66 +12,9 @@ bool TurretBase::canUpgrade(long long resource) {
 
 void BasicTurret::attack(std::vector<EnemyBase> &targetlist) {
 	int targetindex;
-
+	targetindex = this->target->decisionOrder(targetlist, *this);
+	if (targetindex == -1)return;
 	// there is no enemy in stage
-	if (targetlist.size() == 0)return;
-
-	switch (this->targetpriority) {
-	case ClosestTurret:
-		double mindistance;
-		if (targetlist.size() > 0) {
-			targetindex = 0;
-			mindistance = this->getPosition().getAbsTo(targetlist[0].getPosition());
-		}
-
-		for (int i = 0; i < (signed)targetlist.size(); i++) {
-			// out of range
-			if (this->range < targetlist[i].getPosition().getAbsTo(this->position)) {
-				// there is no enemy in range
-				if (i == (signed)targetlist.size() - 1)return;
-				continue;
-			}
-			// farther than target
-			else if (mindistance < this->getPosition().getAbsTo(targetlist[i].getPosition())) {
-				continue;
-			}
-			mindistance = this->getPosition().getAbsTo(targetlist[i].getPosition());
-			targetindex = i;
-		}
-		break;
-	case FarthestTurret:
-		double maxdistance;
-		if (targetlist.size() > 0) {
-			targetindex = 0;
-			maxdistance = this->getPosition().getAbsTo(targetlist[0].getPosition());
-		}
-
-		for (int i = 0; i < (signed)targetlist.size(); i++) {
-			// out of range
-			if (this->range < targetlist[i].getPosition().getAbsTo(this->position)) {
-				// there is no enemy in range
-				if (i == (signed)targetlist.size() - 1)return;
-				continue;
-			}
-			// closer than target
-			else if (maxdistance > this->getPosition().getAbsTo(targetlist[i].getPosition())) {
-				continue;
-			}
-			maxdistance = this->getPosition().getAbsTo(targetlist[i].getPosition());
-			targetindex = i;
-		}
-		break;
-	case ClosestBase:
-		break;
-	case FarthestBase:
-		break;
-	case LowestHealth:
-		break;
-	case HighestHealth:
-		break;
-	case Random:
-		break;
-	}
 
 	/* attack */
 	// set barrel angle to target
@@ -79,4 +23,68 @@ void BasicTurret::attack(std::vector<EnemyBase> &targetlist) {
 	targetlist[targetindex].setHitpoint(targetlist[targetindex].getHitpoint() - this->damage);
 
 }
+void TurretBase::changePriority(TargetPriority* target) {
+	delete this->target;
+	this->target = target;
+}
+//レンジ・グレード・ダメージを増加
+void BasicTurret::upgrade() {
+	setRange(getRange()*1.1);
+	setGrade(getGrade() + 1);
+	setDamage(getDamage()*1.5);
+	setCostSpent(getCostSpent() + getUpgradeCost());
+	setUpgradeCost((int)round(getUpgradeCost()*1.5));
+	return;
+}
+//費やしたコストに応じてコストを返還
+int BasicTurret::destroy() {
+	return (int)round(getCostSpent()*0.7);
+}
 
+void MortarTurret::attack(std::vector<EnemyBase> &targetlist) {
+	//set target
+	int targetindex;
+	targetindex = this->target->decisionOrder(targetlist, *this);
+	if (targetindex == -1)return;
+	//set barrel angle
+	this->turretbarrel.setAngle(this->getPosition().getAngleTo(targetlist[targetindex].getPosition()));
+	//attack to the target
+	targetlist[targetindex].setHitpoint(targetlist[targetindex].getHitpoint() - this->damage);
+	//splash damage
+	for (auto i = 0; i < targetlist.size(); i++) {
+		if (targetlist[targetindex].getPosition().getAbsTo(targetlist[i].getPosition()) < this->getSplashRange()) {
+			targetlist[i].setHitpoint(targetlist[i].getHitpoint() - this->getSplashDamage());
+		}
+	}
+}
+void MortarTurret::upgrade() {
+	setSplashDamage(getSplashDamage()*1.5);
+	setSplashRange(getSplashRange()*1.1);
+	setRange(getRange()*1.1);
+	setGrade(getGrade() + 1);
+	setDamage(getDamage()*1.5);
+	setCostSpent(getCostSpent() + getUpgradeCost());
+	setUpgradeCost((int)round(getUpgradeCost()*1.5));
+	return;
+}
+int MortarTurret::destroy() {
+	return (int)round(getCostSpent()*0.7);
+}
+void BlastTurret::attack(std::vector<EnemyBase> &targetlist) {
+	for (auto i = 0; i < targetlist.size(); i++) {
+		if (this->getRange() > this->getPosition().getAbsTo(targetlist[i].getPosition())) {
+			targetlist[i].setHitpoint(targetlist[i].getHitpoint() - this->getDamage());
+		}
+	}
+}
+void BlastTurret::upgrade() {
+	setRange(getRange()*1.1);
+	setGrade(getGrade() + 1);
+	setDamage(getDamage()*1.5);
+	setCostSpent(getCostSpent() + getUpgradeCost());
+	setUpgradeCost((int)round(getUpgradeCost()*1.5));
+	return;
+}
+int BlastTurret::destroy() {
+	return (int)round(getCostSpent()*0.7);
+}

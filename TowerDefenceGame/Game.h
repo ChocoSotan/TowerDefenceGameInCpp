@@ -8,6 +8,8 @@
 #include "Terrain.h"
 
 #include "Texture.h"
+#include "Button.h"
+#include "Mouse.h"
 
 #include <vector>
 
@@ -33,17 +35,25 @@ public:
 	void Finalize() override;
 
 private:
+	Mouse mouse;
+
 	std::vector<TurretBase*> vturret;
+	std::vector<TurretBase> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	Texture *texture;
+	Texture texture;
 
+	std::vector<Button*> button;
+
+	bool isPaused;
+	bool isFFed;
 };
 
 Game::Game(ISceneChanger *changer) : BaseScene(changer) {
-
+	this->isPaused = false;
+	this->isFFed = false;
 }
 
 void Game::Initialize() {
@@ -87,22 +97,81 @@ void Game::Initialize() {
 	vpath.push_back(*vec);
 	vec = new Vector2D(144 + 64 * 10, 408 - 64 * 0);
 	vpath.push_back(*vec);
+
+	texture.pool("texture/Game/Buttons/Stop.png");
+	texture.pool("texture/Game/Buttons/Start.png");
+	texture.pool("texture/Game/Buttons/NotFastForward.png");
+	texture.pool("texture/Game/Buttons/FastForward.png");
+	texture.pool("texture/Game/Buttons/NextWave.png");
+	texture.pool("texture/Game/Turrets/TurretBases/default.png");
+	texture.pool("texture/Game/Turrets/TurretBases/default(selected).png");
+
+	std::vector<std::string> *vfilename = new std::vector<std::string>();
+	vfilename->push_back("texture/Game/Buttons/Stop.png");
+	vfilename->push_back("texture/Game/Buttons/Start.png");
+	button.push_back(new Button(8, 8));
+	button[0]->init(&texture, *vfilename);
+
+	
+	vfilename->clear();
+	vfilename->push_back("texture/Game/Buttons/NotFastForward.png");
+	vfilename->push_back("texture/Game/Buttons/FastForward.png");
+	button.push_back(new Button(56, 8));
+	button[1]->init(&texture, *vfilename);
+
+	vfilename->clear();
+	vfilename->push_back("texture/Game/Buttons/NextWave.png");
+	button.push_back(new Button(104, 8));
+	button[2]->init(&texture, *vfilename);
+
+	vfilename->clear();
+	vfilename->push_back("texture/Game/Turrets/TurretBases/default.png");
+	vfilename->push_back("texture/Game/Turrets/TurretBases/default(selected).png");
+	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
+		button.push_back(new Button(808 + j * 64, 132 + i * 64));
+	}
+	for(int i = 0;i<9;i++)button[3 + i]->init(&texture, *vfilename);
 }
 
 void Game::Update() {
+	this->mouse.update();
+	for (auto i = button.begin(); i != button.end(); i++) {
+		(*i)->update(this->mouse);
+	}
+	if (button[0]->isClicked()) {
+		isPaused ? isPaused = false : isPaused = true;
+	}
+	if (button[1]->isClicked()) {
+		isFFed ? isFFed = false : isFFed = true;
+	}
+	if (button[2]->isClicked()) {
+		// next wave
+	}
+	for (int i = 0; i < 9; i++) {
+		if (button[3 + i]->isClicked()) {
+			printfDx("clicked\n");
+		}
+	}
+	
+	
+	if (isPaused) return;
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		(*i)->move(vpath);
+		if(isFFed)(*i)->move(vpath);
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		
+
 	}
+
+
 }
 
 void Game::Draw() {
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "ƒQ[ƒ€");
 
-	DrawFormatString(0, 40, White, "%lf", venemy[0]->getDistanceToBase(vpath));
-
+	for (auto i = button.begin(); i != button.end(); i++) {
+		(*i)->draw();
+	}
 	
 	// Stop/Start
 	DrawString(8, 8, "S/S", White);
@@ -162,5 +231,7 @@ void Game::Draw() {
 }
 
 void Game::Finalize() {
-
+	for (auto i = button.begin(); i != button.end(); i++) {
+		delete (*i);
+	}
 }
