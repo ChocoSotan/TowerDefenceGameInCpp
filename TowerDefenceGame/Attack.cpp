@@ -9,7 +9,7 @@ int ClosestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &
 	if (targetlist.empty())return -1;
 	double mindistancefromturret = DBL_MAX;
 	int targetindex = 0;
-	for (int i = 0; i < targetlist.size(); i++) {
+	for (int i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getPosition().getAbsTo(targetlist[i].getPosition()) < mindistancefromturret) {
@@ -28,7 +28,7 @@ int FarthestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase 
 	if (targetlist.empty())return -1;
 	double maxdistancefromturret = 0;
 	int targetindex = 0;
-	for (int i = 0; i < targetlist.size(); i++) {
+	for (int i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getPosition().getAbsTo(targetlist[i].getPosition()) > maxdistancefromturret) {
@@ -47,7 +47,7 @@ int ClosestBase::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &tu
 	if (targetlist.empty())return -1;
 	double mindistancetobase = DBL_MAX;
 	int targetindex = 0;
-	for (auto i = 0; i < targetlist.size(); i++) {
+	for (auto i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (targetlist[i].getDistanceToBase(vpath) < mindistancetobase) {
@@ -64,7 +64,7 @@ int FarthestBase::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &t
 	if (targetlist.empty())return -1;
 	double maxdistancetobase = 0;
 	int targetindex = 0;
-	for (auto i = 0; i < targetlist.size(); i++) {
+	for (auto i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (targetlist[i].getDistanceToBase(vpath) < maxdistancetobase) {
@@ -81,7 +81,7 @@ int LowestHealth::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &t
 	if (targetlist.empty())return -1;
 	double minHitPoint = DBL_MAX;
 	int targetindex = 0;
-	for (int i = 0; i < targetlist.size(); i++) {
+	for (int i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (targetlist[i].getHitpoint() < minHitPoint) {
@@ -100,7 +100,7 @@ int HighestHealth::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &
 	if (targetlist.empty())return -1;
 	double maxHitPoint = 0;
 	int targetindex = 0;
-	for (int i = 0; i < targetlist.size(); i++) {
+	for (int i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[0].getPosition())) continue;
 		if (targetlist[i].getHitpoint() > maxHitPoint) {

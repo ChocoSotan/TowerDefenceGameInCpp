@@ -2,7 +2,6 @@
 
 #include "Terrain.h"
 #include "Turret.h"
-
 #include "TurretFactory.h"
 
 #include <string>
@@ -11,7 +10,15 @@
 #include <fstream>
 
 
+// split string by delimiter and store to container
+void Loader::splitString(const std::string &line, std::vector<std::string> &container, const char delim) {
+	std::istringstream iss(line);
+	std::string str;
 
+	while (std::getline(iss, str, delim)) {
+		container.push_back(str);
+	}
+}
 
 bool FieldLoader::load(std::string filename, std::vector<TerrainBase*> &vec) {
 	return true;
@@ -51,6 +58,7 @@ bool TurretLoader::load(std::string filename, std::vector<TurretBase*> &vec) {
 	}
 	return true;
 }
+
 
 bool EnemyLoader::load(std::string filename, std::vector<EnemyBase*> &vec) {
 	using namespace std;

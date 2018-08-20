@@ -1,15 +1,15 @@
 ﻿#pragma once
 
-
-
-#include <vector>
-#include <string>
-#include<math.h>
-
 #include "Vector2D.h"
 #include "Enemy.h"
 #include "TurretBarrel.h"
-#include "Attack.h"
+
+#include <vector>
+#include <string>
+#include <math.h>
+
+
+
 class TargetPriority;
 class TurretBase {
 public:
@@ -24,7 +24,7 @@ public:
 		this->costspent = constructcost;
 		this->position = position;
 	}
-	virtual ~TurretBase() = 0;
+	virtual ~TurretBase() {}
 
 	virtual void attack(std::vector<EnemyBase> &targetlist) = 0;
 	bool canConstruct(long long resource);
@@ -128,7 +128,7 @@ public:
 	BlastTurret(std::string name, double damage, double firerate, double range, int constructcost, int upgradecost,Vector2D position) : TurretBase(name, damage, firerate, range, constructcost, upgradecost,position) {
 		this->minrange = 0;
 	}
-	~BlastTurret() {}
+	virtual ~BlastTurret() {}
 	void upgrade()override;
 	int destroy()override;
 	void attack(std::vector<EnemyBase> &targetlist) override;
@@ -145,6 +145,7 @@ public:
 	DotTurret(std::string name, double damage, double firerate, double range, int constructcost, int upgradecost,Vector2D position, double effectvalue) : TurretBase(name, damage, firerate, range, constructcost, upgradecost,position) {
 		this->effectvalue = effectvalue;
 	}
+	~DotTurret() {}
 
 	void attack(std::vector<EnemyBase> &targetlist) override;
 

@@ -1,7 +1,5 @@
-
-//#include <vector>
 #include "Turret.h"
-
+#include "Attack.h"
 
 bool TurretBase::canConstruct(long long resource) {
 	return resource >= constructcost;
@@ -51,7 +49,7 @@ void MortarTurret::attack(std::vector<EnemyBase> &targetlist) {
 	//attack to the target
 	targetlist[targetindex].setHitpoint(targetlist[targetindex].getHitpoint() - this->damage);
 	//splash damage
-	for (auto i = 0; i < targetlist.size(); i++) {
+	for (auto i = 0; i < (signed)targetlist.size(); i++) {
 		if (targetlist[targetindex].getPosition().getAbsTo(targetlist[i].getPosition()) < this->getSplashRange()) {
 			targetlist[i].setHitpoint(targetlist[i].getHitpoint() - this->getSplashDamage());
 		}
@@ -71,7 +69,7 @@ int MortarTurret::destroy() {
 	return (int)round(getCostSpent()*0.7);
 }
 void BlastTurret::attack(std::vector<EnemyBase> &targetlist) {
-	for (auto i = 0; i < targetlist.size(); i++) {
+	for (auto i = 0; i < (signed)targetlist.size(); i++) {
 		if (this->getRange() > this->getPosition().getAbsTo(targetlist[i].getPosition())) {
 			targetlist[i].setHitpoint(targetlist[i].getHitpoint() - this->getDamage());
 		}
