@@ -1,0 +1,6 @@
+BasicTurret (特殊効果なし、基本)
+MachinegunTurret (特殊効果なし、威力低、速度早)
+SniperTurret (特殊効果なし、範囲/威力高、速度遅)
+MorterTurret (範囲攻撃、ドーナツ型の範囲、速度遅)
+SplashTurret (範囲攻撃、速度遅)
+BlastTurret (範囲内のすべてに攻撃)

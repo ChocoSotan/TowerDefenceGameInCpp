@@ -5,7 +5,7 @@
 
 class EnemyBase {
 public:
-	EnemyBase(double hitpoint, double movespeed, long attackpower, long long resourcereward) {
+	EnemyBase(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) {
 		this->hitpoint = hitpoint;
 		this->movespeed = movespeed;
 		this->attackpower = attackpower;
@@ -13,6 +13,7 @@ public:
 		this->currentpoint = 0;
 		this->angle = 0;
 		this->knockback = 0;
+		this->position = pos;
 	}
 	virtual ~EnemyBase() {}
 
@@ -54,7 +55,7 @@ protected:
 
 class NormalEnemy : public EnemyBase {
 public:
-	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward) {}
+	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward, pos) {}
 	~NormalEnemy() {}
 
 	void move(std::vector<Vector2D> &vpath) override;
