@@ -135,6 +135,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="Turret.h" />
     <ClInclude Include="TurretBarrel.h" />
     <ClInclude Include="Vector2D.h" />

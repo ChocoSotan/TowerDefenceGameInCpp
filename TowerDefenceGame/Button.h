@@ -5,7 +5,6 @@
 #include "Mouse.h"
 
 #include <string>
-
 class Button {
 public:
 	Button(int x, int y) {
