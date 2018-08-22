@@ -1,4 +1,4 @@
-#include"Attack.h"
+#include"TargetPriority.h"
 #include"Vector2D.h"
 
 int ClosestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
