@@ -11,4 +11,5 @@
 //}
 //void ToggleButton::addButton(int x, int y) {
 //	button.push_back(new Button(x, y));
+//	button[button.size()].init(Texture *texture, std::vector<std::string> vfilename);
 //}
