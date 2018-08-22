@@ -18,7 +18,7 @@ int ClosestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &
 			targetindex = i;
 		}
 	}
-	if (targetindex == -1)return targetindex;
+	if (targetindex == -1)return -1;
 	turret.setWaiting(0.0);
 	return targetindex;
 }
