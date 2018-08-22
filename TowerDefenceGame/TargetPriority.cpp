@@ -1,9 +1,9 @@
 #include"TargetPriority.h"
 #include"Vector2D.h"
 
-int ClosestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+int ClosestTurret::decisionOrder(std::vector<EnemyBase>& targetlist, TurretBase &turret)const {
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -19,12 +19,12 @@ int ClosestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &
 		}
 	}
 	if (targetindex == -1)return -1;
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
 int FarthestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -40,12 +40,12 @@ int FarthestTurret::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase 
 		}
 	}
 	if (targetindex == -1)return targetindex;
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
 int ClosestBase::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -60,12 +60,12 @@ int ClosestBase::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &tu
 		}
 	}
 	if (targetindex == -1)return targetindex;
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
 int FarthestBase::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -80,12 +80,12 @@ int FarthestBase::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &t
 		}
 	}
 	if (targetindex == -1)return targetindex;
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
 int LowestHealth::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -101,12 +101,12 @@ int LowestHealth::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &t
 		}
 	}
 	if (targetindex == -1)return targetindex;
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
 int HighestHealth::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -122,12 +122,12 @@ int HighestHealth::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &
 		}
 	}
 	if (targetindex == -1)return targetindex;
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
 int Random::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)const {
-	if (turret.getFireRate() > turret.getWaiting()) {
-		turret.setWaiting(turret.getWaiting() + 1.0);
+	if (turret.getFireRate() > turret.getWaitTime()) {
+		turret.setWaitTime(turret.getWaitTime() + 1.0);
 		return -1;
 	}
 	if (targetlist.empty())return -1;
@@ -142,6 +142,6 @@ int Random::decisionOrder(std::vector<EnemyBase>&targetlist, TurretBase &turret)
 		targetindex = GetRand((int)targetlist.size());
 		if (targetlist[targetindex].getPosition().getAbsTo(turret.getPosition()) < turret.getRange())break;
 	} while (1);
-	turret.setWaiting(0.0);
+	turret.setWaitTime(0.0);
 	return targetindex;
 }
