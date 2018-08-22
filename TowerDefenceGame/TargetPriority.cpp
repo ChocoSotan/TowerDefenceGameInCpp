@@ -9,7 +9,7 @@ int ClosestTurret::decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase
 	}
 	if (targetlist.empty())return -1;
 	double mindistancefromturret = DBL_MAX;
-	int targetindex = 0;
+	int targetindex = -1;
 	for (int i = 0; i < (signed)targetlist.size(); i++) {
 		if (turret.getRange() < turret.getPosition().getAbsTo(targetlist[i]->getPosition())) continue;
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[i]->getPosition())) continue;
@@ -18,6 +18,7 @@ int ClosestTurret::decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase
 			targetindex = i;
 		}
 	}
+	if (targetindex == -1)return -1;
 	turret.setWaitTime(0.0);
 	return targetindex;
 }

@@ -4,6 +4,7 @@
 #include "Turret.h"
 #include "TurretFactory.h"
 #include "WaveSystem.h"
+#include "TargetPriority.h"
 
 #include <string>
 #include <sstream>
@@ -30,6 +31,7 @@ bool TurretLoader::load(std::string filename, std::vector<TurretBase*> &vec) {
 	ifstream ifs(filename);
 	string line;
 	vector<string> buffer;
+	TurretBase *turret;
 
 	const vector<string> TurretType {
 		"Basic",
@@ -45,15 +47,16 @@ bool TurretLoader::load(std::string filename, std::vector<TurretBase*> &vec) {
 			if (TurretType[i].compare(buffer[0]) != 0)continue;
 			switch (i) {
 			case 0:
-				vec.push_back(new BasicTurret(buffer[1],stod(buffer[2]),stod(buffer[3]),stod(buffer[4]),stoi(buffer[5]),stoi(buffer[6]),Vector2D(0,0)));
+				turret = new BasicTurret(buffer[1],stod(buffer[2]),stod(buffer[3]),stod(buffer[4]),stoi(buffer[5]),stoi(buffer[6]),Vector2D(0,0));
 				break;
 			case 1:
-				vec.push_back(new MortarTurret(buffer[1], stod(buffer[2]), stod(buffer[3]), stod(buffer[4]), stoi(buffer[5]), stoi(buffer[6]), Vector2D(0, 0), stod(buffer[7]), stod(buffer[8]), stod(buffer[9])));
+				turret = new MortarTurret(buffer[1], stod(buffer[2]), stod(buffer[3]), stod(buffer[4]), stoi(buffer[5]), stoi(buffer[6]), Vector2D(0, 0), stod(buffer[7]), stod(buffer[8]), stod(buffer[9]));
 				break;
 			case 2:
-				vec.push_back(new BlastTurret(buffer[1], stod(buffer[2]), stod(buffer[3]), stod(buffer[4]), stoi(buffer[5]), stoi(buffer[6]), Vector2D(0, 0)));
+				turret = new BlastTurret(buffer[1], stod(buffer[2]), stod(buffer[3]), stod(buffer[4]), stoi(buffer[5]), stoi(buffer[6]), Vector2D(0, 0));
 				break;
 			}
+			vec.push_back(turret);
 		}
 		buffer.clear();
 	}
@@ -88,7 +91,6 @@ bool WaveLoader::load(std::string filename, std::vector<Wave*> &vec, Vector2D &p
 				for (int j = 0; j < stoi(buffer[1]); j++) {
 					venemy.push_back(new NormalEnemy(stoi(buffer[2]), stod(buffer[3]), stol(buffer[4]), stoll(buffer[5]),pos));
 				}
-				vec.push_back(new Wave(venemy));
 				break;
 
 			case 1:
@@ -96,16 +98,15 @@ bool WaveLoader::load(std::string filename, std::vector<Wave*> &vec, Vector2D &p
 				for (int j = 0; j < stoi(buffer[1]); j++) {
 					venemy.push_back(new NormalEnemy(stoi(buffer[2]), stod(buffer[3]), stol(buffer[4]), stoll(buffer[5]),pos));
 				}
-				vec.push_back(new Wave(venemy));
 				break;
 			case 2:
 				// Armored
 				for (int j = 0; j < stoi(buffer[1]); j++) {
 					venemy.push_back(new NormalEnemy(stoi(buffer[2]), stod(buffer[3]), stol(buffer[4]), stoll(buffer[5]),pos));
 				}
-				vec.push_back(new Wave(venemy));
 				break;
 			}
+			vec.push_back(new Wave(venemy));
 			break;
 		}
 		venemy.clear();

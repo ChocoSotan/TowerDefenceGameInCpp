@@ -41,7 +41,7 @@ private:
 	Mouse mouse;
 
 	std::vector<TurretBase*> vturret;
-	std::vector<TurretBase> vturret_ini;		// to copy to vturret
+	std::vector<TurretBase*> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
 	std::vector<Wave*> vwave;
 	std::vector<Vector2D> vpath;
@@ -62,8 +62,18 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 }
 
 void Game::Initialize() {
-	PathLoader pl;
+	PathLoader pl = PathLoader();
 	pl.load("data\\stage\\01\\path.csv", this->vpath);
+	TurretLoader tl = TurretLoader();
+	tl.load("data\\turret\\turret.csv", this->vturret_ini);
+#ifdef _DEBUG
+	for (int i = 0; i < vturret_ini.size(); i++) {
+		printfDx("Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(),vturret_ini[i]->getDamage(),vturret_ini[i]->getFireRate());
+	}
+#endif // _DEBUG
+
+	
+
 	ws = new WaveSystem(&this->venemy, 300);
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
 	ws->update(this->venemy);
@@ -106,6 +116,11 @@ void Game::Initialize() {
 		button.push_back(new Button(808 + j * 64, 132 + i * 64));
 	}
 	for(int i = 0;i<9;i++)button[3 + i]->init(&texture, vfilename);
+
+	// for debug
+	vturret.push_back(vturret_ini[0]);
+	vturret[0]->changePriority(new ClosestTurret(this->vpath));
+
 }
 
 void Game::Update() {
@@ -120,12 +135,12 @@ void Game::Update() {
 
 	// toggle pause
 	if (button[0]->isClicked()) {
-		isPaused ? isPaused = false : isPaused = true;
+		isPaused = isPaused? false : true;
 	}
 
 	// toggle fast forward
 	if (button[1]->isClicked()) {
-		isFFed ? isFFed = false : isFFed = true;
+		isFFed = isFFed? false : true;
 	}
 
 	// next wave
@@ -221,7 +236,12 @@ void Game::Draw() {
 	for (int i = 0; i < venemy.size(); i++) {
 		DrawCircle((int)venemy[i]->getPosition().getX(), (int)venemy[i]->getPosition().getY(), 4, White);
 	}
-	DrawFormatString(0, 60, White, "%d", (int)ws->getCount());
+	for (int i = 0; i < venemy.size(); i++) {
+		DrawFormatString(0, 220 + i*20, White, "venemy[%d].hitpoint:%f", i, venemy[i]->getHitpoint());
+	}
+	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
+	DrawFormatString(0, 160, White, "vturret[0].firerate:%f", vturret[0]->getFireRate());
+	DrawFormatString(0, 180, White, "vturret[0].wait:%f", vturret[0]->getWaitTime());
 }
 
 void Game::Finalize() {

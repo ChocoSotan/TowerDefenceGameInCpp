@@ -8,9 +8,8 @@
 #include <string>
 #include <math.h>
 
-
-
 class TargetPriority;
+
 class TurretBase {
 public:
 	TurretBase(std::string name, double damage, double firerate, double range,int constructcost,int upgradecost, Vector2D position) {
@@ -45,17 +44,9 @@ public:
 	//int getCostSpent()const { return this->costspent; }
 	Vector2D getPosition() const { return this->position; }
 
-	//void setAttackPower(double damage) { this->damage = damage; }
-	//void setFireRate(double firerate) { this->firerate = firerate; }
-	//void setAttackRange(double range) { this->range = range; }
-	//void setTarget(TargetPriority* priority) {this->target = priority;}
 	void setWaitTime(double waittime) { this->waittime = waittime; }
-	//void setGrade(int grade) { this->grade = grade; }
-	//void setDamage(double damage) { this->damage = damage; }
-	//void setCostSpent(int coatspent) { this->costspent = costspent; }
-	//void setUpgradeCost(int upgradecost) { this->upgradecost = upgradecost; }
-	//void setRange(double range) { this->range = range; }
 
+	TurretBarrel* getTurretBarrel() { return &this->turretbarrel; }
 
 
 protected:
