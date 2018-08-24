@@ -10,9 +10,8 @@ void ToggleButton::update() {
 		}
 	}
 }
-void ToggleButton::addButton(int x, int y, Texture* texture, std::vector<std::string> vfilename) {
-	button.push_back(new Button(x, y));
-	button[button.size()]->init(texture, vfilename);
+void ToggleButton::addButton(Button* button) {
+	this->button.push_back(button);
 }
 void ToggleButton::addButton(std::vector<Button*>button) {
 	this->button.clear();

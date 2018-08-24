@@ -9,7 +9,7 @@ public:
 
 	}
 	void update();
-	void addButton(int x, int y, Texture*, std::vector<std::string>);
+	void addButton(Button*);
 	void addButton(std::vector<Button*>);
 	int getChannel() { return Channel; }
 private:
