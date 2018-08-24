@@ -8,7 +8,7 @@ public:
 	ToggleButton() {
 
 	}
-	void update(const Mouse &mouse);
+	void update();
 	void addButton(int x, int y, Texture*, std::vector<std::string>);
 	void addButton(std::vector<Button*>);
 	int getChannel() { return Channel; }

@@ -1,5 +1,5 @@
 #include"ToggleButton.h"
-void ToggleButton::update(const Mouse &mouse) {
+void ToggleButton::update() {
 	for (int i = 0; i < button.size(); i++) {
 		if (button[i]->isClicked()) {
 			if (Channel != -1) {
