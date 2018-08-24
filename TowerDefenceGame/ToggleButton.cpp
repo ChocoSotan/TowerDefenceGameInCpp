@@ -2,6 +2,9 @@
 void ToggleButton::update(const Mouse &mouse) {
 	for (int i = 0; i < button.size(); i++) {
 		if (button[i]->isClicked()) {
+			if (Channel != -1) {
+				button[Channel]->setCount(0);
+			}
 			Channel = i;
 			break;
 		}

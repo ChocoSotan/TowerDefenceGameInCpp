@@ -14,5 +14,5 @@ public:
 	int getChannel() { return Channel; }
 private:
 	std::vector<Button*> button;
-	int Channel=0;
+	int Channel=-1;
 };
