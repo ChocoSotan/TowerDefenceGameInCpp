@@ -33,7 +33,7 @@ public:
 	FieldLoader() {}
 	~FieldLoader() {}
 
-	bool load(std::string filename, std::vector<TerrainBase*> &vec);
+	bool load(std::string filename_canplace, std::string filename_field, std::vector<std::vector<TerrainBase*>> &vec);
 };
 
 class PathLoader : public Loader {
@@ -51,8 +51,6 @@ public:
 
 	bool load(std::string filename, std::vector<TurretBase*> &vec);
 };
-
-
 
 class WaveLoader : public Loader {
 public:

@@ -7,7 +7,6 @@
 #include "TargetPriority.h"
 
 #include <string>
-#include <sstream>
 #include <vector>
 #include <fstream>
 
@@ -22,7 +21,26 @@ void Loader::splitString(const std::string &line, std::vector<std::string> &cont
 	}
 }
 
-bool FieldLoader::load(std::string filename, std::vector<TerrainBase*> &vec) {
+bool FieldLoader::load(std::string filename_canplace, std::string filename_field, std::vector<std::vector<TerrainBase*>> &vec) {
+	using namespace std;
+	ifstream ifs(filename_canplace);
+	string line;
+	vector<string> buffer;
+	int column = 0;
+	int row = 0;
+
+	while (getline(ifs, line)) {
+		if (line[0] == '#')continue;
+		splitString(line, buffer);
+
+		for (column = 0; column < (signed)buffer.size(); column++) {
+			vec[column][row] = new BasicTerrain();
+		}
+		row++;
+		buffer.clear();
+	}
+	
+
 	return true;
 }
 

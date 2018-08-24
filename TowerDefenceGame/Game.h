@@ -66,11 +66,10 @@ void Game::Initialize() {
 	pl.load("data\\stage\\01\\path.csv", this->vpath);
 	TurretLoader tl = TurretLoader();
 	tl.load("data\\turret\\turret.csv", this->vturret_ini);
-#ifdef _DEBUG
-	for (int i = 0; i < vturret_ini.size(); i++) {
-		printfDx("Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(),vturret_ini[i]->getDamage(),vturret_ini[i]->getFireRate());
+
+	for (int i = 0; i < (signed)vturret_ini.size(); i++) {
+		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(), vturret_ini[i]->getDamage(), vturret_ini[i]->getFireRate());
 	}
-#endif // _DEBUG
 
 	
 
@@ -233,10 +232,10 @@ void Game::Draw() {
 	DrawString(160 + 10 * Boxsize, 340, "Information", White);
 	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
 
-	for (int i = 0; i < venemy.size(); i++) {
+	for (int i = 0; i < (signed)venemy.size(); i++) {
 		DrawCircle((int)venemy[i]->getPosition().getX(), (int)venemy[i]->getPosition().getY(), 4, White);
 	}
-	for (int i = 0; i < venemy.size(); i++) {
+	for (int i = 0; i < (signed)venemy.size(); i++) {
 		DrawFormatString(0, 220 + i*20, White, "venemy[%d].hitpoint:%f", i, venemy[i]->getHitpoint());
 	}
 	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
