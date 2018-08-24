@@ -21,24 +21,36 @@ void Loader::splitString(const std::string &line, std::vector<std::string> &cont
 	}
 }
 
-bool FieldLoader::load(std::string filename_canplace, std::string filename_field, std::vector<std::vector<TerrainBase*>> &vec) {
+bool FieldLoader::load(std::string filename_canplace, std::string filename_field, std::vector<std::vector<TerrainBase*>> &vec, Vector2D &pos, int size) {
 	using namespace std;
 	ifstream ifs(filename_canplace);
 	string line;
 	vector<string> buffer;
 	int column = 0;
 	int row = 0;
+	Vector2D position;
 
+	if (ifs.fail())return false;
+
+	// can place turret
 	while (getline(ifs, line)) {
 		if (line[0] == '#')continue;
 		splitString(line, buffer);
 
 		for (column = 0; column < (signed)buffer.size(); column++) {
-			vec[column][row] = new BasicTerrain();
+			position.setX(0), position.setY(0);
+			vec[column][row] = stoi(buffer[column]) == 0 ?
+				new BasicTerrain(false, Vector2D(pos.getX() + column * size, pos.getY() + row * size))
+				: new BasicTerrain(true, Vector2D(pos.getX() + column * size, pos.getY() + row * size));
 		}
 		row++;
 		buffer.clear();
 	}
+	ifs.clear();
+
+	// texture filename
+	ifs.open(filename_field);
+	if (ifs.fail())return false;
 	
 
 	return true;
