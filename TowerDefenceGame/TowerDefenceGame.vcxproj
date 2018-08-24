@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="TargetPriority.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Mouse.cpp" />
