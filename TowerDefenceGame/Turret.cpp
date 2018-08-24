@@ -33,7 +33,7 @@ void BasicTurret::upgrade() {
 	this->range *= 1.1;
 	this->damage *= 1.5;
 	this->costspent += upgradecost;
-	this->upgradecost = round(this->upgradecost * 1.5);
+	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
 }
 
@@ -83,7 +83,7 @@ void BlastTurret::upgrade() {
 	this->range *= 1.1;
 	this->damage *= 1.5;
 	this->costspent += upgradecost;
-	this->upgradecost = round(this->upgradecost * 1.5);
+	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
 }
 int BlastTurret::destroy() {

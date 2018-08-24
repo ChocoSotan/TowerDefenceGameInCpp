@@ -4,13 +4,14 @@
 
 
 bool TerrainBase::init(Texture *texture, std::string filename) {
-	if(!texture->pool(filename))return false;
+	this->texture = texture;
+	this->filename = filename;
 	return true;
 }
 
 
 void TerrainBase::draw() {
-	DrawGraph((int)position.getX(), (int)position.getY(), texture->getHandle(), FALSE);
+	DrawGraph((int)position.getX(), (int)position.getY(), texture->getHandle(filename), FALSE);
 }
 
 

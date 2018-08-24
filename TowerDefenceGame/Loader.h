@@ -5,6 +5,7 @@
 #include "Turret.h"
 #include "Wave.h"
 #include "WaveSystem.h"
+#include "Texture.h"
 
 
 #include <string>
@@ -59,4 +60,13 @@ public:
 
 	bool load(std::string filename, std::vector<Wave*> &vec, Vector2D &pos);
 };
+
+class TextureLoader : public Loader {
+public:
+	TextureLoader() {}
+	~TextureLoader() {}
+
+	bool load(std::string filename, Texture *texture);
+};
+
 

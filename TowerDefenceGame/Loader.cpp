@@ -69,6 +69,8 @@ bool TurretLoader::load(std::string filename, std::vector<TurretBase*> &vec) {
 		"AoE",
 	};
 
+	if (ifs.fail())return false;
+
 	while (getline(ifs, line)) {
 		if (line[0] == '#')continue;
 		splitString(line, buffer);
@@ -93,9 +95,6 @@ bool TurretLoader::load(std::string filename, std::vector<TurretBase*> &vec) {
 	return true;
 }
 
-
-
-
 bool WaveLoader::load(std::string filename, std::vector<Wave*> &vec, Vector2D &pos) {
 	using namespace std;
 
@@ -109,6 +108,8 @@ bool WaveLoader::load(std::string filename, std::vector<Wave*> &vec, Vector2D &p
 		"Fast",
 		"Armored",
 	};
+
+	if (ifs.fail())return false;
 
 	while (getline(ifs, line)) {
 		if (line[0] == '#')continue;
@@ -151,6 +152,7 @@ bool PathLoader::load(std::string filename, std::vector<Vector2D>& vpath) {
 	string line;
 	vector<string> buffer;
 
+	if (ifs.fail())return false;
 
 	while (getline(ifs, line)) {
 		if (line[0] == '#')continue;
@@ -166,3 +168,26 @@ bool PathLoader::load(std::string filename, std::vector<Vector2D>& vpath) {
 	return true;
 }
 
+bool TextureLoader::load(std::string filename, Texture *texture) {
+	using namespace std;
+
+	ifstream ifs(filename);
+	string line;
+	vector<string> buffer;
+	vector<string> vfilename;
+
+	if (ifs.fail())return false;
+
+	while (getline(ifs, line)) {
+		if (line[0] == '#')continue;
+		//splitString(line, buffer);
+
+		texture->pool(line);
+
+		buffer.clear();
+	}
+
+
+
+	return true;
+}

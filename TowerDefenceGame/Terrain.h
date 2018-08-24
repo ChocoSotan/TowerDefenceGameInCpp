@@ -25,6 +25,7 @@ protected:
 	bool canplaceturret;
 	Vector2D position;
 	Texture *texture;
+	std::string filename;
 };
 
 class BasicTerrain : public TerrainBase {

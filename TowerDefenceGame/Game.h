@@ -64,8 +64,12 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 void Game::Initialize() {
 	PathLoader pl = PathLoader();
 	pl.load("data\\stage\\01\\path.csv", this->vpath);
-	TurretLoader tl = TurretLoader();
-	tl.load("data\\turret\\turret.csv", this->vturret_ini);
+	TurretLoader tul = TurretLoader();
+	tul.load("data\\turret\\turret.csv", this->vturret_ini);
+	TextureLoader tel = TextureLoader();
+	tel.load("data\\texturelist.csv", &this->texture);
+
+
 
 	for (int i = 0; i < (signed)vturret_ini.size(); i++) {
 		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(), vturret_ini[i]->getDamage(), vturret_ini[i]->getFireRate());
@@ -79,13 +83,13 @@ void Game::Initialize() {
 
 
 	/* Pooling to Texture Pool */
-	texture.pool("texture/Game/Buttons/Stop.png");
+	/*texture.pool("texture/Game/Buttons/Stop.png");
 	texture.pool("texture/Game/Buttons/Start.png");
 	texture.pool("texture/Game/Buttons/NotFastForward.png");
 	texture.pool("texture/Game/Buttons/FastForward.png");
 	texture.pool("texture/Game/Buttons/NextWave.png");
 	texture.pool("texture/Game/Turrets/TurretBases/default.png");
-	texture.pool("texture/Game/Turrets/TurretBases/default(selected).png");
+	texture.pool("texture/Game/Turrets/TurretBases/default(selected).png");*/
 
 	// Start/Stop Button
 	std::vector<std::string> vfilename;
