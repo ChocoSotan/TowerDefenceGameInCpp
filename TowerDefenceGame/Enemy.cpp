@@ -77,6 +77,12 @@ void NormalEnemy::move(std::vector<Vector2D> &vpath) {
 
 
 
-//double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
-	//for()
-//}
+double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
+	double ret = 0;
+	for (int i = vpath.size() - 1; i > this->currentpoint; i--) {
+		ret += vpath[i].getAbsTo(vpath[i - 1]);
+	}
+	ret -= this->position.getAbsTo(vpath[currentpoint]);
+	
+	return ret;
+}

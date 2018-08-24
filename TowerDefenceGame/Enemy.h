@@ -1,13 +1,11 @@
 #pragma once
 
-#include "Vector2D.h"
-#include "DxLib.h"
-
 #include <vector>
+#include "Vector2D.h"
 
 class EnemyBase {
 public:
-	EnemyBase(double hitpoint, double movespeed, long attackpower, long long resourcereward) {
+	EnemyBase(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) {
 		this->hitpoint = hitpoint;
 		this->movespeed = movespeed;
 		this->attackpower = attackpower;
@@ -15,13 +13,14 @@ public:
 		this->currentpoint = 0;
 		this->angle = 0;
 		this->knockback = 0;
+		this->position = pos;
 	}
 	virtual ~EnemyBase() {}
 
 	virtual void move(std::vector<Vector2D> &vpath) = 0;
 	bool isAlive() const { return hitpoint > 0; }
 	
-	double getDistanceToBase(std::vector<Vector2D> &vpath) const;
+	double getDistanceToBase(const std::vector<Vector2D> &vpath) const;
 	double getHitpoint() const			{ return this->hitpoint; }
 	double getMovespeed() const			{ return this->movespeed; }
 	long getAttackpower() const			{ return this->attackpower; }
@@ -32,6 +31,7 @@ public:
 
 	// for debug
 	int getCurrentpoint()const { return this->currentpoint; }
+
 
 	void setHitpoint(double hitpoint)		{ this->hitpoint = hitpoint; }
 	void setMovespeed(double movespeed)		{ this->movespeed = movespeed; }
@@ -55,7 +55,7 @@ protected:
 
 class NormalEnemy : public EnemyBase {
 public:
-	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward) {}
+	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward, pos) {}
 	~NormalEnemy() {}
 
 	void move(std::vector<Vector2D> &vpath) override;

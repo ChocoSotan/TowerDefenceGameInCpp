@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Vector2D.h"
 #include "Enemy.h"
@@ -6,58 +6,64 @@
 
 #include <vector>
 #include <string>
+#include <math.h>
+
+class TargetPriority;
 
 class TurretBase {
 public:
-	TurretBase(std::string name, double damage, double firerate, double range) {
+	TurretBase(std::string name, double damage, double firerate, double range,int constructcost,int upgradecost, Vector2D position) {
 		this->name = name;
 		this->damage = damage;
 		this->firerate = firerate;
 		this->range = range;
+		this->grade = 1;
+		this->constructcost = constructcost;
+		this->upgradecost = upgradecost;
+		this->costspent = constructcost;
+		this->position = position;
 	}
-	virtual ~TurretBase() = 0;
+	virtual ~TurretBase() {}
 
-	virtual void attack(std::vector<EnemyBase> &targetlist) = 0;
-	virtual void construct() = 0;
+	virtual void attack(std::vector<EnemyBase*> &targetlist) = 0;
 	bool canConstruct(long long resource);
 	virtual void upgrade() = 0;
 	bool canUpgrade(long long resource);
-	virtual void destroy() = 0;
+	virtual int destroy() = 0;
+	void changePriority(TargetPriority* target);
 
 	std::string getName() const { return this->name; }
 	double getDamage() const { return this->damage; }
 	double getFireRate() const { return this->firerate; }
-	double getRange() const { this->range; }
+	double getRange() const { return this->range; }
+	double getWaitTime()const { return this->waittime; }
+	double getMinRange() { return this->minrange; }
+	int getGrade()const { return this->grade; }
+	int getConstructCost()const { return this->constructcost; }
+	int getUpgradeCost()const { return this->upgradecost; }
+	//int getCostSpent()const { return this->costspent; }
 	Vector2D getPosition() const { return this->position; }
 
-	void setAttackPower(double damage) { this->damage = damage; }
-	void setFireRate(double firerate) { this->firerate = firerate; }
-	void setAttackRange(double range) { this->range = range; }
+	void setWaitTime(double waittime) { this->waittime = waittime; }
+
+	TurretBarrel* getTurretBarrel() { return &this->turretbarrel; }
 
 
 protected:
-	typedef enum {
-		ClosestTurret,
-		FarthestTurret,
-		ClosestBase,
-		FarthestBase,
-		LowestHealth,
-		HighestHealth,
-
-		Random,
-	}eTargetPriority;
 
 	std::string name;
 	int constructcost;
 	int upgradecost;
 	int costspent;
+	int grade;
 	double damage;
 	double firerate;
 	double range;
+	double waittime;
+	double minrange;
 	Vector2D position;
-	eTargetPriority targetpriority;
 	TurretBarrel turretbarrel;
-
+	TargetPriority* target;
 	int texturehandle;
 
 	
@@ -68,14 +74,16 @@ protected:
 /// </summary>
 class BasicTurret : public TurretBase {
 public:
-	BasicTurret(std::string name, double damage, double firerate, double range) : TurretBase(name, damage, firerate, range) {}
+	BasicTurret(std::string name, double damage, double firerate, double range,int constructcost,int upgradecost,Vector2D position) : TurretBase(name, damage, firerate, range,constructcost,upgradecost,position) {
+		this->minrange = 0;
+	}
 	~BasicTurret() {}
-
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
+	void upgrade()override;
+	int destroy()override;
 
 
 protected:
-
 };
 
 /// <summary>
@@ -83,19 +91,24 @@ protected:
 /// </summary>
 class MortarTurret : public TurretBase {
 public:
-	MortarTurret(std::string name, double damage, double firerate, double maxrange, double splashdamage, double splashrange, double minrange) : TurretBase(name, damage, firerate, maxrange) {
+	MortarTurret(std::string name, double damage, double firerate, double maxrange,int constructcost,int upgradecost,Vector2D position, double splashdamage, double splashrange, double minrange) : TurretBase(name, damage, firerate, maxrange, constructcost, upgradecost,position) {
 		this->splashdamage = splashdamage;
 		this->splashrange = splashrange;
 		this->minrange = minrange;
 	}
 	~MortarTurret() {}
-
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void upgrade()override;
+	int destroy()override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
+	double getSplashDamage() { return this->splashdamage; }
+	double getSplashRange() { return this->splashrange; }
+	void setSplashDamage(double splashdamage) {this->splashdamage=splashdamage; }
+	void setSplashRange(double splashrange) { this->splashrange = splashrange; }
+	void setMinRange(double minrange) { this->minrange = minrange; }
 
 protected:
 	double splashdamage;
 	double splashrange;
-	double minrange;
 };
 
 /// <summary>
@@ -103,12 +116,13 @@ protected:
 /// </summary>
 class BlastTurret : public TurretBase {
 public:
-	BlastTurret(std::string name, double damage, double firerate, double range) : TurretBase(name, damage, firerate, range) {
-		
+	BlastTurret(std::string name, double damage, double firerate, double range, int constructcost, int upgradecost,Vector2D position) : TurretBase(name, damage, firerate, range, constructcost, upgradecost,position) {
+		this->minrange = 0;
 	}
-	~BlastTurret() {}
-
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	virtual ~BlastTurret() {}
+	void upgrade()override;
+	int destroy()override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
 
 protected:
 	
@@ -119,11 +133,12 @@ protected:
 /// </summary>
 class DotTurret : public TurretBase {
 public:
-	DotTurret(std::string name, double damage, double firerate, double range, double effectvalue) : TurretBase(name, damage, firerate, range) {
+	DotTurret(std::string name, double damage, double firerate, double range, int constructcost, int upgradecost,Vector2D position, double effectvalue) : TurretBase(name, damage, firerate, range, constructcost, upgradecost,position) {
 		this->effectvalue = effectvalue;
 	}
+	~DotTurret() {}
 
-	void attack(std::vector<EnemyBase> &targetlist) override;
+	void attack(std::vector<EnemyBase*> &targetlist) override;
 
 protected:
 	double effectvalue;
