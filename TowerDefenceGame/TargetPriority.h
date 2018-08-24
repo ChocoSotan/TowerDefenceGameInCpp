@@ -1,12 +1,9 @@
 #pragma once
-
-#include "Enemy.h"
-#include "Turret.h"
-#include "DxLib.h"
-
+#include"Enemy.h"
+#include"Turret.h"
+#include"DxLib.h"
 class TurretBase;
 class MortarTurret;
-
 class TargetPriority {
 public:
 	TargetPriority(std::vector<Vector2D> &vpath) {
@@ -20,9 +17,9 @@ protected:
 
 class ClosestTurret : public TargetPriority {
 public:
-	ClosestTurret(std::vector<Vector2D> &vpath): TargetPriority(vpath) {}
-	~ClosestTurret() {}
-
+	ClosestTurret(std::vector<Vector2D> &vpath):TargetPriority(vpath) {
+		
+	}
 	int decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase &turret)const override;
 private:
 };
@@ -30,60 +27,60 @@ private:
 
 class FarthestTurret :public TargetPriority {
 public:
-	FarthestTurret(std::vector<Vector2D> &vpath) : TargetPriority(vpath) {}
-	~FarthestTurret() {}
+	FarthestTurret(std::vector<Vector2D> &vpath) :TargetPriority(vpath) {
 
-	int decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase &turret)const override;
+	}
+	int decisionOrder(std::vector<EnemyBase*>&targetlist, TurretBase &turret)const override;
 private:
 };
 
 
 class ClosestBase :public TargetPriority {
 public:
-	ClosestBase(std::vector<Vector2D> &vpath) : TargetPriority(vpath) {}
-	~ClosestBase() {}
+	ClosestBase(std::vector<Vector2D> &vpath) :TargetPriority(vpath) {
 
-	int decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase &turret)const override;
+	}
+	int decisionOrder(std::vector<EnemyBase*>&targetlist, TurretBase &turret)const override;
 private:
 };
 
 
 class FarthestBase :public TargetPriority {
 public:
-	FarthestBase(std::vector<Vector2D> &vpath) : TargetPriority(vpath) {}
-	~FarthestBase() {}
+	FarthestBase(std::vector<Vector2D> &vpath) :TargetPriority(vpath) {
 
-	int decisionOrder(std::vector<EnemyBase* >&targetlist, TurretBase &turret)const override;
+	}
+	int decisionOrder(std::vector<EnemyBase*>&targetlist, TurretBase &turret)const override;
 private:
 };
 
 
 class LowestHealth :public TargetPriority {
 public:
-	LowestHealth(std::vector<Vector2D> &vpath) : TargetPriority(vpath) {}
-	~LowestHealth() {}
+	LowestHealth(std::vector<Vector2D> &vpath) :TargetPriority(vpath) {
 
-	int decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase &turret)const override;
+	}
+	int decisionOrder(std::vector<EnemyBase*>&targetlist, TurretBase &turret)const override;
 private:
 };
 
 
 class HighestHealth :public TargetPriority {
 public:
-	HighestHealth(std::vector<Vector2D> &vpath) : TargetPriority(vpath) {}
-	~HighestHealth() {}
+	HighestHealth(std::vector<Vector2D> &vpath) :TargetPriority(vpath) {
 
-	int decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase &turret)const override;
+	}
+	int decisionOrder(std::vector<EnemyBase*>&targetlist, TurretBase &turret)const override;
 private:
 };
 
 
 class Random :public TargetPriority {
 public:
-	Random(std::vector<Vector2D> &vpath) : TargetPriority(vpath) {}
-	~Random() {}
-
-	int decisionOrder(std::vector<EnemyBase*> &targetlist, TurretBase &turret)const override;
+	Random(std::vector<Vector2D> &vpath) :TargetPriority(vpath) {
+		SRand(0);
+	}
+	int decisionOrder(std::vector<EnemyBase*>&targetlist, TurretBase &turret)const override;
 private:
 };
 //ゲーム自体にコンストラクタを呼ぶ関数があると想定。
