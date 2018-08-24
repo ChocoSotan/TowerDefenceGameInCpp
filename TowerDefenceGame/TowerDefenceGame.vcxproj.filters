@@ -45,7 +45,7 @@
     <ClCompile Include="TargetPriority.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="ToggleButton.cpp">
+    <ClCompile Include="Button.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

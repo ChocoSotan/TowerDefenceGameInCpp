@@ -1,5 +1,8 @@
 #include "Button.h"
 
+#include <vector>
+#include <string>
+
 void Button::draw() const {
 	DrawGraph(x, y, texture->getHandle(vfilename[count]), TRUE);
 }
@@ -14,7 +17,6 @@ void Button::update(const Mouse &mouse) {
 	if (!mouse.isChangedState())return;
 
 	if (mouse.getLog() == MOUSE_INPUT_LOG_DOWN && (mouse.getBind() & MOUSE_INPUT_LEFT) != 0) {
-		// clicked in range
 		if (mouse.getPosition().getX() < this->x || this->x + this->sx < mouse.getPosition().getX() || mouse.getPosition().getY() < this->y || this->y + this->sy < mouse.getPosition().getY()) {
 			wasclicked = false;
 		}
@@ -24,7 +26,6 @@ void Button::update(const Mouse &mouse) {
 		return;
 	}
 	if (mouse.getLog() == MOUSE_INPUT_LOG_UP && (mouse.getBind() & MOUSE_INPUT_LEFT) != 0) {
-		// clicked in range
 		if (mouse.getPosition().getX() < this->x || this->x + this->sx < mouse.getPosition().getX() || mouse.getPosition().getY() < this->y || this->y + this->sy < mouse.getPosition().getY()) {
 			isclicked = false;
 			return;
@@ -35,7 +36,6 @@ void Button::update(const Mouse &mouse) {
 			count = (count + 1) % (int)vfilename.size();
 		}
 	}
-
 }
 
 bool Button::init(Texture *texture, std::vector<std::string> vfilename) {
