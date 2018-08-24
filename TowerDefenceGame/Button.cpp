@@ -47,3 +47,11 @@ bool Button::init(Texture *texture, std::vector<std::string> vfilename) {
 	if (GetGraphSize(texture->getHandle(vfilename[0]), &sx, &sy) == -1)return false;
 	return true;
 }
+
+bool Button::init(Texture * texture, std::string filename) {
+	if (texture->getHandle(filename) == -1)return false;
+	this->texture = texture;
+	this->vfilename.push_back(filename);
+	if (GetGraphSize(texture->getHandle(vfilename[0]), &sx, &sy) == -1)return false;
+	return true;
+}

@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "Mouse.h"
 #include "Loader.h"
+#include "ToggleButton.h"
 
 #include <vector>
 
@@ -51,6 +52,7 @@ private:
 	Texture texture;
 
 	std::vector<Button*> button;
+	ToggleButton tbutton;
 
 	bool isPaused;
 	bool isFFed;
@@ -62,21 +64,19 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 }
 
 void Game::Initialize() {
+	// Loading Path
 	PathLoader pl = PathLoader();
 	pl.load("data\\stage\\01\\path.csv", this->vpath);
+
+	// Loading Turret
 	TurretLoader tl = TurretLoader();
 	tl.load("data\\turret\\turret.csv", this->vturret_ini);
-#ifdef _DEBUG
-	for (int i = 0; i < vturret_ini.size(); i++) {
-		printfDx("Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(),vturret_ini[i]->getDamage(),vturret_ini[i]->getFireRate());
-	}
-#endif // _DEBUG
 
-	
-
+	// Loading WaveData
 	ws = new WaveSystem(&this->venemy, 300);
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
-	ws->update(this->venemy);
+
+
 
 
 	/* Pooling to Texture Pool */
@@ -103,17 +103,17 @@ void Game::Initialize() {
 	button[1]->init(&texture, vfilename);
 
 	// NextWave Button
-	vfilename.clear();
-	vfilename.push_back("texture/Game/Buttons/NextWave.png");
 	button.push_back(new Button(104, 8));
-	button[2]->init(&texture, vfilename);
+	button[2]->init(&texture, std::string("texture/Game/Buttons/NextWave.png"));
 
 	// Buying Turret Button(Toggle)
 	vfilename.clear();
 	vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
 	vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
 	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
-		button.push_back(new Button(808 + j * 64, 132 + i * 64));
+		Button *turretbutton = new Button(808 + j * 64, 132 + i * 64);
+		button.push_back(turretbutton);
+		tbutton.addButton(turretbutton);
 	}
 	for(int i = 0;i<9;i++)button[3 + i]->init(&texture, vfilename);
 
@@ -121,6 +121,11 @@ void Game::Initialize() {
 	vturret.push_back(vturret_ini[0]);
 	vturret[0]->changePriority(new ClosestTurret(this->vpath));
 
+#ifdef _DEBUG
+	for (int i = 0; i < vturret_ini.size(); i++) {
+		printfDx("Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(), vturret_ini[i]->getDamage(), vturret_ini[i]->getFireRate());
+	}
+#endif // _DEBUG
 }
 
 void Game::Update() {
@@ -132,6 +137,7 @@ void Game::Update() {
 	for (auto i = button.begin(); i != button.end(); i++) {
 		(*i)->update(this->mouse);
 	}
+	tbutton.update();
 
 	// toggle pause
 	if (button[0]->isClicked()) {

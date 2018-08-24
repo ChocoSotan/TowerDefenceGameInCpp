@@ -22,6 +22,7 @@ public:
 	virtual void update(const Mouse &mouse);
 	bool isClicked() const;
 	bool init(Texture *texture, std::vector<std::string> vfilename);
+	bool init(Texture *texture, std::string filename);
 
 	void proceedCount() { count = (count + 1) % (int)vfilename.size(); }
 	void setCount(int count) { this->count = count; }
