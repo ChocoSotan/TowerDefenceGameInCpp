@@ -23,7 +23,7 @@ void ToggleButton::addButton(std::vector<Button*>button) {
 		this->button.push_back(button[i]);
 	}
 }
-void ToggleButton::channelClear() {
+void ToggleButton::clearChannel() {
 	for (auto i = 0; i < button.size(); i++) {
 		button[i]->setCount(0);
 	}
