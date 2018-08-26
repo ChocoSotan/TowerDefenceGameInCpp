@@ -34,7 +34,8 @@ public:
 	FieldLoader() {}
 	~FieldLoader() {}
 
-	bool load(std::string filename_canplace, std::string filename_field, std::vector<std::vector<TerrainBase*>> &vec, Vector2D &pos, int size);
+	bool load(std::string filename, std::vector<std::vector<TerrainBase*>> &vec, Vector2D &pos, int size);
+	bool initField(std::string filename, std::vector<std::vector<TerrainBase*>> &vec, Texture *texture);
 };
 
 class PathLoader : public Loader {

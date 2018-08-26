@@ -12,6 +12,9 @@ public:
 	~Texture() {}
 
 	bool pool(const std::string filename) {
+		// if pair has been added dictionary
+		if (dictionary.find(filename) != dictionary.end())return;
+
 		int handle = LoadGraph(filename.c_str());
 		if (handle == -1)return false;
 		
@@ -19,11 +22,14 @@ public:
 		return true;
 	}
 	bool pool(std::vector<std::string> vfilename) {
-		for (int i = 0; i < (signed)vfilename.size(); i++) {
-			int handle = LoadGraph(vfilename[i].c_str());
+		for (auto i = vfilename.begin(); i != vfilename.end(); i++) {
+			// if pair has been added dictionary
+			if (dictionary.find(*i) != dictionary.end())continue;
+
+			int handle = LoadGraph((*i).c_str());
 			if (handle == -1)return false;
 
-			dictionary.insert(std::make_pair(vfilename[i], handle));
+			dictionary.insert(std::make_pair(*i, handle));
 		}
 		return true;
 	}
