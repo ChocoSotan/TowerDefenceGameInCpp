@@ -233,6 +233,7 @@ bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Tex
 		button->init(texture, buttonfilename);
 		vbutton.push_back(button);
 
+		buttonfilename.clear();
 		buffer.clear();
 	}
 
