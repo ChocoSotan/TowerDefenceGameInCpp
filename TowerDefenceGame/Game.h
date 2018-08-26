@@ -66,17 +66,18 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 void Game::Initialize() {
 	// Loading Path
 	PathLoader pl = PathLoader();
-	pl.load("data\\stage\\01\\path.csv", this->vpath);
+	_RPT0(_CRT_WARN, "Path initializing...\t");
+	pl.load("data\\stage\\01\\path.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+
+	// Loading Turrets
 	TurretLoader tul = TurretLoader();
-	tul.load("data\\turret\\turret.csv", this->vturret_ini);
+	_RPT0(_CRT_WARN,"Turret initializing...\t");
+	tul.load("data\\turret\\turret.csv", this->vturret_ini) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+
+	// Loading Textures
 	TextureLoader tel = TextureLoader();
-	tel.load("data\\texturelist.csv", &this->texture);
-
-
-
-	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
-		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\tRange:%.1f\n", (*i)->getName().c_str(), (*i)->getDamage(), (*i)->getFireRate(), (*i)->getRange());
-	}
+	_RPT0(_CRT_WARN, "Texture initializing...\t");
+	tel.load("data\\texturelist.csv", &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	// Loading WaveData
 	ws = new WaveSystem(&this->venemy, 300);
@@ -84,50 +85,21 @@ void Game::Initialize() {
 
 	// Loading ButtonData
 	ButtonLoader bl = ButtonLoader();
-	bl.load("data\\buttonlist.csv", this->vbutton, &this->texture);
+	_RPT0(_CRT_WARN, "Button initializing...\t");
+	bl.load("data\\buttonlist.csv", this->vbutton, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+
+	FieldLoader fl = FieldLoader();
+	//fl.load("", this->vterrain, Vector2D(80, 56), 64);
 
 
-	//// Start/Stop Button
-	//std::vector<std::string> vfilename;
-	//vfilename.push_back("texture/Game/Buttons/Stop.png");
-	//vfilename.push_back("texture/Game/Buttons/Start.png");
-	//vbutton.push_back(new Button(8, 8));
-	//vbutton[0]->init(&texture, vfilename);
+	// Buying Turret Button(Toggle)
+	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
+		//tbutton.addButton(turretbutton);
+	}
 
-	//// FastForward Button
-	//vfilename.clear();
-	//vfilename.push_back("texture/Game/Buttons/NotFastForward.png");
-	//vfilename.push_back("texture/Game/Buttons/FastForward.png");
-	//vbutton.push_back(new Button(56, 8));
-	//vbutton[1]->init(&texture, vfilename);
-
-	//// NextWave Button
-	//vbutton.push_back(new Button(104, 8));
-	//vbutton[2]->init(&texture, "texture/Game/Buttons/NextWave.png");
-
-	//// Buying Turret Button(Toggle)
-	//vfilename.clear();
-	//vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
-	//vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
-	//for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
-	//	Button *turretbutton = new Button(808 + j * 64, 132 + i * 64);
-	//	vbutton.push_back(turretbutton);
-	//	tbutton.addButton(turretbutton);
-	//}
-	//for(int i = 0;i<9;i++)vbutton[3 + i]->init(&texture, vfilename);
-
-	//// Field Button
-	//for (int i = 0; i < 11; i++) {
-	//	for (int j = 0; j < 11; j++) {
-	//		vbutton.push_back(new Button(80 + j * 64, 56 + i * 64));
-	//		vbutton[i * 11 + j + 12]->init(&this->texture,"texture/Game/Turrets/TurretBases/default.png");
-	//	}
-	//}
-
-	// for debug
-	vturret.push_back(vturret_ini[0]);
-	vturret[0]->changePriority(new ClosestTurret(this->vpath));
-
+	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
+		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\tRange:%.1f\n", (*i)->getName().c_str(), (*i)->getDamage(), (*i)->getFireRate(), (*i)->getRange());
+	}
 }
 
 void Game::Update() {
@@ -240,8 +212,6 @@ void Game::Draw() {
 		DrawFormatString(0, 220 + i*20, White, "venemy[%d].hitpoint:%f", i, venemy[i]->getHitpoint());
 	}
 	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
-	DrawFormatString(0, 160, White, "vturret[0].firerate:%f", vturret[0]->getFireRate());
-	DrawFormatString(0, 180, White, "vturret[0].wait:%f", vturret[0]->getWaitTime());
 }
 
 void Game::Finalize() {
