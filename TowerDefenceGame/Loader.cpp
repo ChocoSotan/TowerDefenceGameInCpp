@@ -22,7 +22,7 @@ void Loader::splitString(const std::string &line, std::vector<std::string> &cont
 	}
 }
 
-bool FieldLoader::load(std::string filename, std::vector<std::vector<TerrainBase*>> &vec, Vector2D &pos, int size) {
+bool FieldLoader::load(std::string filename, std::vector<std::vector<TerrainBase*>> &vec, const Vector2D &pos, const int size) {
 	using namespace std;
 	ifstream ifs(filename);
 	string line;
