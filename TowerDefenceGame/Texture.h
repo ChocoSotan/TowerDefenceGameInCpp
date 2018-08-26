@@ -13,7 +13,7 @@ public:
 
 	bool pool(const std::string filename) {
 		// if pair has been added dictionary
-		if (dictionary.find(filename) != dictionary.end())return;
+		if (dictionary.find(filename) != dictionary.end())return false;
 
 		int handle = LoadGraph(filename.c_str());
 		if (handle == -1)return false;
