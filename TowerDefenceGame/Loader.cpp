@@ -5,6 +5,7 @@
 #include "TurretFactory.h"
 #include "WaveSystem.h"
 #include "TargetPriority.h"
+#include "Button.h"
 
 #include <string>
 #include <vector>
@@ -201,6 +202,33 @@ bool TextureLoader::load(std::string filename, Texture *texture) {
 		//splitString(line, buffer);
 
 		texture->pool(line);
+
+		buffer.clear();
+	}
+
+
+
+	return true;
+}
+
+bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Texture *texture) {
+	using namespace std;
+
+	ifstream ifs(filename);
+	string line;
+	vector<string> buffer;
+	Button *button;
+
+
+	if (ifs.fail())return false;
+
+	while (getline(ifs, line)) {
+		if (line[0] == '#')continue;
+		splitString(line, buffer);
+
+		button = new Button(stoi(buffer[0]), stoi(buffer[1]));
+		button->init(texture, buffer[2]);
+		vbutton.push_back(button);
 
 		buffer.clear();
 	}
