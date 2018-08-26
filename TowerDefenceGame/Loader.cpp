@@ -38,9 +38,9 @@ bool FieldLoader::load(std::string filename, std::vector<std::vector<TerrainBase
 		splitString(line, buffer);
 
 		for (column = 0; column < (signed)buffer.size(); column++) {
-			vec[column][row] = stoi(buffer[row]) == 0 ?
-				new BasicTerrain(false, Vector2D(pos.getX() + column * size, pos.getY() + row * size))
-				: new BasicTerrain(true, Vector2D(pos.getX() + column * size, pos.getY() + row * size));
+			stoi(buffer[row]) == 0 ?
+				vec[row].push_back(new BasicTerrain(false, Vector2D(pos.getX() + column * size, pos.getY() + row * size)))
+				: vec[row].push_back(new BasicTerrain(true, Vector2D(pos.getX() + column * size, pos.getY() + row * size)));
 		}
 		row++;
 		buffer.clear();
