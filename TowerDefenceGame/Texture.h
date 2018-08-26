@@ -52,7 +52,7 @@ public:
 		} catch (std::out_of_range &oor) {
 			OutputDebugString(oor.what());
 			return -1;
-		}
+		} 
 		return dictionary[filename];
 	}
 	

@@ -36,3 +36,11 @@ texture/Game/Turrets/MuzzleFires/MortarTurretMF.png
 texture/Game/Turrets/TurretBases/BlastTurret.png
 texture/Game/Turrets/TurretBarrels/BlastTurretBarrel.png
 texture/Game/Turrets/MuzzleFires/BlastTurretMF.png
+#Terrain
+texture/Game/Field/concrete/concrete_dark_plane.png
+texture/Game/Field/concrete/concrete_ud.png
+texture/Game/Field/concrete/concrete_lr.png
+texture/Game/Field/concrete/concrete_ur.png
+texture/Game/Field/concrete/concrete_rd.png
+texture/Game/Field/concrete/concrete_dl.png
+texture/Game/Field/concrete/concrete_lu.png
