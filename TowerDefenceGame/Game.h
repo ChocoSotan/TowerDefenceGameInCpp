@@ -87,42 +87,42 @@ void Game::Initialize() {
 	bl.load("data\\buttonlist.csv", this->vbutton, &this->texture);
 
 
-	// Start/Stop Button
-	std::vector<std::string> vfilename;
-	vfilename.push_back("texture/Game/Buttons/Stop.png");
-	vfilename.push_back("texture/Game/Buttons/Start.png");
-	vbutton.push_back(new Button(8, 8));
-	vbutton[0]->init(&texture, vfilename);
+	//// Start/Stop Button
+	//std::vector<std::string> vfilename;
+	//vfilename.push_back("texture/Game/Buttons/Stop.png");
+	//vfilename.push_back("texture/Game/Buttons/Start.png");
+	//vbutton.push_back(new Button(8, 8));
+	//vbutton[0]->init(&texture, vfilename);
 
-	// FastForward Button
-	vfilename.clear();
-	vfilename.push_back("texture/Game/Buttons/NotFastForward.png");
-	vfilename.push_back("texture/Game/Buttons/FastForward.png");
-	vbutton.push_back(new Button(56, 8));
-	vbutton[1]->init(&texture, vfilename);
+	//// FastForward Button
+	//vfilename.clear();
+	//vfilename.push_back("texture/Game/Buttons/NotFastForward.png");
+	//vfilename.push_back("texture/Game/Buttons/FastForward.png");
+	//vbutton.push_back(new Button(56, 8));
+	//vbutton[1]->init(&texture, vfilename);
 
-	// NextWave Button
-	vbutton.push_back(new Button(104, 8));
-	vbutton[2]->init(&texture, "texture/Game/Buttons/NextWave.png");
+	//// NextWave Button
+	//vbutton.push_back(new Button(104, 8));
+	//vbutton[2]->init(&texture, "texture/Game/Buttons/NextWave.png");
 
-	// Buying Turret Button(Toggle)
-	vfilename.clear();
-	vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
-	vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
-	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
-		Button *turretbutton = new Button(808 + j * 64, 132 + i * 64);
-		vbutton.push_back(turretbutton);
-		tbutton.addButton(turretbutton);
-	}
-	for(int i = 0;i<9;i++)vbutton[3 + i]->init(&texture, vfilename);
+	//// Buying Turret Button(Toggle)
+	//vfilename.clear();
+	//vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
+	//vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
+	//for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
+	//	Button *turretbutton = new Button(808 + j * 64, 132 + i * 64);
+	//	vbutton.push_back(turretbutton);
+	//	tbutton.addButton(turretbutton);
+	//}
+	//for(int i = 0;i<9;i++)vbutton[3 + i]->init(&texture, vfilename);
 
-	// Field Button
-	for (int i = 0; i < 11; i++) {
-		for (int j = 0; j < 11; j++) {
-			vbutton.push_back(new Button(80 + j * 64, 56 + i * 64));
-			vbutton[i * 11 + j + 12]->init(&this->texture,"texture/Game/Turrets/TurretBases/default.png");
-		}
-	}
+	//// Field Button
+	//for (int i = 0; i < 11; i++) {
+	//	for (int j = 0; j < 11; j++) {
+	//		vbutton.push_back(new Button(80 + j * 64, 56 + i * 64));
+	//		vbutton[i * 11 + j + 12]->init(&this->texture,"texture/Game/Turrets/TurretBases/default.png");
+	//	}
+	//}
 
 	// for debug
 	vturret.push_back(vturret_ini[0]);
