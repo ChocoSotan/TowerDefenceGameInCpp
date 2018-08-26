@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "Mouse.h"
 #include "Loader.h"
+#include "ToggleButton.h"
 
 #include <vector>
 
@@ -51,6 +52,7 @@ private:
 	Texture texture;
 
 	std::vector<Button*> button;
+	ToggleButton tbutton;
 
 	bool isPaused;
 	bool isFFed;
@@ -62,6 +64,7 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 }
 
 void Game::Initialize() {
+	// Loading Path
 	PathLoader pl = PathLoader();
 	pl.load("data\\stage\\01\\path.csv", this->vpath);
 	TurretLoader tul = TurretLoader();
@@ -75,11 +78,11 @@ void Game::Initialize() {
 		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\n", vturret_ini[i]->getName().c_str(), vturret_ini[i]->getDamage(), vturret_ini[i]->getFireRate());
 	}
 
-	
-
+	// Loading WaveData
 	ws = new WaveSystem(&this->venemy, 300);
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
-	ws->update(this->venemy);
+
+
 
 
 	/* Pooling to Texture Pool */
@@ -106,19 +109,27 @@ void Game::Initialize() {
 	button[1]->init(&texture, vfilename);
 
 	// NextWave Button
-	vfilename.clear();
-	vfilename.push_back("texture/Game/Buttons/NextWave.png");
 	button.push_back(new Button(104, 8));
-	button[2]->init(&texture, vfilename);
+	button[2]->init(&texture, "texture/Game/Buttons/NextWave.png");
 
 	// Buying Turret Button(Toggle)
 	vfilename.clear();
 	vfilename.push_back("texture/Game/Turrets/TurretBases/default.png");
 	vfilename.push_back("texture/Game/Turrets/TurretBases/default(selected).png");
 	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
-		button.push_back(new Button(808 + j * 64, 132 + i * 64));
+		Button *turretbutton = new Button(808 + j * 64, 132 + i * 64);
+		button.push_back(turretbutton);
+		tbutton.addButton(turretbutton);
 	}
 	for(int i = 0;i<9;i++)button[3 + i]->init(&texture, vfilename);
+
+	// Field Button
+	for (int i = 0; i < 11; i++) {
+		for (int j = 0; j < 11; j++) {
+			button.push_back(new Button(80 + j * 64, 56 + i * 64));
+			button[i * 11 + j + 12]->init(&this->texture,"texture/Game/Turrets/TurretBases/default.png");
+		}
+	}
 
 	// for debug
 	vturret.push_back(vturret_ini[0]);
@@ -132,29 +143,22 @@ void Game::Update() {
 
 	/* Button */
 	// button update
-	for (auto i = button.begin(); i != button.end(); i++) {
-		(*i)->update(this->mouse);
-	}
+	for (auto i = button.begin(); i != button.end(); i++) { (*i)->update(this->mouse); }
+	tbutton.update();
 
 	// toggle pause
-	if (button[0]->isClicked()) {
-		isPaused = isPaused? false : true;
-	}
+	if (button[0]->isClicked()) { isPaused = isPaused? false : true; }
 
 	// toggle fast forward
-	if (button[1]->isClicked()) {
-		isFFed = isFFed? false : true;
-	}
+	if (button[1]->isClicked()) { isFFed = isFFed? false : true; }
 
 	// next wave
-	if (button[2]->isClicked()) {
-		ws->nextWave();
-	}
-	
-	
-	if (isPaused) return;
+	if (button[2]->isClicked()) { ws->nextWave(); }
+
+
 
 	/* Not Paused */
+	if (isPaused) return;
 
 	ws->update(this->venemy);
 	if(isFFed)ws->update(this->venemy);
