@@ -89,8 +89,9 @@ void Game::Initialize() {
 	bl.load("data\\buttonlist.csv", this->vbutton, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	FieldLoader fl = FieldLoader();
-	//fl.load("", this->vterrain, Vector2D(80, 56), 64);
-
+	_RPT0(_CRT_WARN, "Field initializing...\t");
+	fl.load("data\\stage\\01\\map_canplace.csv", this->vterrain, Vector2D(80, 56), 64) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	// fl.initField("", this->vterrain, &this->texture);
 
 	// Buying Turret Button(Toggle)
 	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
