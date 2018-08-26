@@ -5,6 +5,12 @@ texture/Game/Buttons/NotFastForward.png
 texture/Game/Buttons/Start.png
 texture/Game/Buttons/Stop.png
 texture/Game/Buttons/NextWave.png
+texture/Game/Buttons/Turrets/BasicTurret.png
+texture/Game/Buttons/Turrets/MachinegunTurret.png
+texture/Game/Buttons/Turrets/SniperTurret.png
+texture/Game/Buttons/Turrets/CanonTurret.png
+texture/Game/Buttons/Turrets/MortarTurret.png
+texture/Game/Buttons/Turrets/BlastTurret.png
 #Turret
 #Basic
 texture/Game/Turrets/TurretBases/BasicTurret.png
