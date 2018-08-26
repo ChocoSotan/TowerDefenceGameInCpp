@@ -29,6 +29,7 @@ bool FieldLoader::load(std::string filename, std::vector<std::vector<TerrainBase
 	vector<string> buffer;
 	int column = 0;
 	int row = 0;
+	vector<TerrainBase*> tmp;
 
 	if (ifs.fail())return false;
 
@@ -39,9 +40,12 @@ bool FieldLoader::load(std::string filename, std::vector<std::vector<TerrainBase
 
 		for (column = 0; column < (signed)buffer.size(); column++) {
 			stoi(buffer[row]) == 0 ?
-				vec[row].push_back(new BasicTerrain(false, Vector2D(pos.getX() + column * size, pos.getY() + row * size)))
-				: vec[row].push_back(new BasicTerrain(true, Vector2D(pos.getX() + column * size, pos.getY() + row * size)));
+				tmp.push_back(new BasicTerrain(false, Vector2D(pos.getX() + column * size, pos.getY() + row * size)))
+				: tmp.push_back(new BasicTerrain(true, Vector2D(pos.getX() + column * size, pos.getY() + row * size)));
 		}
+
+		vec.push_back(tmp);
+		tmp.clear();
 		row++;
 		buffer.clear();
 	}
