@@ -218,7 +218,7 @@ bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Tex
 	string line;
 	vector<string> buffer;
 	Button *button;
-
+	vector<string> buttonfilename;
 
 	if (ifs.fail())return false;
 
@@ -227,7 +227,10 @@ bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Tex
 		splitString(line, buffer);
 
 		button = new Button(stoi(buffer[0]), stoi(buffer[1]));
-		button->init(texture, buffer[2]);
+		for (int i = 2; i < (unsigned)buffer.size(); i++) {
+			buttonfilename.push_back(buffer[i]);
+		}
+		button->init(texture, buttonfilename);
 		vbutton.push_back(button);
 
 		buffer.clear();
