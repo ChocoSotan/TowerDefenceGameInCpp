@@ -56,11 +56,14 @@ private:
 
 	bool isPaused;
 	bool isFFed;
+
+	long long resource;
 };
 
 Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 	this->isPaused = false;
 	this->isFFed = false;
+	resource = 100;			// initial resource
 }
 
 void Game::Initialize() {
@@ -95,11 +98,6 @@ void Game::Initialize() {
 	_RPT0(_CRT_WARN, "Field initializing...(set texture)\t");
 	fl.initField("data\\stage\\01\\map_texture.csv", "data\\stage\\01\\map_textureid.csv", this->vterrain, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
-	// Buying Turret Button(Toggle)
-	for (int i = 0; i < 3; i++)for (int j = 0; j < 3; j++) {
-		//tbutton.addButton(turretbutton);
-	}
-
 	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
 		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\tRange:%.1f\n", (*i)->getName().c_str(), (*i)->getDamage(), (*i)->getFireRate(), (*i)->getRange());
 	}
@@ -111,8 +109,15 @@ void Game::Update() {
 
 	/* Button */
 	// button update
+	if (mouse.isChangedState() && mouse.getLog() == MOUSE_INPUT_LOG_UP) {
+		for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) {
+			(*i)->clearChannel();
+		}
+	}
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) { (*i)->update(this->mouse); }
 	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
+
+	
 
 	// toggle pause
 	if (vbutton[0]->isClicked()) { isPaused = isPaused? false : true; }
@@ -123,7 +128,12 @@ void Game::Update() {
 	// next wave
 	if (vbutton[2]->isClicked()) { ws->nextWave(); }
 
-	
+	// construct turret
+	if (/* selected turret constructing button && pressing field button */ false) {
+		if (/* having enough money */ false) {
+
+		}
+	}
 
 
 	/* Not Paused */
@@ -225,6 +235,9 @@ void Game::Draw() {
 
 void Game::Finalize() {
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
+		delete (*i);
+	}
+	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		delete (*i);
 	}
 }

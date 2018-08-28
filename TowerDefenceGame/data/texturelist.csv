@@ -17,6 +17,7 @@ texture/Game/Buttons/Turrets/SniperTurret_pressed.png
 texture/Game/Buttons/Turrets/CanonTurret_pressed.png
 texture/Game/Buttons/Turrets/MortarTurret_pressed.png
 texture/Game/Buttons/Turrets/BlastTurret_pressed.png
+texture/Game/Buttons/dummy.png
 #Turret
 #Basic
 texture/Game/Turrets/TurretBases/BasicTurret.png
