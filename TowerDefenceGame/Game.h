@@ -52,7 +52,7 @@ private:
 	Texture texture;
 
 	std::vector<Button*> vbutton;
-	ToggleButton tbutton;
+	std::vector<ToggleButton*> vtbutton;
 
 	bool isPaused;
 	bool isFFed;
@@ -86,7 +86,7 @@ void Game::Initialize() {
 	// Loading ButtonData
 	ButtonLoader bl = ButtonLoader();
 	_RPT0(_CRT_WARN, "Button initializing...\t");
-	bl.load("data\\buttonlist.csv", this->vbutton, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	bl.load("data\\buttonlist.csv", this->vbutton, this->vtbutton, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	// Loading Field
 	FieldLoader fl = FieldLoader();
@@ -112,7 +112,7 @@ void Game::Update() {
 	/* Button */
 	// button update
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) { (*i)->update(this->mouse); }
-	tbutton.update();
+	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
 
 	// toggle pause
 	if (vbutton[0]->isClicked()) { isPaused = isPaused? false : true; }
@@ -123,6 +123,7 @@ void Game::Update() {
 	// next wave
 	if (vbutton[2]->isClicked()) { ws->nextWave(); }
 
+	
 
 
 	/* Not Paused */
