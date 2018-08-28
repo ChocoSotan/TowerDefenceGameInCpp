@@ -6,6 +6,7 @@
 #include "WaveSystem.h"
 #include "TargetPriority.h"
 #include "Button.h"
+#include "ToggleButton.h"
 
 #include <string>
 #include <vector>
@@ -236,7 +237,7 @@ bool TextureLoader::load(std::string filename, Texture *texture) {
 	return true;
 }
 
-bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Texture *texture) {
+bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, std::vector<ToggleButton*> &vtbutton,Texture *texture) {
 	using namespace std;
 
 	ifstream ifs(filename);
@@ -244,6 +245,7 @@ bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Tex
 	vector<string> buffer;
 	Button *button;
 	vector<string> buttonfilename;
+	vector<int> togglegroup;
 
 	if (ifs.fail())return false;
 
@@ -251,18 +253,26 @@ bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, Tex
 		if (line[0] == '#')continue;
 		splitString(line, buffer);
 
-		button = new Button(stoi(buffer[0]), stoi(buffer[1]));
-		for (int i = 2; i < (unsigned)buffer.size(); i++) {
+		button = new Button(stoi(buffer[1]), stoi(buffer[2]));
+		for (int i = 3; i < (unsigned)buffer.size(); i++) {
 			buttonfilename.push_back(buffer[i]);
 		}
+
+		// if the button has toggle group id
+		if (buffer[0].compare("-") != 0) {
+			int id = stoi(buffer[0]);
+			togglegroup.push_back(id);
+			if(vtbutton.size() <= id)vtbutton.push_back(new ToggleButton());
+			vtbutton[id]->addButton(button);
+		}
+		
+
 		button->init(texture, buttonfilename);
 		vbutton.push_back(button);
 
 		buttonfilename.clear();
 		buffer.clear();
 	}
-
-
 
 	return true;
 }

@@ -7,7 +7,7 @@
 #include "WaveSystem.h"
 #include "Texture.h"
 #include "Button.h"
-
+#include "ToggleButton.h"
 
 #include <string>
 #include <sstream>
@@ -76,5 +76,14 @@ public:
 	ButtonLoader() {}
 	~ButtonLoader() {}
 
-	bool load(std::string filename, std::vector<Button*> &vbutton, Texture *texture);
+	bool load(std::string filename, std::vector<Button*> &vbutton, std::vector<ToggleButton*> &vtbutton, Texture *texture);
 };
+
+class SoundLoader : public Loader {
+public:
+	SoundLoader() {}
+	~SoundLoader() {}
+
+	bool load(std::string filename);
+};
+
