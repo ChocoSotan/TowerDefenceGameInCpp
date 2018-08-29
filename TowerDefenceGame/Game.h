@@ -225,10 +225,7 @@ void Game::Draw() {
 	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
 
 	for (int i = 0; i < (signed)venemy.size(); i++) {
-		DrawCircle((int)venemy[i]->getPosition().getX(), (int)venemy[i]->getPosition().getY(), 4, White);
-	}
-	for (int i = 0; i < (signed)venemy.size(); i++) {
-		DrawFormatString(0, 220 + i*20, White, "venemy[%d].hitpoint:%f", i, venemy[i]->getHitpoint());
+		DrawCircle((int)venemy[i]->getPosition().getX(), (int)venemy[i]->getPosition().getY(), 6, Purple);
 	}
 	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
 }
