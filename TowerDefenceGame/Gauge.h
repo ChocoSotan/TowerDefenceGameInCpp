@@ -1,8 +1,6 @@
 #pragma once
 #include"Enemy.h"
 #include"DxLib.h"
-//最大値をコンストラクタで設定。
-//表示する場所と呼び出し時点での数値を引数として受け取る。
 class Gauge {
 public:
 	Gauge(int size_x,int size_y,const int &surfacecolor,const int &backcolor,int difference_x=0,int difference_y=0) {
