@@ -83,7 +83,7 @@ void Game::Initialize() {
 	tel.load("data\\texturelist.csv", &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	// Loading WaveData
-	ws = new WaveSystem(&this->venemy, 300);
+	ws = new WaveSystem(&this->venemy, 300, &this->texture);
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
 
 	// Loading ButtonData
@@ -131,7 +131,7 @@ void Game::Update() {
 	// construct turret
 	if (/* selected turret constructing button && pressing field button */ false) {
 		if (/* having enough money */ false) {
-
+			
 		}
 	}
 
@@ -169,18 +169,6 @@ void Game::Draw() {
 			vterrain[j][i]->draw();
 		}
 	}
-
-	// Stop/Start
-	DrawString(8, 8, "S/S", White);
-	DrawBox(8, 8, 48, 48, White, FALSE);
-
-	// FastForward
-	DrawString(56, 8, "FF", White);
-	DrawBox(56, 8, 96, 48, White, FALSE);
-
-	// NextWave
-	DrawString(104, 8, "NW", White);
-	DrawBox(104, 8, 144, 48, White, FALSE);
 
 	// WaveGuage
 	DrawString(8, 56, "Wave", White);
@@ -234,7 +222,15 @@ void Game::Finalize() {
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
 		delete (*i);
 	}
+	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) {
+		delete (*i);
+	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		delete (*i);
+	}
+	for (int i = 0;i<vterrain.size(); i++) {
+		for (int j = 0; j < vterrain[i].size(); j++) {
+			delete vterrain[j][i];
+		}
 	}
 }
