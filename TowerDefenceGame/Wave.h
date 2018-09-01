@@ -11,7 +11,7 @@ public:
 	~Wave();
 
 	void push(std::vector<EnemyBase*> &venemy);
-
+	std::vector<EnemyBase*> getWaveInfo() { return this->venemy; }
 	
 private:
 	std::vector<EnemyBase*> venemy;
