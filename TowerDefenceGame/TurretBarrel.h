@@ -1,33 +1,21 @@
 #pragma once
-
+#include<math.h>
 #include "DxLib.h"
 #include "Vector2D.h"
+#include "Texture.h"
 
 class TurretBarrel {
 public:
 	TurretBarrel() {
-		
+		this->angle =atan2(-1.0,-1.0);
 	}
 	~TurretBarrel() {
 		
 	}
-
-	bool loadTexture(const char *filename) {
-		if((this->texturehandle = LoadGraph(filename)) == -1)return false;
-		return true;
-	}
-	bool deleteTexture() {
-		if((DeleteGraph(this->texturehandle)) == -1)return false;
-		return true;
-	}
-
+	void draw(int x, int y, Texture *texture);
 	double getAngle() { return this->angle; }
-	Vector2D getPosition() { return this->position; }
 	void setAngle(double angle) { this->angle = angle; }
-	void setPosition(Vector2D position) { this->position = position; }
 
 private:
 	double angle;
-	Vector2D position;
-	int texturehandle;
 };
