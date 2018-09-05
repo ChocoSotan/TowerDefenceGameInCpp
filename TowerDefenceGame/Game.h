@@ -245,7 +245,7 @@ void Game::Draw() {
 	}
 
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		(*i)->
+		// (*i)->draw(&this->texture);
 	}
 
 	// info
