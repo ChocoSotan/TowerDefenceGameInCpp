@@ -8,7 +8,6 @@ bool TurretBase::canConstruct(long long resource) {
 bool TurretBase::canUpgrade(long long resource) {
 	return resource >= upgradecost;
 }
-
 void BasicTurret::attack(std::vector<EnemyBase*> &targetlist) {
 	int targetindex;
 	targetindex = this->target->decisionOrder(targetlist, *this);
@@ -26,7 +25,10 @@ void TurretBase::changePriority(TargetPriority* target) {
 	delete this->target;
 	this->target = target;
 }
-
+void BasicTurret::draw(Texture *texture) {
+	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TuretBases/Basic.png"), TRUE);
+	turretbarrel.draw(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/BasicTurretBarrel.png"));
+}
 //レンジ・グレード・ダメージを増加
 void BasicTurret::upgrade() {
 	this->grade++;
@@ -68,6 +70,10 @@ void MortarTurret::upgrade() {
 	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
 }
+void MortarTurret::draw(Texture *texture) {
+	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TurretBases/Mortar.png"), TRUE);
+	turretbarrel.draw(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/MortarTurretBarrel.png"));
+}
 int MortarTurret::destroy() {
 	return (int)round(this->costspent * 0.7);
 }
@@ -85,6 +91,10 @@ void BlastTurret::upgrade() {
 	this->costspent += upgradecost;
 	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
+}
+void BlastTurret::draw(Texture *texture) {
+	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TuretBases/Blast.png"), TRUE);
+	turretbarrel.draw(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/BlastTurretBarrel.png"));
 }
 int BlastTurret::destroy() {
 	return (int)round(this->costspent * 0.7);

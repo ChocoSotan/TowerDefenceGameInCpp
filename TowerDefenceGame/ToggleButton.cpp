@@ -5,6 +5,7 @@ void ToggleButton::update() {
 		if (i == Channel) {
 			button[i]->setCount(0);
 			Channel = -1;
+			return;
 		}
 		if (Channel != -1) {
 			button[Channel]->setCount(0);

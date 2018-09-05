@@ -3,6 +3,7 @@
 #include "Vector2D.h"
 #include "Enemy.h"
 #include "TurretBarrel.h"
+#include "Texture.h"
 
 #include <vector>
 #include <string>
@@ -31,6 +32,7 @@ public:
 	bool canUpgrade(long long resource);
 	virtual int destroy() = 0;
 	void changePriority(TargetPriority* target);
+	virtual void draw(Texture *texture)=0;
 
 	std::string getName() const { return this->name; }
 	double getDamage() const { return this->damage; }
@@ -80,6 +82,7 @@ public:
 	~BasicTurret() {}
 	void attack(std::vector<EnemyBase*> &targetlist) override;
 	void upgrade()override;
+	void draw(Texture *texture)override;
 	int destroy()override;
 
 
@@ -105,6 +108,7 @@ public:
 	void setSplashDamage(double splashdamage) {this->splashdamage=splashdamage; }
 	void setSplashRange(double splashrange) { this->splashrange = splashrange; }
 	void setMinRange(double minrange) { this->minrange = minrange; }
+	void draw(Texture *textuer)override;
 
 protected:
 	double splashdamage;
@@ -123,6 +127,7 @@ public:
 	void upgrade()override;
 	int destroy()override;
 	void attack(std::vector<EnemyBase*> &targetlist) override;
+	void draw(Texture *texture)override;
 
 protected:
 	
@@ -139,6 +144,7 @@ public:
 	~DotTurret() {}
 
 	void attack(std::vector<EnemyBase*> &targetlist) override;
+	void draw(Texture *texture);
 
 protected:
 	double effectvalue;
