@@ -26,7 +26,7 @@ void TurretBase::changePriority(TargetPriority* target) {
 	this->target = target;
 }
 void BasicTurret::draw(Texture *texture) {
-	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TuretBases/BasicTurret.png"), TRUE);
+	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TurretBases/BasicTurret.png"), TRUE);
 	turretbarrel.draw(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TurretBarrels/BasicTurretBarrel.png"));
 }
 //レンジ・グレード・ダメージを増加
@@ -93,7 +93,7 @@ void BlastTurret::upgrade() {
 	return;
 }
 void BlastTurret::draw(Texture *texture) {
-	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TuretBases/BlastTurret.png"), TRUE);
+	DrawGraph(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TurretBases/BlastTurret.png"), TRUE);
 	turretbarrel.draw(position.getX(), position.getY(), texture->getHandle("texture/Game/Turrets/TurretBarrels/BlastTurretBarrel.png"));
 }
 int BlastTurret::destroy() {
