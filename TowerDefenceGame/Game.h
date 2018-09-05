@@ -22,7 +22,7 @@
 #define Black GetColor(0,0,0)
 #define Red GetColor(255,0,0)
 #define Green GetColor(0,255,0)
-#define Blue Getcolor(0,0,255)
+#define Blue GetColor(0,0,255)
 #define Yellow GetColor(255,255,0)
 #define SkyBlue GetColor(0,255,255)
 #define Purple GetColor(255,0,255)
@@ -48,22 +48,26 @@ private:
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws;
+	WaveSystem *ws = new WaveSystem(&this->venemy, 300, &this->texture);
 	Texture texture;
 
 	std::vector<Button*> vbutton;
 	std::vector<ToggleButton*> vtbutton;
 
+	// option flags
 	bool isPaused;
 	bool isFFed;
 
+	// in game numeric
 	long long resource;
+	int health;
 };
 
 Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 	this->isPaused = false;
 	this->isFFed = false;
 	resource = 100;			// initial resource
+	health = 20;			// initial health
 }
 
 void Game::Initialize() {
@@ -76,6 +80,9 @@ void Game::Initialize() {
 	TurretLoader tul = TurretLoader();
 	_RPT0(_CRT_WARN,"Turret initializing...\t");
 	tul.load("data\\turret\\turret.csv", this->vturret_ini) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
+		(*i)->changePriority(new ClosestBase(this->vpath));
+	}
 
 	// Loading Textures
 	TextureLoader tel = TextureLoader();
@@ -83,7 +90,6 @@ void Game::Initialize() {
 	tel.load("data\\texturelist.csv", &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	// Loading WaveData
-	ws = new WaveSystem(&this->venemy, 300, &this->texture);
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
 
 	// Loading ButtonData
@@ -109,14 +115,9 @@ void Game::Update() {
 
 	/* Button */
 	// button update
-	if (mouse.isChangedState() && mouse.getLog() == MOUSE_INPUT_LOG_UP) {
-		for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) {
-			(*i)->clearChannel();
-		}
-	}
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) { (*i)->update(this->mouse); }
 	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
-
+	
 	
 
 	// toggle pause
@@ -129,13 +130,36 @@ void Game::Update() {
 	if (vbutton[2]->isClicked()) { ws->nextWave(); }
 
 	// construct turret
-	if (/* selected turret constructing button && pressing field button */ false) {
-		if (/* having enough money */ false) {
-			
+	{
+		int selectedturret = vtbutton[0]->getChannel();
+		if (selectedturret != -1) {
+			for (int i = 12; i < 133; i++) {
+				if (!(vbutton[i]->isClicked()))continue;
+				if (!vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->canPlaceTurret())break;
+
+				// construction
+				if (!vturret_ini[selectedturret]->canConstruct(this->resource)) {
+					vtbutton[0]->clearChannel();
+					break;
+				}
+				this->resource -= vturret_ini[selectedturret]->getConstructCost();
+				vturret.push_back(vturret_ini[selectedturret]);
+				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
+				vtbutton[0]->clearChannel();
+			}
+		}
+		else {
+			// upgrade
 		}
 	}
 
-
+	// for debug
+	for (int i = 0; i < (signed)vbutton.size(); i++) {
+		if (vbutton[i]->isClicked()) {
+			printfDx("BUTTON %d WAS CLICKED.\n",i);
+			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
+		}
+	}
 	/* Not Paused */
 	if (isPaused) return;
 
@@ -155,15 +179,27 @@ void Game::Update() {
 		}
 	}
 
+	/*
+	if (mouse.isChangedState() && mouse.getLog() == MOUSE_INPUT_LOG_UP) {
+		for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) {
+			(*i)->clearChannel();
+		}
+	}
+	*/
+	
 
 }
 
 void Game::Draw() {
 	DrawFormatString(0, 0, GetColor(255, 255, 255), "ƒQ[ƒ€");
 
+
+	// button
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
 		(*i)->draw();
 	}
+
+	// terrain
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
 		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
 			vterrain[j][i]->draw();
@@ -177,10 +213,12 @@ void Game::Draw() {
 	// Money
 	DrawString(208, 8, "Money", White);
 	DrawBox(208, 8, 528, 48, White, FALSE);
+	DrawFormatString(208, 28, White, "%d", this->resource);
 
 	// Health
 	DrawString(536, 8, "Health", White);
 	DrawBox(536, 8, 656, 48, White, FALSE);
+	DrawFormatString(536, 28, White, "%d", this->health);
 
 	// Options
 	DrawString(976, 8, "Opt", White);
@@ -208,14 +246,34 @@ void Game::Draw() {
 		}
 	}
 
+	for (auto i = vturret.begin(); i != vturret.end(); i++) {
+		(*i)->
+	}
+
 	// info
 	DrawString(160 + 10 * Boxsize, 340, "Information", White);
 	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
 
-	for (int i = 0; i < (signed)venemy.size(); i++) {
-		DrawCircle((int)venemy[i]->getPosition().getX(), (int)venemy[i]->getPosition().getY(), 6, Purple);
+	// for debug
+	// enemy
+	for (auto i = venemy.begin(); i != venemy.end(); i++) {
+		if (!(*i)->isAlive())continue;
+		DrawCircle((int)(*i)->getPosition().getX(), (int)(*i)->getPosition().getY(), 8, Purple);
 	}
+
+	// turret selection
+	DrawFormatString(0, 100, White, "%d", vtbutton[0]->getChannel());
+	
+	// wavecount
 	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
+
+	// can place
+	for (int i = 0; i < (signed)vterrain.size(); i++) {
+		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
+			vterrain[i][j]->canPlaceTurret() ? DrawFormatString(80 + j * 64, 56 + i * 64, Blue, "TRUE") : DrawFormatString(80 + j * 64, 56 + i * 64, Red, "FALSE");
+		}
+	}
+
 }
 
 void Game::Finalize() {
@@ -226,7 +284,7 @@ void Game::Finalize() {
 		delete (*i);
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		delete (*i);
+		// delete *i;
 	}
 	for (int i = 0;i<vterrain.size(); i++) {
 		for (int j = 0; j < vterrain[i].size(); j++) {

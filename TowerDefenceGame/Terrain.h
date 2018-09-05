@@ -13,11 +13,12 @@ public:
 	TerrainBase(bool canplaceturret, Vector2D pos) {
 		this->canplaceturret = canplaceturret;
 		this->position = pos;
-		this->texture = texture;
 	}
 	virtual ~TerrainBase() {}
 
 	bool canPlaceTurret() { return canplaceturret; }
+	void changeCanPlaceTurret() { canplaceturret = canplaceturret ? false : true; }
+
 	bool init(Texture *texture, std::string filename);
 	void draw();
 
