@@ -12,7 +12,7 @@ public:
 	~TurretBarrel() {
 		
 	}
-	void draw(int x, int y, Texture *texture);
+	void draw(int x, int y,int handle);
 	double getAngle() { return this->angle; }
 	void setAngle(double angle) { this->angle = angle; }
 
