@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="InformationWindow.cpp" />
     <ClCompile Include="TargetPriority.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Loader.cpp" />
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="InformationWindow.h" />
     <ClInclude Include="TargetPriority.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
