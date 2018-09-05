@@ -118,8 +118,6 @@ void Game::Update() {
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) { (*i)->update(this->mouse); }
 	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
 	
-	
-
 	// toggle pause
 	if (vbutton[0]->isClicked()) { isPaused = isPaused? false : true; }
 
