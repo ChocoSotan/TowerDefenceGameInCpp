@@ -227,7 +227,7 @@ bool TextureLoader::load(std::string filename, Texture *texture) {
 		if (line[0] == '#')continue;
 		//splitString(line, buffer);
 
-		texture->pool(line);
+		if(!texture->pool(line))return false;
 
 		buffer.clear();
 	}
