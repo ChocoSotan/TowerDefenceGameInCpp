@@ -211,6 +211,7 @@ void Game::Draw() {
 
 	// WaveGuage
 	DrawString(8, 56, "Wave", White);
+	// ws->draw(Vector2D(8,56), "", "", 8);
 	DrawBox(8, 56, 72, 768 - 8, White, FALSE);
 
 	// Money
@@ -252,12 +253,6 @@ void Game::Draw() {
 	DrawString(160 + 10 * Boxsize, 340, "Information", White);
 	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
 
-	// for debug
-	// enemy
-	/*for (auto i = venemy.begin(); i != venemy.end(); i++) {
-		if (!(*i)->isAlive())continue;
-		DrawCircle((int)(*i)->getPosition().getX(), (int)(*i)->getPosition().getY(), 8, Purple);
-	}*/
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);
@@ -290,4 +285,5 @@ void Game::Finalize() {
 			delete vterrain[j][i];
 		}
 	}
+	texture.deleteHandleAll();
 }
