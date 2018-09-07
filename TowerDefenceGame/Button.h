@@ -27,6 +27,8 @@ public:
 	void proceedCount() { count = (count + 1) % (int)vfilename.size(); }
 	void setCount(int count) { this->count = count; }
 
+	Vector2D getPosition() const { return Vector2D(x, y); }
+
 protected:
 	int x, y;
 	int sx, sy;
