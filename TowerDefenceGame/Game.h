@@ -39,6 +39,11 @@ public:
 	void Finalize() override;
 
 private:
+	// void constructTurret();
+
+
+
+private:
 	Mouse mouse;
 
 	std::vector<TurretBase*> vturret;
@@ -56,7 +61,7 @@ private:
 
 	// option flags
 	bool isPaused;
-	bool isFFed;
+	int ffmul;
 
 	// in game numeric
 	long long resource;
@@ -65,7 +70,7 @@ private:
 
 Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 	this->isPaused = false;
-	this->isFFed = false;
+	this->ffmul = 1;
 	resource = 100;			// initial resource
 	health = 20;			// initial health
 }
@@ -122,7 +127,7 @@ void Game::Update() {
 	if (vbutton[0]->isClicked()) { isPaused = isPaused? false : true; }
 
 	// toggle fast forward
-	if (vbutton[1]->isClicked()) { isFFed = isFFed? false : true; }
+	if (vbutton[1]->isClicked()) { ffmul = ffmul == 1 ? 2 : 1; }
 
 	// next wave
 	if (vbutton[2]->isClicked()) { ws->nextWave(); }
@@ -147,7 +152,13 @@ void Game::Update() {
 			}
 		}
 		else {
-			// upgrade
+			for (int i = 12; i < 133; i++) {
+				if (!(vbutton[i]->isClicked()))continue;
+				if (vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->canPlaceTurret())break;
+
+				// upgrade
+
+			}
 		}
 	}
 
@@ -161,29 +172,23 @@ void Game::Update() {
 	/* Not Paused */
 	if (isPaused) return;
 
-	ws->update(this->venemy);
-	if(isFFed)ws->update(this->venemy);
+	for (int i = 0; i < ffmul; i++) {
+		ws->update(this->venemy);
+	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
-		(*i)->move(vpath);
-		if (isFFed) {
+		if (!(*i)->isAlive())continue;
+		for (int j = 0; j < ffmul; j++) {
 			(*i)->move(vpath);
 		}
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		(*i)->attack(venemy);
-		if (isFFed) {
+		for (int j = 0; j < ffmul; j++) {
 			(*i)->attack(venemy);
 		}
 	}
 
-	/*
-	if (mouse.isChangedState() && mouse.getLog() == MOUSE_INPUT_LOG_UP) {
-		for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) {
-			(*i)->clearChannel();
-		}
-	}
-	*/
+
 	
 
 }
@@ -238,11 +243,6 @@ void Game::Draw() {
 
 	// turrets
 	DrawString(160 + 10 * Boxsize, 64, "Turret", White);
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			DrawBox(168 + 10 * Boxsize + j * 64, 132 + i * 64, 232 + 10 * Boxsize + j * 64, 196 + i * 64, White, FALSE);
-		}
-	}
 
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		(*i)->draw(&this->texture);
@@ -259,18 +259,15 @@ void Game::Draw() {
 		DrawCircle((int)(*i)->getPosition().getX(), (int)(*i)->getPosition().getY(), 8, Purple);
 	}
 
+	for (int i = 0; i < (signed)venemy.size(); i++) {
+		DrawFormatString(200, 0 + i*20, White, "HP:%f", venemy[i]->getHitpoint());
+	}
+
 	// turret selection
 	DrawFormatString(0, 100, White, "%d", vtbutton[0]->getChannel());
 	
 	// wavecount
 	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
-
-	// can place
-	for (int i = 0; i < (signed)vterrain.size(); i++) {
-		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
-			vterrain[i][j]->canPlaceTurret() ? DrawFormatString(80 + j * 64, 56 + i * 64, Blue, "TRUE") : DrawFormatString(80 + j * 64, 56 + i * 64, Red, "FALSE");
-		}
-	}
 
 }
 
@@ -282,10 +279,10 @@ void Game::Finalize() {
 		delete (*i);
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		// delete *i;
+		// delete (*i);
 	}
-	for (int i = 0;i<vterrain.size(); i++) {
-		for (int j = 0; j < vterrain[i].size(); j++) {
+	for (int i = 0; i < (signed)vterrain.size(); i++) {
+		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
 			delete vterrain[j][i];
 		}
 	}
