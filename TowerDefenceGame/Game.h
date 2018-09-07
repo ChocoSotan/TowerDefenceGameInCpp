@@ -179,7 +179,7 @@ void Game::Update() {
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		for (int j = 0; j < ffmul; j++) {
-			(*i)->move(vpath);
+			(*i)->update(vpath);
 		}
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
@@ -254,9 +254,13 @@ void Game::Draw() {
 
 	// for debug
 	// enemy
-	for (auto i = venemy.begin(); i != venemy.end(); i++) {
+	/*for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		DrawCircle((int)(*i)->getPosition().getX(), (int)(*i)->getPosition().getY(), 8, Purple);
+	}*/
+	for (auto i = venemy.begin(); i != venemy.end(); i++) {
+		if (!(*i)->isAlive())continue;
+		(*i)->draw(this->texture);
 	}
 
 	for (int i = 0; i < (signed)venemy.size(); i++) {

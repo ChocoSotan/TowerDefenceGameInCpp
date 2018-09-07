@@ -51,3 +51,5 @@ texture/Game/Field/concrete/concrete_ur.png
 texture/Game/Field/concrete/concrete_rd.png
 texture/Game/Field/concrete/concrete_dl.png
 texture/Game/Field/concrete/concrete_lu.png
+#Enemy
+texture/Game/Enemies/Normal/Normal.png
