@@ -1,21 +1,25 @@
 #pragma once
-#include<math.h>
+
 #include "DxLib.h"
 #include "Vector2D.h"
 #include "Texture.h"
 
+#include <math.h>
+
 class TurretBarrel {
 public:
 	TurretBarrel() {
-		this->angle =atan2(-1.0,-1.0);
+		this->angle = 0;
 	}
-	~TurretBarrel() {
-		
+	~TurretBarrel() {}
+
+	void draw(const Texture &texture, std::string filename) const;
+	void update(double angle, const Vector2D &pos) {
+		this->angle = angle;
+		this->pos = pos;
 	}
-	void draw(int x, int y,int handle);
-	double getAngle() { return this->angle; }
-	void setAngle(double angle) { this->angle = angle; }
 
 private:
+	Vector2D pos;
 	double angle;
 };

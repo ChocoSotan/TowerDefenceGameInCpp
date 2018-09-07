@@ -23,23 +23,24 @@ public:
 		this->upgradecost = upgradecost;
 		this->costspent = constructcost;
 		this->position = position;
+		this->angle = 0;
 	}
 	virtual ~TurretBase() {}
 
-	virtual void attack(std::vector<EnemyBase*> &targetlist) = 0;
-	bool canConstruct(long long resource);
+	virtual void attack(std::vector<EnemyBase*> *targetlist) = 0;
+	bool canConstruct(long long resource) const;
 	virtual void upgrade() = 0;
-	bool canUpgrade(long long resource);
+	bool canUpgrade(long long resource) const;
 	virtual int destroy() = 0;
 	void changePriority(TargetPriority* target);
-	virtual void draw(Texture *texture)=0;
+	virtual void draw(const Texture &texture) const = 0;
 
 	std::string getName() const { return this->name; }
 	double getDamage() const { return this->damage; }
 	double getFireRate() const { return this->firerate; }
 	double getRange() const { return this->range; }
 	double getWaitTime()const { return this->waittime; }
-	double getMinRange() { return this->minrange; }
+	double getMinRange() const{ return this->minrange; }
 	int getGrade()const { return this->grade; }
 	int getConstructCost()const { return this->constructcost; }
 	int getUpgradeCost()const { return this->upgradecost; }
@@ -47,9 +48,7 @@ public:
 	Vector2D getPosition() const { return this->position; }
 
 	void setWaitTime(double waittime) { this->waittime = waittime; }
-
-	TurretBarrel* getTurretBarrel() { return &this->turretbarrel; }
-
+	void setPosition(const Vector2D &pos) { this->position = pos; }
 
 protected:
 
@@ -63,6 +62,8 @@ protected:
 	double range;
 	double waittime;
 	double minrange;
+
+	double angle;
 	Vector2D position;
 	TurretBarrel turretbarrel;
 	TargetPriority* target;
@@ -80,9 +81,9 @@ public:
 		this->minrange = 0;
 	}
 	~BasicTurret() {}
-	void attack(std::vector<EnemyBase*> &targetlist) override;
+	void attack(std::vector<EnemyBase*> *targetlist) override;
 	void upgrade()override;
-	void draw(Texture *texture)override;
+	void draw(const Texture &texture) const override;
 	int destroy()override;
 
 
@@ -102,13 +103,13 @@ public:
 	~MortarTurret() {}
 	void upgrade()override;
 	int destroy()override;
-	void attack(std::vector<EnemyBase*> &targetlist) override;
+	void attack(std::vector<EnemyBase*> *targetlist) override;
 	double getSplashDamage() { return this->splashdamage; }
 	double getSplashRange() { return this->splashrange; }
 	void setSplashDamage(double splashdamage) {this->splashdamage=splashdamage; }
 	void setSplashRange(double splashrange) { this->splashrange = splashrange; }
 	void setMinRange(double minrange) { this->minrange = minrange; }
-	void draw(Texture *textuer)override;
+	void draw(const Texture &texture) const override;
 
 protected:
 	double splashdamage;
@@ -126,8 +127,8 @@ public:
 	virtual ~BlastTurret() {}
 	void upgrade()override;
 	int destroy()override;
-	void attack(std::vector<EnemyBase*> &targetlist) override;
-	void draw(Texture *texture)override;
+	void attack(std::vector<EnemyBase*> *targetlist) override;
+	void draw(const Texture &texture) const override;
 
 protected:
 	
@@ -143,8 +144,8 @@ public:
 	}
 	~DotTurret() {}
 
-	void attack(std::vector<EnemyBase*> &targetlist) override;
-	void draw(Texture *texture);
+	void attack(std::vector<EnemyBase*> *targetlist) override;
+	void draw(const Texture &texture) const override;
 
 protected:
 	double effectvalue;

@@ -147,6 +147,8 @@ void Game::Update() {
 				}
 				this->resource -= vturret_ini[selectedturret]->getConstructCost();
 				vturret.push_back(vturret_ini[selectedturret]);
+				
+				//vturret[(signed)vturret.size()]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
 				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
 				vtbutton[0]->clearChannel();
 			}
@@ -165,7 +167,6 @@ void Game::Update() {
 	// for debug
 	for (int i = 0; i < (signed)vbutton.size(); i++) {
 		if (vbutton[i]->isClicked()) {
-			printfDx("BUTTON %d WAS CLICKED.\n",i);
 			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
 		}
 	}
@@ -184,7 +185,7 @@ void Game::Update() {
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		for (int j = 0; j < ffmul; j++) {
-			(*i)->attack(venemy);
+			(*i)->attack(&venemy);
 		}
 	}
 
@@ -246,7 +247,7 @@ void Game::Draw() {
 	DrawString(160 + 10 * Boxsize, 64, "Turret", White);
 
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		(*i)->draw(&this->texture);
+		(*i)->draw(this->texture);
 	}
 
 	// info
