@@ -101,5 +101,5 @@ std::string NormalEnemy::getStatusText() const {
 }
 
 void NormalEnemy::draw(const Texture &texture) {
-	DrawRotaGraph(this->position.getX(), this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemy/Normal.png"), TRUE);
+	DrawRotaGraph(this->position.getX(), this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemies/Normal/Normal.png"), TRUE);
 }
