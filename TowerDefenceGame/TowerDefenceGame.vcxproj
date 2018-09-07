@@ -138,6 +138,7 @@
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
