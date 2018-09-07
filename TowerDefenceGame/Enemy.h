@@ -32,6 +32,7 @@ public:
 	Vector2D getPosition() const		{ return this->position; }
 	double getAngle() const				{ return this->angle; }
 	double getKnockback()const			{ return this->knockback; }
+	virtual std::string getStatusText() const = 0;
 
 	// for debug
 	int getCurrentpoint()const { return this->currentpoint; }
@@ -64,6 +65,8 @@ public:
 
 	void update(const std::vector<Vector2D> &vpath) override;
 	void draw(const Texture &texture) override;
+
+	std::string getStatusText()const override;
 
 protected:
 

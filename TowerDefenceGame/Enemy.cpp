@@ -5,6 +5,8 @@
 #include "DxLib.h"
 
 #include <math.h>
+#include <sstream>
+#include <iomanip>
 
 
 
@@ -77,8 +79,6 @@ void NormalEnemy::update(const std::vector<Vector2D> &vpath) {
 	}
 }
 
-
-
 double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
 	double ret = 0;
 	for (int i = vpath.size() - 1; i > this->currentpoint; i--) {
@@ -87,6 +87,17 @@ double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
 	ret -= this->position.getAbsTo(vpath[currentpoint]);
 	
 	return ret;
+}
+
+std::string NormalEnemy::getStatusText() const {
+	std::stringstream ss;
+	ss << "Type : Normal\n"
+		<< "HitPoint : " << std::setprecision(1) << this->hitpoint << "\n"
+		<< "Speed : " << std::setprecision(2) << this->movespeed << "\n"
+		<< "Damage : " << this->attackpower << "\n"
+		<< "Reward : " << this->resourcereward << "\n";
+	
+	return ss.str();
 }
 
 void NormalEnemy::draw(const Texture &texture) {
