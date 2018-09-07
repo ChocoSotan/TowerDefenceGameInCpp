@@ -1,16 +1,18 @@
 #include "Enemy.h"
 
 #include "Vector2D.h"
+#include "Texture.h"
 #include "DxLib.h"
 
 #include <math.h>
 
 
 
-void NormalEnemy::move(std::vector<Vector2D> &vpath) {
+void NormalEnemy::update(const std::vector<Vector2D> &vpath) {
 	Vector2D nextpos;
 	double nextangle;
 
+	/* move */
 	// taken knockback
 	while (this->knockback > EPSILON) {
 		nextangle = this->getPosition().getAngleTo(vpath[currentpoint]);
@@ -85,4 +87,8 @@ double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
 	ret -= this->position.getAbsTo(vpath[currentpoint]);
 	
 	return ret;
+}
+
+void NormalEnemy::draw(const Texture &texture) {
+	DrawRotaGraph(this->position.getX(), this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemy/Normal.png"), TRUE);
 }
