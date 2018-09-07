@@ -147,8 +147,8 @@ void Game::Update() {
 				}
 				this->resource -= vturret_ini[selectedturret]->getConstructCost();
 				vturret.push_back(vturret_ini[selectedturret]);
-				
-				//vturret[(signed)vturret.size()]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
+
+				vturret[(signed)vturret.size()]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
 				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
 				vtbutton[0]->clearChannel();
 			}
