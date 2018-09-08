@@ -2,32 +2,24 @@
 
 #include "DxLib.h"
 #include "Vector2D.h"
+#include "Texture.h"
+
+#include <math.h>
 
 class TurretBarrel {
 public:
 	TurretBarrel() {
-		
+		this->angle = 0;
 	}
-	~TurretBarrel() {
-		
-	}
+	~TurretBarrel() {}
 
-	bool loadTexture(const char *filename) {
-		if((this->texturehandle = LoadGraph(filename)) == -1)return false;
-		return true;
+	void draw(const Texture &texture, std::string filename) const;
+	void update(double angle, const Vector2D &pos) {
+		this->angle = angle;
+		this->pos = pos;
 	}
-	bool deleteTexture() {
-		if((DeleteGraph(this->texturehandle)) == -1)return false;
-		return true;
-	}
-
-	double getAngle() { return this->angle; }
-	Vector2D getPosition() { return this->position; }
-	void setAngle(double angle) { this->angle = angle; }
-	void setPosition(Vector2D position) { this->position = position; }
 
 private:
+	Vector2D pos;
 	double angle;
-	Vector2D position;
-	int texturehandle;
 };

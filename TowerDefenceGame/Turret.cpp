@@ -2,29 +2,38 @@
 
 #include "TargetPriority.h"
 
-bool TurretBase::canConstruct(long long resource) {
+bool TurretBase::canConstruct(long long resource) const {
 	return resource >= constructcost;
 }
-bool TurretBase::canUpgrade(long long resource) {
+
+bool TurretBase::canUpgrade(long long resource) const {
 	return resource >= upgradecost;
 }
 
-void BasicTurret::attack(std::vector<EnemyBase*> &targetlist) {
+void TurretBase::changePriority(TargetPriority* target) {
+	delete this->target;
+	this->target = target;
+}
+
+void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
 	int targetindex;
-	targetindex = this->target->decisionOrder(targetlist, *this);
+	targetindex = this->target->decisionOrder(*targetlist, *this);
 	if (targetindex == -1)return;
 	// there is no enemy in stage
 
 	/* attack */
 	// set barrel angle to target
-	this->turretbarrel.setAngle(this->getPosition().getAngleTo(targetlist[targetindex]->getPosition()));
+	this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
+	this->turretbarrel.update(this->angle, this->position);
+
 	// take damage
-	targetlist[targetindex]->setHitpoint(targetlist[targetindex]->getHitpoint() - this->damage);
+	(*targetlist)[targetindex]->setHitpoint((*targetlist)[targetindex]->getHitpoint() - this->damage);
 
 }
-void TurretBase::changePriority(TargetPriority* target) {
-	delete this->target;
-	this->target = target;
+
+void BasicTurret::draw(const Texture &texture) const {
+	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/BasicTurret.png"), TRUE);
+	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/BasicTurretBarrel.png");
 }
 
 //レンジ・グレード・ダメージを増加
@@ -33,7 +42,7 @@ void BasicTurret::upgrade() {
 	this->range *= 1.1;
 	this->damage *= 1.5;
 	this->costspent += upgradecost;
-	this->upgradecost = round(this->upgradecost * 1.5);
+	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
 }
 
@@ -42,22 +51,27 @@ int BasicTurret::destroy() {
 	return (int)round(this->costspent * 0.7);
 }
 
-void MortarTurret::attack(std::vector<EnemyBase*> &targetlist) {
+void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
 	//set target
 	int targetindex;
-	targetindex = this->target->decisionOrder(targetlist, *this);
+	targetindex = this->target->decisionOrder(*targetlist, *this);
 	if (targetindex == -1)return;
+
 	//set barrel angle
-	this->turretbarrel.setAngle(this->position.getAngleTo(targetlist[targetindex]->getPosition()));
+	this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
+	turretbarrel.update(this->angle, this->position);
+
 	//attack to the target
-	targetlist[targetindex]->setHitpoint(targetlist[targetindex]->getHitpoint() - this->damage);
+	(*targetlist)[targetindex]->setHitpoint((*targetlist)[targetindex]->getHitpoint() - this->damage);
+
 	//splash damage
-	for (auto i = 0; i < (signed)targetlist.size(); i++) {
-		if (targetlist[targetindex]->getPosition().getAbsTo(targetlist[i]->getPosition()) < this->splashrange) {
-			targetlist[i]->setHitpoint(targetlist[i]->getHitpoint() - this->splashdamage);
+	for (auto i = 0; i < (signed)targetlist->size(); i++) {
+		if ((*targetlist)[targetindex]->getPosition().getAbsTo((*targetlist)[i]->getPosition()) < this->splashrange) {
+			(*targetlist)[i]->setHitpoint((*targetlist)[i]->getHitpoint() - this->splashdamage);
 		}
 	}
 }
+
 void MortarTurret::upgrade() {
 	this->grade++;
 	this->splashdamage *= 1.5;
@@ -68,24 +82,38 @@ void MortarTurret::upgrade() {
 	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
 }
+
+void MortarTurret::draw(const Texture &texture) const {
+	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/MortarTurret.png"), TRUE);
+	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/MortarTurretBarrel.png");
+}
+
 int MortarTurret::destroy() {
 	return (int)round(this->costspent * 0.7);
 }
-void BlastTurret::attack(std::vector<EnemyBase*> &targetlist) {
-	for (auto i = 0; i < (signed)targetlist.size(); i++) {
-		if (this->range > this->position.getAbsTo(targetlist[i]->getPosition())) {
-			targetlist[i]->setHitpoint(targetlist[i]->getHitpoint() - this->damage);
+
+void BlastTurret::attack(std::vector<EnemyBase*> *targetlist) {
+	for (auto i = 0; i < (signed)targetlist->size(); i++) {
+		if (this->range > this->position.getAbsTo((*targetlist)[i]->getPosition())) {
+			(*targetlist)[i]->setHitpoint((*targetlist)[i]->getHitpoint() - this->damage);
 		}
 	}
 }
+
 void BlastTurret::upgrade() {
 	this->grade++;
 	this->range *= 1.1;
 	this->damage *= 1.5;
 	this->costspent += upgradecost;
-	this->upgradecost = round(this->upgradecost * 1.5);
+	this->upgradecost = (int)round(this->upgradecost * 1.5);
 	return;
 }
+
+void BlastTurret::draw(const Texture &texture) const {
+	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/BlastTurret.png"), TRUE);
+	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/BlastTurretBarrel.png");
+}
+
 int BlastTurret::destroy() {
 	return (int)round(this->costspent * 0.7);
 }

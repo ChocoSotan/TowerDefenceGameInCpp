@@ -5,7 +5,9 @@
 #include "Turret.h"
 #include "Wave.h"
 #include "WaveSystem.h"
-
+#include "Texture.h"
+#include "Button.h"
+#include "ToggleButton.h"
 
 #include <string>
 #include <sstream>
@@ -33,7 +35,8 @@ public:
 	FieldLoader() {}
 	~FieldLoader() {}
 
-	bool load(std::string filename, std::vector<TerrainBase*> &vec);
+	bool load(std::string filename, std::vector<std::vector<TerrainBase*>> &vec, const Vector2D &pos, const int size);
+	bool initField(std::string filename_texture, std::string filename_id, std::vector<std::vector<TerrainBase*>> &vec, Texture *texture);
 };
 
 class PathLoader : public Loader {
@@ -52,13 +55,35 @@ public:
 	bool load(std::string filename, std::vector<TurretBase*> &vec);
 };
 
-
-
 class WaveLoader : public Loader {
 public:
 	WaveLoader() {}
 	~WaveLoader() {}
 
 	bool load(std::string filename, std::vector<Wave*> &vec, Vector2D &pos);
+};
+
+class TextureLoader : public Loader {
+public:
+	TextureLoader() {}
+	~TextureLoader() {}
+
+	bool load(std::string filename, Texture *texture);
+};
+
+class ButtonLoader : public Loader {
+public:
+	ButtonLoader() {}
+	~ButtonLoader() {}
+
+	bool load(std::string filename, std::vector<Button*> &vbutton, std::vector<ToggleButton*> &vtbutton, Texture *texture);
+};
+
+class SoundLoader : public Loader {
+public:
+	SoundLoader() {}
+	~SoundLoader() {}
+
+	bool load(std::string filename);
 };
 

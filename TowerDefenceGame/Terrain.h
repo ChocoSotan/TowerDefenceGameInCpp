@@ -1,25 +1,38 @@
 #pragma once
 
+#include "Vector2D.h"
+#include "Texture.h"
+
+#include <string>
+
 /// <summary>
 /// Terrain(map) class.
 /// </summary>
 class TerrainBase {
 public:
-	TerrainBase() {}
-	virtual ~TerrainBase() = 0;
+	TerrainBase(bool canplaceturret, Vector2D pos) {
+		this->canplaceturret = canplaceturret;
+		this->position = pos;
+	}
+	virtual ~TerrainBase() {}
 
 	bool canPlaceTurret() { return canplaceturret; }
-	bool loadTexture(const char *filename);
+	void changeCanPlaceTurret() { canplaceturret = canplaceturret ? false : true; }
+
+	bool init(Texture *texture, std::string filename);
+	void draw();
 
 protected:
 	bool canplaceturret;
-	int texturehandle;
+	Vector2D position;
+	Texture *texture;
+	std::string filename;
 };
 
-class GlassTerrain : public TerrainBase {
+class BasicTerrain : public TerrainBase {
 public:
-	GlassTerrain(bool canplaceturret) { this->canplaceturret = canplaceturret; }
-
+	BasicTerrain(bool canplaceturret, Vector2D pos) : TerrainBase(canplaceturret, pos) { }
+	~BasicTerrain() {}
 
 
 private:

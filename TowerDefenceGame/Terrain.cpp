@@ -2,13 +2,18 @@
 
 #include "DxLib.h"
 
-bool TerrainBase::loadTexture(const char *filename) {
-	int texturehandle = LoadGraph(filename);
 
-	if (texturehandle == -1) {
-		return false;
-	}
-
-	this->texturehandle = LoadGraph(filename);
+bool TerrainBase::init(Texture *texture, std::string filename) {
+	this->texture = texture;
+	this->filename = filename;
 	return true;
 }
+
+
+void TerrainBase::draw() {
+	DrawGraph((int)position.getX(), 
+		(int)position.getY(), 
+		texture->getHandle(filename), FALSE);
+}
+
+

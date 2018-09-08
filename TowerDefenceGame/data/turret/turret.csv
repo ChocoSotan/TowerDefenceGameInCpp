@@ -1,5 +1,5 @@
 #Type(Key),#Name,#Power,#FireRate,#Range,#Cost,#UpgradeCost,#SplashRange,#SplashDamage,#MinRange
-Basic,BasicTurret,4,60,500,30,45,-,-,-
+Basic,BasicTurret,10,10,500,30,45,-,-,-
 Basic,MachinegunTurret,2,150,160,50,75,-,-,-
 Basic,SniperTurret,18,12,340,150,225,-,-,-
 Splash,CanonTurret,6,20,220,150,225,40,3,0

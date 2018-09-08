@@ -1,7 +1,10 @@
 #pragma once
 
-#include <vector>
 #include "Vector2D.h"
+#include "Texture.h"
+
+#include <vector>
+
 
 class EnemyBase {
 public:
@@ -17,7 +20,8 @@ public:
 	}
 	virtual ~EnemyBase() {}
 
-	virtual void move(std::vector<Vector2D> &vpath) = 0;
+	virtual void update(const std::vector<Vector2D> &vpath) = 0;
+	virtual void draw(const Texture &texture) = 0;
 	bool isAlive() const { return hitpoint > 0; }
 	
 	double getDistanceToBase(const std::vector<Vector2D> &vpath) const;
@@ -28,6 +32,7 @@ public:
 	Vector2D getPosition() const		{ return this->position; }
 	double getAngle() const				{ return this->angle; }
 	double getKnockback()const			{ return this->knockback; }
+	virtual std::string getStatusText() const = 0;
 
 	// for debug
 	int getCurrentpoint()const { return this->currentpoint; }
@@ -58,8 +63,10 @@ public:
 	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward, pos) {}
 	~NormalEnemy() {}
 
-	void move(std::vector<Vector2D> &vpath) override;
+	void update(const std::vector<Vector2D> &vpath) override;
+	void draw(const Texture &texture) override;
 
+	std::string getStatusText()const override;
 
 protected:
 

@@ -2,6 +2,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "DxLib.h"
 
@@ -10,26 +11,15 @@ public:
 	Texture() {}
 	~Texture() {}
 
-	bool pool(const std::string filename) {
-		int handle = LoadGraph(filename.c_str());
-		if (handle == -1)return false;
-		
-		dictionary.insert(std::make_pair(filename, handle));
-		return true;
-	}
-	bool deleteHandle(const std::string filename) {
-		if (DeleteGraph(dictionary[filename]) == -1)return false;
-		return true;
-	}
-	int getHandle(const std::string filename) {
-		try {
-			dictionary.at(filename);
-		} catch (std::out_of_range &oor) {
-			OutputDebugString(oor.what());
-			return -1;
-		}
-		return dictionary[filename];
-	}
+	bool pool(const std::string &filename);
+	bool pool(const std::vector<std::string> &vfilename);
+
+	bool deleteHandle(const std::string &filename);
+	bool deleteHandle(const std::vector<std::string> &vfilename);
+	bool deleteHandleAll();
+
+	int getHandle(const std::string &filename) const;
+	std::vector<int> getHandle(const std::vector<std::string> &vfilename) const;
 	
 private:
 	std::map<std::string,int> dictionary;
