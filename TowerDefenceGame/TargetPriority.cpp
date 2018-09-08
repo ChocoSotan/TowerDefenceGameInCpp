@@ -59,6 +59,7 @@ int ClosestBase::decisionOrder(const std::vector<EnemyBase*> &targetlist, Turret
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[i]->getPosition())) continue;
 		if (!targetlist[i]->isAlive())continue;
 		if (targetlist[i]->getDistanceToBase(vpath) < mindistancetobase) {
+			mindistancetobase = targetlist[i]->getDistanceToBase(vpath);
 			targetindex = i;
 		}
 	}
@@ -80,6 +81,7 @@ int FarthestBase::decisionOrder(const std::vector<EnemyBase*> &targetlist, Turre
 		if (turret.getMinRange() > turret.getPosition().getAbsTo(targetlist[i]->getPosition())) continue;
 		if (!targetlist[i]->isAlive())continue;
 		if (targetlist[i]->getDistanceToBase(vpath) < maxdistancetobase) {
+			maxdistancetobase = targetlist[i]->getDistanceToBase(vpath);
 			targetindex = i;
 		}
 	}
