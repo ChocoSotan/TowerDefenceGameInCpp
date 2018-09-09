@@ -8,10 +8,16 @@ TurretBase* TurretFactory::create(const TurretBase &turret, int channel) {
 		return createBasicTurret(turret);
 	case 2:
 		return createBasicTurret(turret);
+	case 3:
+		return createBasicTurret(turret);
+	case 4:
+		return createMortarTurret(turret); 
+	case 5:
+		return createBlastTurret(turret);
 	default:
 		break;
 	}
-	return nullptr;
+	return createBasicTurret(turret);
 }
 
 TurretBase* TurretFactory::createBasicTurret(const TurretBase &turret) {
