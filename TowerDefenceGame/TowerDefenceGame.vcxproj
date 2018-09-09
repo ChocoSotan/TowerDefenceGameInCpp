@@ -143,6 +143,7 @@
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
     <ClCompile Include="TurretBarrel.cpp" />
+    <ClCompile Include="TurretFactory.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="WaveSystem.cpp" />
   </ItemGroup>

@@ -1,5 +1,7 @@
 #pragma once
 
+#include"TurretFactory.h"
+
 #include "Scene.h"
 #include "DxLib.h"
 
@@ -52,6 +54,7 @@ private:
 	std::vector<Wave*> vwave;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
+	TurretFactory turretfactory;
 	
 	WaveSystem *ws = new WaveSystem(&this->venemy, 300, &this->texture);
 	Texture texture;
@@ -145,9 +148,9 @@ void Game::Update() {
 					vtbutton[0]->clearChannel();
 					break;
 				}
-				this->resource -= vturret_ini[selectedturret]->getConstructCost();
-				vturret.push_back(vturret_ini[selectedturret]);//bug
-				
+				this->resource-= vturret_ini[selectedturret]->getConstructCost();
+				vturret.push_back(turretfactory.create(*vturret_ini[selectedturret],vtbutton[0]->getChannel()));//bug
+				vturret[vturret.size() - 1]->changePriority(new ClosestBase(this->vpath));
 				vturret[(signed)vturret.size()-1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
 				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
 				vtbutton[0]->clearChannel();

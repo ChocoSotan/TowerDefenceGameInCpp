@@ -22,9 +22,10 @@ public:
 		this->constructcost = constructcost;
 		this->upgradecost = upgradecost;
 		this->costspent = constructcost;
-		this->position = position;
+		//this->position = position;
 		this->angle = 0;
 	}
+	TurretBase() {}
 	virtual ~TurretBase() {}
 
 	virtual void attack(std::vector<EnemyBase*> *targetlist) = 0;
@@ -41,6 +42,8 @@ public:
 	double getRange() const { return this->range; }
 	double getWaitTime()const { return this->waittime; }
 	double getMinRange() const{ return this->minrange; }
+	double getSplashDamage() const{ return this->splashdamage; }
+	double getSplashRange() const{ return this->splashrange; }
 	int getGrade()const { return this->grade; }
 	int getConstructCost()const { return this->constructcost; }
 	int getUpgradeCost()const { return this->upgradecost; }
@@ -50,8 +53,8 @@ public:
 	void setWaitTime(double waittime) { this->waittime = waittime; }
 	void setPosition(const Vector2D &pos) { this->position = pos; }
 
-protected:
 
+protected:
 	std::string name;
 	int constructcost;
 	int upgradecost;
@@ -62,8 +65,10 @@ protected:
 	double range;
 	double waittime;
 	double minrange;
-
+	double splashdamage;
+	double splashrange;
 	double angle;
+
 	Vector2D position;
 	TurretBarrel turretbarrel;
 	TargetPriority* target;
@@ -78,6 +83,23 @@ protected:
 class BasicTurret : public TurretBase {
 public:
 	BasicTurret(std::string name, double damage, double firerate, double range,int constructcost,int upgradecost,Vector2D position) : TurretBase(name, damage, firerate, range,constructcost,upgradecost,position) {
+		this->splashdamage = 0;
+		this->splashrange = 0;
+		this->minrange = 0;
+	}
+	BasicTurret(const TurretBase &obj):TurretBase(){
+		this->name = obj.getName();
+		this->damage = obj.getDamage();
+		this->firerate = obj.getFireRate();
+		this->range = obj.getRange();
+		this->grade = 1;
+		this->constructcost = obj.getConstructCost();
+		this->upgradecost = obj.getUpgradeCost();
+		this->costspent = obj.getConstructCost();
+		//this->position = position;
+		this->angle = 0;
+		this->splashdamage = 0;
+		this->splashrange = 0;
 		this->minrange = 0;
 	}
 	~BasicTurret() {}
@@ -100,20 +122,31 @@ public:
 		this->splashrange = splashrange;
 		this->minrange = minrange;
 	}
+	MortarTurret(const TurretBase &obj):TurretBase(){
+		this->name = obj.getName();
+		this->damage = obj.getDamage();
+		this->firerate = obj.getFireRate();
+		this->range = obj.getRange();
+		this->grade = 1;
+		this->constructcost = obj.getConstructCost();
+		this->upgradecost = obj.getUpgradeCost();
+		this->costspent = obj.getConstructCost();
+		//this->position = position;
+		this->angle = 0;
+		this->splashdamage = obj.getSplashDamage();
+		this->splashrange = obj.getSplashRange();
+		this->minrange = obj.getMinRange();
+	}
 	~MortarTurret() {}
 	void upgrade()override;
 	int destroy()override;
 	void attack(std::vector<EnemyBase*> *targetlist) override;
-	double getSplashDamage() { return this->splashdamage; }
-	double getSplashRange() { return this->splashrange; }
 	void setSplashDamage(double splashdamage) {this->splashdamage=splashdamage; }
 	void setSplashRange(double splashrange) { this->splashrange = splashrange; }
 	void setMinRange(double minrange) { this->minrange = minrange; }
 	void draw(const Texture &texture) const override;
 
 protected:
-	double splashdamage;
-	double splashrange;
 };
 
 /// <summary>
@@ -122,6 +155,23 @@ protected:
 class BlastTurret : public TurretBase {
 public:
 	BlastTurret(std::string name, double damage, double firerate, double range, int constructcost, int upgradecost,Vector2D position) : TurretBase(name, damage, firerate, range, constructcost, upgradecost,position) {
+		this->minrange = 0;
+		this->splashdamage = 0;
+		this->splashrange = 0;
+	}
+	BlastTurret(const TurretBase &obj):TurretBase(){
+		this->name = obj.getName();
+		this->damage = obj.getDamage();
+		this->firerate = obj.getFireRate();
+		this->range = obj.getRange();
+		this->grade = 1;
+		this->constructcost = obj.getConstructCost();
+		this->upgradecost = obj.getUpgradeCost();
+		this->costspent = obj.getConstructCost();
+		//this->position = position;
+		this->angle = 0;
+		this->splashdamage = 0;
+		this->splashrange = 0;
 		this->minrange = 0;
 	}
 	virtual ~BlastTurret() {}
