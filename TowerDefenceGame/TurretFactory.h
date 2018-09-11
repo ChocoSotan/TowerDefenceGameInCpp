@@ -8,11 +8,10 @@ class TurretFactory {
 public:
 	TurretFactory() {}
 	~TurretFactory() {}
-	TurretBase* create(const TurretBase &turret,int channel);
-	TurretBase* createBasicTurret(const TurretBase &turret);
-	TurretBase* createMortarTurret(const TurretBase &turret);
-	TurretBase* createBlastTurret(const TurretBase &turret);
-
+	TurretBase* create(const TurretBase &turret);
+	BasicTurret* createBasicTurret(const TurretBase &turret);
+	MortarTurret* createMortarTurret(const TurretBase &turret);
+	BlastTurret* createBlastTurret(const TurretBase &turret);
 private:
 
 };

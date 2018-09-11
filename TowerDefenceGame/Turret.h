@@ -28,13 +28,13 @@ public:
 	TurretBase() {}
 	virtual ~TurretBase() {}
 
-	virtual void attack(std::vector<EnemyBase*> *targetlist) = 0;
+	virtual void attack(std::vector<EnemyBase*> *targetlist) {} //= 0;
 	bool canConstruct(long long resource) const;
-	virtual void upgrade() = 0;
+	virtual void upgrade() {}// = 0;
 	bool canUpgrade(long long resource) const;
-	virtual int destroy() = 0;
+	virtual int destroy() { return 0; }// = 0;
 	void changePriority(TargetPriority* target);
-	virtual void draw(const Texture &texture) const = 0;
+	virtual void draw(const Texture &texture) const {}// = 0;
 
 	std::string getName() const { return this->name; }
 	double getDamage() const { return this->damage; }
