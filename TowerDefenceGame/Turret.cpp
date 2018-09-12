@@ -11,7 +11,7 @@ bool TurretBase::canUpgrade(long long resource) const {
 }
 
 void TurretBase::changePriority(TargetPriority* target) {
-	delete this->target;
+	//if(this->target != nullptr) delete this->target;
 	this->target = target;
 }
 
@@ -32,8 +32,24 @@ void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
 }
 
 void BasicTurret::draw(const Texture &texture) const {
-	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/BasicTurret.png"), TRUE);
-	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/BasicTurretBarrel.png");
+	const std::vector <std::string> basicturretnames = {
+		"BasicTurret", "MachinegunTurret", "SniperTurret",
+	};
+	
+	std::string basepath = "texture/Game/Turrets/TurretBases/";
+	std::string barrelpath = "texture/Game/Turrets/TurretBarrels/";
+
+	for (int i = 0; i < (signed)basicturretnames.size(); i++) {
+		if (this->name.compare(basicturretnames[i]) == 0) {
+			basepath += basicturretnames[i];
+			basepath += ".png";
+			barrelpath += basicturretnames[i];
+			barrelpath += "Barrel.png";
+		}
+	}
+
+	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle(basepath), TRUE);
+	turretbarrel.draw(texture, barrelpath);
 }
 
 //レンジ・グレード・ダメージを増加
@@ -43,7 +59,6 @@ void BasicTurret::upgrade() {
 	this->damage *= 1.5;
 	this->costspent += upgradecost;
 	this->upgradecost = (int)round(this->upgradecost * 1.5);
-	return;
 }
 
 //費やしたコストに応じてコストを返還

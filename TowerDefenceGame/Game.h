@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma warning(disable:4996)
+
 #include "Scene.h"
 #include "DxLib.h"
 
@@ -12,6 +14,7 @@
 #include "Mouse.h"
 #include "Loader.h"
 #include "ToggleButton.h"
+#include "TurretFactory.h"
 
 #include <vector>
 
@@ -47,13 +50,14 @@ private:
 	Mouse mouse;
 
 	std::vector<TurretBase*> vturret;
-	std::vector<TurretBase*> vturret_ini;		// to copy to vturret
+	std::vector<const TurretBase*> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
 	std::vector<Wave*> vwave;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
 	WaveSystem *ws = new WaveSystem(&this->venemy, 300, &this->texture);
+	TurretFactory *tf = new TurretFactory();
 	Texture texture;
 
 	std::vector<Button*> vbutton;
@@ -82,12 +86,9 @@ void Game::Initialize() {
 	pl.load("data\\stage\\01\\path.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	// Loading Turrets
-	TurretLoader tul = TurretLoader();
 	_RPT0(_CRT_WARN,"Turret initializing...\t");
-	tul.load("data\\turret\\turret.csv", this->vturret_ini) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
-	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
-		(*i)->changePriority(new ClosestBase(this->vpath));
-	}
+	tf->load("data\\turret\\turret.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	this->vturret_ini = tf->getDataAll();
 
 	// Loading Textures
 	TextureLoader tel = TextureLoader();
@@ -109,9 +110,6 @@ void Game::Initialize() {
 	_RPT0(_CRT_WARN, "Field initializing...(set texture)\t");
 	fl.initField("data\\stage\\01\\map_texture.csv", "data\\stage\\01\\map_textureid.csv", this->vterrain, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
-	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
-		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\tRange:%.1f\n", (*i)->getName().c_str(), (*i)->getDamage(), (*i)->getFireRate(), (*i)->getRange());
-	}
 }
 
 void Game::Update() {
@@ -146,7 +144,8 @@ void Game::Update() {
 					break;
 				}
 				this->resource -= vturret_ini[selectedturret]->getConstructCost();
-				vturret.push_back(vturret_ini[selectedturret]);
+				
+				vturret.push_back(tf->create(vturret_ini[selectedturret]->getName(), this->vpath));
 				
 				vturret[(signed)vturret.size()-1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
 				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
@@ -178,11 +177,18 @@ void Game::Update() {
 	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
-		if (!(*i)->isAlive())continue;
+		if (!(*i)->isAlive()) {
+			this->resource += (*i)->getResourcereward();
+			continue;
+		}
 		for (int j = 0; j < ffmul; j++) {
 			(*i)->update(vpath);
 		}
 	}
+	for (int i = 0; i < (signed)venemy.size(); i++) {
+		if (!venemy[i]->isAlive())this->venemy.erase(this->venemy.begin() + i);
+	}
+
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		for (int j = 0; j < ffmul; j++) {
 			(*i)->attack(&venemy);

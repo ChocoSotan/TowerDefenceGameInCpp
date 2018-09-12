@@ -2,6 +2,9 @@
 
 #include "Turret.h"
 
+#include "TurretLoader.h"
+
+#include "TargetPriority.h"
 
 
 class TurretFactory {
@@ -9,22 +12,16 @@ public:
 	TurretFactory() {}
 	~TurretFactory() {}
 
-	TurretBase* create(const BasicTurret &turret);
-	TurretBase* create(const MortarTurret &turret);
-	TurretBase* create(const BlastTurret &turret);
+	TurretBase* create(const std::string name, const std::vector<Vector2D> &vpath);
+	bool load(const std::string filename, const std::vector<Vector2D> &vpath);
+	const TurretBase* getDataByName(const std::string name) const;
+	const std::vector<const TurretBase*> getDataAll() const;
 
 private:
+	TurretLoader tl;
 
+	std::vector<BasicTurret> vbasicturret;
+	std::vector<MortarTurret> vmortarturret;
+	std::vector<BlastTurret> vblastturret;
 };
 
-TurretBase* TurretFactory::create(const BasicTurret &turret) {
-	return new BasicTurret(turret);
-}
-
-TurretBase* TurretFactory::create(const MortarTurret &turret) {
-	return new MortarTurret(turret);
-}
-
-TurretBase* TurretFactory::create(const BlastTurret &turret) {
-	return new BlastTurret(turret);
-}

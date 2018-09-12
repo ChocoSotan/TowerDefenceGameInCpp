@@ -143,6 +143,8 @@
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
     <ClCompile Include="TurretBarrel.cpp" />
+    <ClCompile Include="TurretFactory.cpp" />
+    <ClCompile Include="TurretLoader.cpp" />
     <ClCompile Include="Wave.cpp" />
     <ClCompile Include="WaveSystem.cpp" />
   </ItemGroup>
@@ -165,6 +167,7 @@
     <ClInclude Include="Turret.h" />
     <ClInclude Include="TurretBarrel.h" />
     <ClInclude Include="TurretFactory.h" />
+    <ClInclude Include="TurretLoader.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="WaveSystem.h" />

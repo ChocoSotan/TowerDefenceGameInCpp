@@ -13,11 +13,12 @@ public:
 	}
 	~TurretBarrel() {}
 
-	void draw(const Texture &texture, std::string filename) const;
+	void draw(const Texture &texture, const std::string path) const;
 	void update(double angle, const Vector2D &pos) {
 		this->angle = angle;
 		this->pos = pos;
 	}
+	void setPosition(const Vector2D &pos) { this->pos = pos; };
 
 private:
 	Vector2D pos;
