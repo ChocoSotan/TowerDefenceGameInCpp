@@ -16,15 +16,15 @@
     <Filter Include="Loader">
       <UniqueIdentifier>{573df91a-7336-465c-8a32-b3418233912e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Turret">
+      <UniqueIdentifier>{4dc573c4-28bf-47a2-bd56-5ea42fdcd331}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TowerDefenceGame.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Turret.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
@@ -69,15 +69,15 @@
     <ClCompile Include="TurretFactory.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>Turret</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Turret.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Vector2D.h">
@@ -139,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="TurretLoader.h">
       <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>Turret</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -48,7 +48,7 @@ void BasicTurret::draw(const Texture &texture) const {
 		}
 	}
 
-	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle(basepath), TRUE);
+	DrawRotaGraph((int)position.getX(), (int)position.getY(), 1.0, angle, texture.getHandle(basepath), TRUE);
 	turretbarrel.draw(texture, barrelpath);
 }
 
@@ -99,7 +99,7 @@ void MortarTurret::upgrade() {
 }
 
 void MortarTurret::draw(const Texture &texture) const {
-	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/MortarTurret.png"), TRUE);
+	DrawRotaGraph((int)position.getX(), (int)position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/MortarTurret.png"), TRUE);
 	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/MortarTurretBarrel.png");
 }
 
@@ -125,7 +125,7 @@ void BlastTurret::upgrade() {
 }
 
 void BlastTurret::draw(const Texture &texture) const {
-	DrawRotaGraph(position.getX(), position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/BlastTurret.png"), TRUE);
+	DrawRotaGraph((int)position.getX(), (int)position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/BlastTurret.png"), TRUE);
 	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/BlastTurretBarrel.png");
 }
 

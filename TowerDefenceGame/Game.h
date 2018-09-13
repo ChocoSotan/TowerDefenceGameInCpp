@@ -3,6 +3,7 @@
 #pragma warning(disable:4996)
 
 #include "Scene.h"
+#include "ISceneChanger.h"
 #include "DxLib.h"
 
 #include "Enemy.h"
@@ -56,7 +57,7 @@ private:
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws = new WaveSystem(&this->venemy, 300, &this->texture);
+	WaveSystem *ws = new WaveSystem(300);
 	TurretFactory *tf = new TurretFactory();
 	Texture texture;
 
@@ -70,13 +71,20 @@ private:
 	// in game numeric
 	long long resource;
 	int health;
+
+
+private:
+	// fonts
+	std::vector<int> fonthandle;
+
 };
 
 Game::Game(ISceneChanger *changer) : BaseScene(changer) {
-	this->isPaused = false;
+	this->isPaused = true;
 	this->ffmul = 1;
 	resource = 100;			// initial resource
 	health = 20;			// initial health
+
 }
 
 void Game::Initialize() {
@@ -110,6 +118,9 @@ void Game::Initialize() {
 	_RPT0(_CRT_WARN, "Field initializing...(set texture)\t");
 	fl.initField("data\\stage\\01\\map_texture.csv", "data\\stage\\01\\map_textureid.csv", this->vterrain, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
+	fonthandle.push_back(CreateFontToHandle("メイリオ", 14, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
+	fonthandle.push_back(CreateFontToHandle("メイリオ", 20, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
+	fonthandle.push_back(CreateFontToHandle("メイリオ", 46, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
 }
 
 void Game::Update() {
@@ -195,19 +206,15 @@ void Game::Update() {
 		}
 	}
 
-
+	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+		mSceneChanger->ChangeMainScene(eEnd);
+	}
 	
 
 }
 
 void Game::Draw() {
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "ゲーム");
-
-
-	// button
-	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
-		(*i)->draw();
-	}
+	
 
 	// terrain
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
@@ -217,27 +224,12 @@ void Game::Draw() {
 	}
 
 	// WaveGuage
-	DrawString(8, 56, "Wave", White);
-	// ws->draw(Vector2D(8,56), "", "", 8);
-	DrawBox(8, 56, 72, 768 - 8, White, FALSE);
+	ws->draw(this->texture, Vector2D(8, 56));
 
-	// Money
-	DrawString(208, 8, "Money", White);
-	DrawBox(208, 8, 528, 48, White, FALSE);
-	DrawFormatString(208, 28, White, "%d", this->resource);
 
-	// Health
-	DrawString(536, 8, "Health", White);
-	DrawBox(536, 8, 656, 48, White, FALSE);
-	DrawFormatString(536, 28, White, "%d", this->health);
-
-	// Options
-	DrawString(976, 8, "Opt", White);
-	DrawBox(976, 8, 1016, 48, White, FALSE);
 
 
 	// field
-	DrawString(80, 56, "Field", White);
 	const int Boxsize = 64;
 	for (int i = 0; i < 11; i++) {
 		for (int j = 0; j < 11; j++) {
@@ -245,36 +237,40 @@ void Game::Draw() {
 		}
 	}
 
-	// turret construction/information menu
-	DrawBox(152 + 10 * Boxsize, 56, 1024 - 8, 768 - 8, White, FALSE);
-	DrawBox(160 + 10 * Boxsize, 64, 1024 - 16, 348 - 16, White, FALSE);
+	
+
+	// overall
+	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
+
+	// Money
+	DrawStringToHandle(530, 8, "Money", Black, fonthandle[0]);
+	DrawFormatStringToHandle(560,26,Black,fonthandle[1],"%d",this->resource);
+
+
+	// Health
+	DrawFormatStringToHandle(666, 8, Black, fonthandle[0], "Health",this->health);
+	DrawFormatStringToHandle(706, 26, Black, fonthandle[1], "%d", this->health);
+
+	// turret construction title
+	DrawStringToHandle(810, 74, "TURRET", Black, fonthandle[2], White);
 
 	// turrets
-	DrawString(160 + 10 * Boxsize, 64, "Turret", White);
-
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		(*i)->draw(this->texture);
 	}
 
+	// button
+	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
+		(*i)->draw();
+	}
+
 	// info
-	DrawString(160 + 10 * Boxsize, 340, "Information", White);
-	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
+	DrawStringToHandle(844, 350, "INFO", Black, fonthandle[2], White);
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);
 	}
-
-	for (int i = 0; i < (signed)venemy.size(); i++) {
-		DrawFormatString(200, 0 + i*20, White, "HP:%f", venemy[i]->getHitpoint());
-	}
-
-	// turret selection
-	DrawFormatString(0, 100, White, "%d", vtbutton[0]->getChannel());
-	
-	// wavecount
-	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
-
 }
 
 void Game::Finalize() {
@@ -293,4 +289,5 @@ void Game::Finalize() {
 		}
 	}
 	texture.deleteHandleAll();
+	MessageBox(nullptr, "Thank you for playing.", "Game Over", MB_OK);
 }

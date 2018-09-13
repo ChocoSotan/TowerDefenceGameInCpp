@@ -2,6 +2,7 @@
 
 #include "Vector2D.h"
 #include "Texture.h"
+#include "Gauge.h"
 #include "DxLib.h"
 
 #include <math.h>
@@ -77,6 +78,10 @@ void NormalEnemy::update(const std::vector<Vector2D> &vpath) {
 			break;
 		}
 	}
+
+
+	// gauge
+	this->gauge->update(this->hitpoint_max, this->hitpoint);
 }
 
 double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
@@ -101,5 +106,6 @@ std::string NormalEnemy::getStatusText() const {
 }
 
 void NormalEnemy::draw(const Texture &texture) {
-	DrawRotaGraph(this->position.getX(), this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemies/Normal/Normal.png"), TRUE);
+	DrawRotaGraph((int)this->position.getX(), (int)this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemies/Normal/Normal.png"), TRUE);
+	this->gauge->draw(this->position + Vector2D(-15,-22));
 }
