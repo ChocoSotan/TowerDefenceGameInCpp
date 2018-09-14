@@ -15,7 +15,7 @@ Wave::~Wave() {
 }
 
 void Wave::push(std::vector<EnemyBase*> &venemy) {
-	for (int i = 0; i < this->venemy.size(); i++) {
+	for (int i = 0; i < (signed)this->venemy.size(); i++) {
 		venemy.push_back(this->venemy[i]);
 	}
 }

@@ -47,13 +47,7 @@ public:
 	bool load(std::string filename, std::vector<Vector2D> &vpath);
 };
 
-class TurretLoader : public Loader {
-public:
-	TurretLoader() {}
-	~TurretLoader() {}
 
-	bool load(std::string filename, std::vector<TurretBase*> &vec);
-};
 
 class WaveLoader : public Loader {
 public:

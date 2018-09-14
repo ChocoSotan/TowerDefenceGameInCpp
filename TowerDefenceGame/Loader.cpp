@@ -101,44 +101,7 @@ bool FieldLoader::initField(std::string filename_texture, std::string filename_i
 	return true;
 }
 
-bool TurretLoader::load(std::string filename, std::vector<TurretBase*> &vec) {
-	using namespace std;
-	ifstream ifs(filename);
-	string line;
-	vector<string> buffer;
-	TurretBase *turret;
 
-	const vector<string> TurretType {
-		"Basic",
-		"Splash",
-		"AoE",
-	};
-
-	if (ifs.fail())return false;
-
-	while (getline(ifs, line)) {
-		if (line[0] == '#')continue;
-		splitString(line, buffer);
-		
-		for (int i = 0; i < (signed)TurretType.size(); i++) {
-			if (TurretType[i].compare(buffer[0]) != 0)continue;
-			switch (i) {
-			case 0:
-				turret = new BasicTurret(buffer[1],stod(buffer[2]),stod(buffer[3]),stod(buffer[4]),stoi(buffer[5]),stoi(buffer[6]),Vector2D(0,0));
-				break;
-			case 1:
-				turret = new MortarTurret(buffer[1], stod(buffer[2]), stod(buffer[3]), stod(buffer[4]), stoi(buffer[5]), stoi(buffer[6]), Vector2D(0, 0), stod(buffer[7]), stod(buffer[8]), stod(buffer[9]));
-				break;
-			case 2:
-				turret = new BlastTurret(buffer[1], stod(buffer[2]), stod(buffer[3]), stod(buffer[4]), stoi(buffer[5]), stoi(buffer[6]), Vector2D(0, 0));
-				break;
-			}
-			vec.push_back(turret);
-		}
-		buffer.clear();
-	}
-	return true;
-}
 
 bool WaveLoader::load(std::string filename, std::vector<Wave*> &vec, Vector2D &pos) {
 	using namespace std;
@@ -227,7 +190,7 @@ bool TextureLoader::load(std::string filename, Texture *texture) {
 		if (line[0] == '#')continue;
 		//splitString(line, buffer);
 
-		texture->pool(line);
+		if(!texture->pool(line))return false;
 
 		buffer.clear();
 	}

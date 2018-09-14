@@ -9,12 +9,11 @@
 #include <sstream>
 
 
-WaveSystem::WaveSystem(std::vector<EnemyBase*> *venemy, short interval, Texture *texture) {
-	this->pvenemy = venemy;
-	this->texture = texture;
+WaveSystem::WaveSystem(short interval) {
 	count = 0;
 	currentwave = 0;
 	this->interval = interval;
+	this->fonthandle = CreateFontToHandle("ÉÅÉCÉäÉI", 32, 0, DX_FONTTYPE_ANTIALIASING);
 }
 
 
@@ -34,10 +33,10 @@ void WaveSystem::update(std::vector<EnemyBase*> &venemy) {
 	}
 
 	vwave[currentwave]->push(venemy);
+	count = 0;
 
-
-	currentwave++;
 	count++;
+	currentwave++;
 }
 
 
@@ -47,18 +46,27 @@ void WaveSystem::nextWave() {
 	}
 }
 
-void WaveSystem::draw(const Vector2D &pos, std::string filename, std::string fontname, int fontsize) {
+void WaveSystem::draw(const Texture &texture, const Vector2D &pos) {
+	std::string filename = "texture/Game/Misc/WaveStone.png";
 	int sx, sy;
-	GetGraphSize(texture->getHandle(filename), &sx, &sy);
-	for (int i = currentwave; i < (signed)vwave.size(); i++) {
-		DrawGraph(pos.getX(), pos.getY() + i * sy, texture->getHandle(filename), FALSE);
-		DrawFormatStringToHandle(pos.getX(), pos.getY() + i * sy, GetColor(255, 255, 255), CreateFontToHandle(fontname.c_str(), fontsize, -1, DX_FONTTYPE_ANTIALIASING_EDGE),
-			"%d", currentwave + i);
+	GetGraphSize(texture.getHandle(filename), &sx, &sy);
+
+	for (int i = 0; i < (signed)vwave.size() - currentwave; i++) {
+		DrawGraph((int)pos.getX(), (int)pos.getY() + i * sy, texture.getHandle(filename), FALSE);
+
+		if (currentwave + i + 1 < 10) {
+			DrawFormatStringToHandle((int)pos.getX() + sx / 3, (int)pos.getY() + i * sy + sy / 3 - ((int)count / interval) * sy, GetColor(255, 255, 255),
+				this->fonthandle, "%d", currentwave + i + 1);
+		}
+		else {
+			DrawFormatStringToHandle((int)pos.getX() + sx / 5, (int)pos.getY() + i * sy + sy / 3 - ((int)count / interval) * sy, GetColor(255, 255, 255),
+				this->fonthandle, "%d", currentwave + i + 1);
+		}
 	}
 }
 
 Wave WaveSystem::getWaveData(int wave) {
-	if (wave < 0 || vwave.size() < wave)return *this->vwave[0];
+	if (wave < 0 || (signed)vwave.size() < wave)return *this->vwave[0];
 	return *this->vwave[wave];
 }
 

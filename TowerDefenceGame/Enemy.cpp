@@ -1,16 +1,21 @@
 #include "Enemy.h"
 
 #include "Vector2D.h"
+#include "Texture.h"
+#include "Gauge.h"
 #include "DxLib.h"
 
 #include <math.h>
+#include <sstream>
+#include <iomanip>
 
 
 
-void NormalEnemy::move(std::vector<Vector2D> &vpath) {
+void NormalEnemy::update(const std::vector<Vector2D> &vpath) {
 	Vector2D nextpos;
 	double nextangle;
 
+	/* move */
 	// taken knockback
 	while (this->knockback > EPSILON) {
 		nextangle = this->getPosition().getAngleTo(vpath[currentpoint]);
@@ -73,9 +78,11 @@ void NormalEnemy::move(std::vector<Vector2D> &vpath) {
 			break;
 		}
 	}
+
+
+	// gauge
+	this->gauge->update(this->hitpoint_max, this->hitpoint);
 }
-
-
 
 double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
 	double ret = 0;
@@ -85,4 +92,20 @@ double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
 	ret -= this->position.getAbsTo(vpath[currentpoint]);
 	
 	return ret;
+}
+
+std::string NormalEnemy::getStatusText() const {
+	std::stringstream ss;
+	ss << "Type : Normal\n"
+		<< "HitPoint : " << std::setprecision(1) << this->hitpoint << "\n"
+		<< "Speed : " << std::setprecision(2) << this->movespeed << "\n"
+		<< "Damage : " << this->attackpower << "\n"
+		<< "Reward : " << this->resourcereward << "\n";
+	
+	return ss.str();
+}
+
+void NormalEnemy::draw(const Texture &texture) {
+	DrawRotaGraph((int)this->position.getX(), (int)this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemies/Normal/Normal.png"), TRUE);
+	this->gauge->draw(this->position + Vector2D(-15,-22));
 }

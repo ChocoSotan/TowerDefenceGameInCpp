@@ -9,15 +9,19 @@
 
 class WaveSystem final {
 public:
-	WaveSystem(std::vector<EnemyBase*> *venemy, short interval, Texture *texture);
+	WaveSystem(short interval);
 	~WaveSystem();
 
 	void init(std::string filename, Vector2D &pos);
 	void update(std::vector<EnemyBase*> &venemy);
 	long long getCount() { return this->count; }
 	void nextWave();
-	void draw(const Vector2D &pos, std::string filename, std::string font, int size);
+	void draw(const Texture &texture, const Vector2D &pos);
 	Wave getWaveData(int wave);
+
+	bool isFinishedSendEnemy() {
+		return currentwave == (signed)vwave.size() ?  true : false;
+	}
 	
 private:
 	std::vector<EnemyBase*> *pvenemy;
@@ -27,5 +31,7 @@ private:
 	short currentwave;
 	long long count;
 	short interval;
+
+	int fonthandle;
 };
 

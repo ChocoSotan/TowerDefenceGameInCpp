@@ -1,6 +1,9 @@
 #pragma once
 
+#pragma warning(disable:4996)
+
 #include "Scene.h"
+#include "ISceneChanger.h"
 #include "DxLib.h"
 
 #include "Enemy.h"
@@ -12,6 +15,7 @@
 #include "Mouse.h"
 #include "Loader.h"
 #include "ToggleButton.h"
+#include "TurretFactory.h"
 
 #include <vector>
 
@@ -39,16 +43,22 @@ public:
 	void Finalize() override;
 
 private:
+	// void constructTurret();
+
+
+
+private:
 	Mouse mouse;
 
 	std::vector<TurretBase*> vturret;
-	std::vector<TurretBase*> vturret_ini;		// to copy to vturret
+	std::vector<const TurretBase*> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
 	std::vector<Wave*> vwave;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws = new WaveSystem(&this->venemy, 300, &this->texture);
+	WaveSystem *ws = new WaveSystem(300);
+	TurretFactory *tf = new TurretFactory();
 	Texture texture;
 
 	std::vector<Button*> vbutton;
@@ -56,18 +66,25 @@ private:
 
 	// option flags
 	bool isPaused;
-	bool isFFed;
+	int ffmul;
 
 	// in game numeric
 	long long resource;
 	int health;
+
+
+private:
+	// fonts
+	std::vector<int> fonthandle;
+
 };
 
 Game::Game(ISceneChanger *changer) : BaseScene(changer) {
-	this->isPaused = false;
-	this->isFFed = false;
+	this->isPaused = true;
+	this->ffmul = 1;
 	resource = 100;			// initial resource
 	health = 20;			// initial health
+
 }
 
 void Game::Initialize() {
@@ -77,12 +94,9 @@ void Game::Initialize() {
 	pl.load("data\\stage\\01\\path.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
 	// Loading Turrets
-	TurretLoader tul = TurretLoader();
 	_RPT0(_CRT_WARN,"Turret initializing...\t");
-	tul.load("data\\turret\\turret.csv", this->vturret_ini) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
-	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
-		(*i)->changePriority(new ClosestBase(this->vpath));
-	}
+	tf->load("data\\turret\\turret.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	this->vturret_ini = tf->getDataAll();
 
 	// Loading Textures
 	TextureLoader tel = TextureLoader();
@@ -104,9 +118,9 @@ void Game::Initialize() {
 	_RPT0(_CRT_WARN, "Field initializing...(set texture)\t");
 	fl.initField("data\\stage\\01\\map_texture.csv", "data\\stage\\01\\map_textureid.csv", this->vterrain, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
 
-	for (auto i = vturret_ini.begin(); i != vturret_ini.end(); i++) {
-		_RPTN(_CRT_WARN, "Name:%s\tDmg:%.1f\tRate:%.1f\tRange:%.1f\n", (*i)->getName().c_str(), (*i)->getDamage(), (*i)->getFireRate(), (*i)->getRange());
-	}
+	fonthandle.push_back(CreateFontToHandle("メイリオ", 14, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
+	fonthandle.push_back(CreateFontToHandle("メイリオ", 20, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
+	fonthandle.push_back(CreateFontToHandle("メイリオ", 46, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
 }
 
 void Game::Update() {
@@ -122,7 +136,7 @@ void Game::Update() {
 	if (vbutton[0]->isClicked()) { isPaused = isPaused? false : true; }
 
 	// toggle fast forward
-	if (vbutton[1]->isClicked()) { isFFed = isFFed? false : true; }
+	if (vbutton[1]->isClicked()) { ffmul = ffmul == 1 ? 2 : 1; }
 
 	// next wave
 	if (vbutton[2]->isClicked()) { ws->nextWave(); }
@@ -131,9 +145,14 @@ void Game::Update() {
 	{
 		int selectedturret = vtbutton[0]->getChannel();
 		if (selectedturret != -1) {
-			for (int i = 12; i < 133; i++) {
+			for (int i = 13; i < 134; i++) {
 				if (!(vbutton[i]->isClicked()))continue;
-				if (!vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->canPlaceTurret())break;
+
+				int x = (int)floor((i - 13) / 11);
+				int y = (i - 13) % 11;
+				
+
+				if (!vterrain[x][y]->canPlaceTurret())break;
 
 				// construction
 				if (!vturret_ini[selectedturret]->canConstruct(this->resource)) {
@@ -141,61 +160,69 @@ void Game::Update() {
 					break;
 				}
 				this->resource -= vturret_ini[selectedturret]->getConstructCost();
-				vturret.push_back(vturret_ini[selectedturret]);
-				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
+				
+				vturret.push_back(tf->create(vturret_ini[selectedturret]->getName(), this->vpath));
+				
+				vturret[(signed)vturret.size()-1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
+				vterrain[x][y]->changeCanPlaceTurret();
 				vtbutton[0]->clearChannel();
 			}
 		}
 		else {
-			// upgrade
+			for (int i = 13; i < 134; i++) {
+				if (!(vbutton[i]->isClicked()))continue;
+
+				int x = (int)floor((i - 13) / 11);
+				int y = (i - 13) % 11;
+
+				if (vterrain[x][y]->canPlaceTurret())break;
+
+				// upgrade
+				
+			}
 		}
 	}
 
-	// for debug
-	for (int i = 0; i < (signed)vbutton.size(); i++) {
-		if (vbutton[i]->isClicked()) {
-			printfDx("BUTTON %d WAS CLICKED.\n",i);
-			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
-		}
-	}
 	/* Not Paused */
 	if (isPaused) return;
 
-	ws->update(this->venemy);
-	if(isFFed)ws->update(this->venemy);
+	for (int i = 0; i < ffmul; i++) {
+		ws->update(this->venemy);
+	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
-		(*i)->move(vpath);
-		if (isFFed) {
-			(*i)->move(vpath);
+		if (!(*i)->isAlive()) {
+			this->resource += (*i)->getResourcereward();
+			continue;
+		}
+		for (int j = 0; j < ffmul; j++) {
+			(*i)->update(vpath);
 		}
 	}
+	for (int i = 0; i < (signed)venemy.size(); i++) {
+		if (!venemy[i]->isAlive())this->venemy.erase(this->venemy.begin() + i);
+	}
+
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		(*i)->attack(venemy);
-		if (isFFed) {
-			(*i)->attack(venemy);
+		for (int j = 0; j < ffmul; j++) {
+			(*i)->attack(&venemy);
 		}
 	}
 
-	/*
-	if (mouse.isChangedState() && mouse.getLog() == MOUSE_INPUT_LOG_UP) {
-		for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) {
-			(*i)->clearChannel();
-		}
+	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+		mSceneChanger->ChangeMainScene(eEnd);
 	}
-	*/
 	
-
+	// for debug
+	for (int i = 0; i < (signed)vbutton.size(); i++) {
+		if (vbutton[i]->isClicked()) {
+			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
+		}
+	}
 }
 
 void Game::Draw() {
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "ゲーム");
-
-
-	// button
-	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
-		(*i)->draw();
-	}
+	
 
 	// terrain
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
@@ -205,73 +232,58 @@ void Game::Draw() {
 	}
 
 	// WaveGuage
-	DrawString(8, 56, "Wave", White);
-	DrawBox(8, 56, 72, 768 - 8, White, FALSE);
-
-	// Money
-	DrawString(208, 8, "Money", White);
-	DrawBox(208, 8, 528, 48, White, FALSE);
-	DrawFormatString(208, 28, White, "%d", this->resource);
-
-	// Health
-	DrawString(536, 8, "Health", White);
-	DrawBox(536, 8, 656, 48, White, FALSE);
-	DrawFormatString(536, 28, White, "%d", this->health);
-
-	// Options
-	DrawString(976, 8, "Opt", White);
-	DrawBox(976, 8, 1016, 48, White, FALSE);
-
+	ws->draw(this->texture, Vector2D(8, 56));
 
 	// field
-	DrawString(80, 56, "Field", White);
 	const int Boxsize = 64;
-	for (int i = 0; i < 11; i++) {
-		for (int j = 0; j < 11; j++) {
+	for (int i = 0; i < (signed)vterrain.size(); i++) {
+		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
 			DrawBox(80 + j * Boxsize, 56 + i * Boxsize, 144 + j * Boxsize, 120 + i * Boxsize, White, FALSE);
 		}
 	}
 
-	// turret construction/information menu
-	DrawBox(152 + 10 * Boxsize, 56, 1024 - 8, 768 - 8, White, FALSE);
-	DrawBox(160 + 10 * Boxsize, 64, 1024 - 16, 348 - 16, White, FALSE);
+	
+
+	// overall
+	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
+
+	// Money
+	DrawStringToHandle(530, 8, "Money", Black, fonthandle[0]);
+	DrawFormatStringToHandle(560,26,Black,fonthandle[1],"%d",this->resource);
+
+
+	// Health
+	DrawFormatStringToHandle(666, 8, Black, fonthandle[0], "Health",this->health);
+	DrawFormatStringToHandle(706, 26, Black, fonthandle[1], "%d", this->health);
+
+	// turret construction title
+	DrawStringToHandle(810, 74, "TURRET", Black, fonthandle[2], White);
 
 	// turrets
-	DrawString(160 + 10 * Boxsize, 64, "Turret", White);
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			DrawBox(168 + 10 * Boxsize + j * 64, 132 + i * 64, 232 + 10 * Boxsize + j * 64, 196 + i * 64, White, FALSE);
-		}
+	for (auto i = vturret.begin(); i != vturret.end(); i++) {
+		(*i)->draw(this->texture);
 	}
 
-	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		// (*i)->draw(&this->texture);
+	// button
+	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
+		(*i)->draw();
 	}
 
 	// info
-	DrawString(160 + 10 * Boxsize, 340, "Information", White);
-	DrawBox(160 + 10 * Boxsize, 340, 1024 - 16, 768 - 16, White, FALSE);
+	DrawStringToHandle(844, 350, "INFO", Black, fonthandle[2], White);
 
-	// for debug
-	// enemy
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
-		DrawCircle((int)(*i)->getPosition().getX(), (int)(*i)->getPosition().getY(), 8, Purple);
+		(*i)->draw(this->texture);
 	}
 
-	// turret selection
-	DrawFormatString(0, 100, White, "%d", vtbutton[0]->getChannel());
-	
-	// wavecount
-	DrawFormatString(0, 140, White, "wavecount:%d", (int)ws->getCount());
-
-	// can place
+#ifdef _DEBUG
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
 		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
-			vterrain[i][j]->canPlaceTurret() ? DrawFormatString(80 + j * 64, 56 + i * 64, Blue, "TRUE") : DrawFormatString(80 + j * 64, 56 + i * 64, Red, "FALSE");
+			vterrain[i][j]->canPlaceTurret() ? DrawString(j * 64 + 80, i * 64 + 56, "TRUE", White) : DrawString(j * 64 + 80, i * 64 + 56, "FALSE", White);
 		}
 	}
-
+#endif
 }
 
 void Game::Finalize() {
@@ -282,11 +294,20 @@ void Game::Finalize() {
 		delete (*i);
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		// delete *i;
+		delete (*i);
 	}
-	for (int i = 0;i<vterrain.size(); i++) {
-		for (int j = 0; j < vterrain[i].size(); j++) {
+	for (int i = 0; i < (signed)vterrain.size(); i++) {
+		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
 			delete vterrain[j][i];
 		}
 	}
+	for (auto i = vwave.begin(); i != vwave.end(); ++i) {
+		delete (*i);
+	}
+
+	
+	delete this->ws;
+	delete this->tf;
+	texture.deleteHandleAll();
+	MessageBox(nullptr, "Thank you for playing.", "Game Over", MB_OK);
 }

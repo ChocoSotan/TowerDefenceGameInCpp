@@ -17,6 +17,7 @@ texture/Game/Buttons/Turrets/SniperTurret_pressed.png
 texture/Game/Buttons/Turrets/CanonTurret_pressed.png
 texture/Game/Buttons/Turrets/MortarTurret_pressed.png
 texture/Game/Buttons/Turrets/BlastTurret_pressed.png
+texture/Game/Buttons/Options.png
 texture/Game/Buttons/dummy.png
 #Turret
 #Basic
@@ -51,3 +52,9 @@ texture/Game/Field/concrete/concrete_ur.png
 texture/Game/Field/concrete/concrete_rd.png
 texture/Game/Field/concrete/concrete_dl.png
 texture/Game/Field/concrete/concrete_lu.png
+#Enemy
+texture/Game/Enemies/Normal/Normal.png
+#Game_Overall
+texture/Game/Field/overall.png
+#Misc
+texture/Game/Misc/WaveStone.png
