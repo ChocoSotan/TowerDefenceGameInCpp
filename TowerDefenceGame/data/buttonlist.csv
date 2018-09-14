@@ -1,6 +1,6 @@
 #Button,,,,
 #togglegroup,#pos.x,#pos.y,#filename,
--,8,8,texture/Game/Buttons/Stop.png,texture/Game/Buttons/Start.png
+-,8,8,texture/Game/Buttons/Start.png,texture/Game/Buttons/Stop.png
 -,56,8,texture/Game/Buttons/NotFastForward.png,texture/Game/Buttons/FastForward.png
 -,104,8,texture/Game/Buttons/NextWave.png,
 -,976,8,texture/Game/Buttons/Options.png,

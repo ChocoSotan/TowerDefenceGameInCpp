@@ -145,9 +145,14 @@ void Game::Update() {
 	{
 		int selectedturret = vtbutton[0]->getChannel();
 		if (selectedturret != -1) {
-			for (int i = 12; i < 133; i++) {
+			for (int i = 13; i < 134; i++) {
 				if (!(vbutton[i]->isClicked()))continue;
-				if (!vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->canPlaceTurret())break;
+
+				int x = (int)floor((i - 13) / 11);
+				int y = (i - 13) % 11;
+				
+
+				if (!vterrain[x][y]->canPlaceTurret())break;
 
 				// construction
 				if (!vturret_ini[selectedturret]->canConstruct(this->resource)) {
@@ -159,27 +164,25 @@ void Game::Update() {
 				vturret.push_back(tf->create(vturret_ini[selectedturret]->getName(), this->vpath));
 				
 				vturret[(signed)vturret.size()-1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
-				vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->changeCanPlaceTurret();
+				vterrain[x][y]->changeCanPlaceTurret();
 				vtbutton[0]->clearChannel();
 			}
 		}
 		else {
-			for (int i = 12; i < 133; i++) {
+			for (int i = 13; i < 134; i++) {
 				if (!(vbutton[i]->isClicked()))continue;
-				if (vterrain[(int)floor((i - 12) / 11)][(i - 12) % 11]->canPlaceTurret())break;
+
+				int x = (int)floor((i - 13) / 11);
+				int y = (i - 13) % 11;
+
+				if (vterrain[x][y]->canPlaceTurret())break;
 
 				// upgrade
-
+				
 			}
 		}
 	}
 
-	// for debug
-	for (int i = 0; i < (signed)vbutton.size(); i++) {
-		if (vbutton[i]->isClicked()) {
-			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
-		}
-	}
 	/* Not Paused */
 	if (isPaused) return;
 
@@ -210,7 +213,12 @@ void Game::Update() {
 		mSceneChanger->ChangeMainScene(eEnd);
 	}
 	
-
+	// for debug
+	for (int i = 0; i < (signed)vbutton.size(); i++) {
+		if (vbutton[i]->isClicked()) {
+			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
+		}
+	}
 }
 
 void Game::Draw() {
@@ -226,13 +234,10 @@ void Game::Draw() {
 	// WaveGuage
 	ws->draw(this->texture, Vector2D(8, 56));
 
-
-
-
 	// field
 	const int Boxsize = 64;
-	for (int i = 0; i < 11; i++) {
-		for (int j = 0; j < 11; j++) {
+	for (int i = 0; i < (signed)vterrain.size(); i++) {
+		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
 			DrawBox(80 + j * Boxsize, 56 + i * Boxsize, 144 + j * Boxsize, 120 + i * Boxsize, White, FALSE);
 		}
 	}
@@ -271,6 +276,14 @@ void Game::Draw() {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);
 	}
+
+#ifdef _DEBUG
+	for (int i = 0; i < (signed)vterrain.size(); i++) {
+		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
+			vterrain[i][j]->canPlaceTurret() ? DrawString(j * 64 + 80, i * 64 + 56, "TRUE", White) : DrawString(j * 64 + 80, i * 64 + 56, "FALSE", White);
+		}
+	}
+#endif
 }
 
 void Game::Finalize() {
@@ -281,13 +294,20 @@ void Game::Finalize() {
 		delete (*i);
 	}
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
-		// delete (*i);
+		delete (*i);
 	}
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
 		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
 			delete vterrain[j][i];
 		}
 	}
+	for (auto i = vwave.begin(); i != vwave.end(); ++i) {
+		delete (*i);
+	}
+
+	
+	delete this->ws;
+	delete this->tf;
 	texture.deleteHandleAll();
 	MessageBox(nullptr, "Thank you for playing.", "Game Over", MB_OK);
 }
