@@ -42,9 +42,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TargetPriority.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -70,6 +67,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Turret.cpp">
+      <Filter>Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetPriority.cpp">
       <Filter>Turret</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,9 +110,6 @@
     <ClInclude Include="Button.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TargetPriority.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="WaveSystem.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -141,6 +138,9 @@
       <Filter>Loader</Filter>
     </ClInclude>
     <ClInclude Include="Turret.h">
+      <Filter>Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetPriority.h">
       <Filter>Turret</Filter>
     </ClInclude>
   </ItemGroup>
