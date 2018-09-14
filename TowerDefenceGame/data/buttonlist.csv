@@ -10,9 +10,9 @@
 0,808,196,texture/Game/Buttons/Turrets/CanonTurret.png,texture/Game/Buttons/Turrets/CanonTurret_pressed.png
 0,872,196,texture/Game/Buttons/Turrets/MortarTurret.png,texture/Game/Buttons/Turrets/MortarTurret_pressed.png
 0,936,196,texture/Game/Buttons/Turrets/BlastTurret.png,texture/Game/Buttons/Turrets/BlastTurret_pressed.png
-0,808,260,texture/Game/Buttons/Turrets/BasicTurret.png,
-0,872,260,texture/Game/Buttons/Turrets/BasicTurret.png,
-0,936,260,texture/Game/Buttons/Turrets/BasicTurret.png,
+-,808,260,texture/Game/Buttons/dummy.png,
+-,872,260,texture/Game/Buttons/dummy.png,
+-,936,260,texture/Game/Buttons/dummy.png,
 #field,,,,
 -,80,56,texture/Game/Buttons/dummy.png,
 -,144,56,texture/Game/Buttons/dummy.png,
