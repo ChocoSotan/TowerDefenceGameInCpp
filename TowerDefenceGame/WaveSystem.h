@@ -6,6 +6,7 @@
 #include "Texture.h"
 
 #include <vector>
+#include <string>
 
 class WaveSystem final {
 public:
@@ -17,7 +18,6 @@ public:
 	long long getCount() { return this->count; }
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
-	Wave getWaveData(int wave);
 
 	bool isFinishedSendEnemy() {
 		return currentwave == (signed)vwave.size() ?  true : false;

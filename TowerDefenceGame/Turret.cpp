@@ -2,6 +2,10 @@
 
 #include "TargetPriority.h"
 
+#include <sstream>
+#include <string>
+#include <iomanip>
+
 bool TurretBase::canConstruct(long long resource) const {
 	return resource >= constructcost;
 }
@@ -13,6 +17,17 @@ bool TurretBase::canUpgrade(long long resource) const {
 void TurretBase::changePriority(TargetPriority* target) {
 	//if(this->target != nullptr) delete this->target;
 	this->target = target;
+}
+
+const std::string TurretBase::getStatusText() const {
+	std::stringstream ss;
+	ss	<< this->name << "\n\n"
+		<< "Type : " << this->type << "\n\n"
+		<< "Cost : " << this->constructcost << "\n\n"
+		<< "Damage : " << this->damage << "\n\n"
+		<< "FireRate : " << this->firerate << "\n\n"
+		<< "Range : " << this->range;
+	return ss.str();
 }
 
 void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
@@ -32,7 +47,7 @@ void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
 }
 
 void BasicTurret::draw(const Texture &texture) const {
-	const std::vector <std::string> basicturretnames = {
+	const std::vector<std::string> basicturretnames = {
 		"BasicTurret", "MachinegunTurret", "SniperTurret",
 	};
 	
@@ -72,9 +87,9 @@ void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
 	targetindex = this->target->decisionOrder(*targetlist, *this);
 	if (targetindex == -1)return;
 
-	//set barrel angle
-	this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
-	turretbarrel.update(this->angle, this->position);
+	// set barrel angle
+	// this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
+	// turretbarrel.update(this->angle, this->position);
 
 	//attack to the target
 	(*targetlist)[targetindex]->setHitpoint((*targetlist)[targetindex]->getHitpoint() - this->damage);

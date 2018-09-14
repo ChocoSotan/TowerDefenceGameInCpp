@@ -58,6 +58,7 @@ public:
 		this->turretbarrel.setPosition(pos);
 	}
 
+	virtual const std::string getStatusText() const;
 
 protected:
 

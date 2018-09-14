@@ -16,6 +16,7 @@
 #include "Loader.h"
 #include "ToggleButton.h"
 #include "TurretFactory.h"
+#include "InformationWindow.h"
 
 #include <vector>
 
@@ -60,6 +61,7 @@ private:
 	WaveSystem *ws = new WaveSystem(300);
 	TurretFactory *tf = new TurretFactory();
 	Texture texture;
+	InformationWindow info;
 
 	std::vector<Button*> vbutton;
 	std::vector<ToggleButton*> vtbutton;
@@ -145,6 +147,9 @@ void Game::Update() {
 	{
 		int selectedturret = vtbutton[0]->getChannel();
 		if (selectedturret != -1) {
+
+			info.update(vturret_ini[selectedturret]->getStatusText());
+
 			for (int i = 13; i < 134; i++) {
 				if (!(vbutton[i]->isClicked()))continue;
 
@@ -271,7 +276,9 @@ void Game::Draw() {
 
 	// info
 	DrawStringToHandle(844, 350, "INFO", Black, fonthandle[2], White);
+	if(vtbutton[0]->getChannel() != -1)info.draw(Vector2D(830, 420), Black, INFOTYPE_NONEBORDER, INFOTYPE_CLEARBACK, eTextAlignmentLeft);
 
+	// enemy
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);

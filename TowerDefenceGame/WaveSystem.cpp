@@ -64,11 +64,3 @@ void WaveSystem::draw(const Texture &texture, const Vector2D &pos) {
 		}
 	}
 }
-
-Wave WaveSystem::getWaveData(int wave) {
-	if (wave < 0 || (signed)vwave.size() < wave)return *this->vwave[0];
-	return *this->vwave[wave];
-}
-
-
-
