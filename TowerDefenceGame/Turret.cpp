@@ -30,7 +30,7 @@ const std::string TurretBase::getStatusText() const {
 	return ss.str();
 }
 
-void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
+void BasicTurret::attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) {
 	if (this->firerate > this->waittime) {
 		this->waittime++;
 		return;
@@ -44,6 +44,9 @@ void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
 	// set barrel angle to target
 	this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
 	this->turretbarrel.update(this->angle, this->position);
+
+	// play sound
+	sound.play("sound/" + this->name + ".wav");
 
 	// take damage
 	(*targetlist)[targetindex]->setHitpoint((*targetlist)[targetindex]->getHitpoint() - this->damage);
@@ -85,7 +88,7 @@ int BasicTurret::destroy() {
 	return (int)round(this->costspent * 0.7);
 }
 
-void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
+void MortarTurret::attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) {
 	if (this->firerate > this->waittime) {
 		this->waittime++;
 		return;
@@ -108,6 +111,10 @@ void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
 			(*targetlist)[i]->setHitpoint((*targetlist)[i]->getHitpoint() - this->splashdamage);
 		}
 	}
+
+	// play sound
+	sound.play("sound/" + this->name + ".wav");
+
 	this->waittime = 0;
 }
 
@@ -163,7 +170,7 @@ const std::string MortarTurret::getStatusText() const {
 	return ss.str();
 }
 
-void BlastTurret::attack(std::vector<EnemyBase*> *targetlist) {
+void BlastTurret::attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) {
 	if (this->firerate > this->waittime) {
 		this->waittime++;
 		return;
@@ -173,6 +180,10 @@ void BlastTurret::attack(std::vector<EnemyBase*> *targetlist) {
 			(*targetlist)[i]->setHitpoint((*targetlist)[i]->getHitpoint() - this->damage);
 		}
 	}
+
+	// play sound
+	sound.play("sound/" + this->name + ".wav");
+
 	this->waittime = 0;
 }
 

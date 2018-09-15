@@ -17,6 +17,8 @@
 #include "ToggleButton.h"
 #include "TurretFactory.h"
 #include "InformationWindow.h"
+#include "SoundLoader.h"
+#include "Sound.h"
 
 #include <vector>
 
@@ -61,6 +63,7 @@ private:
 	WaveSystem *ws = new WaveSystem(300);
 	TurretFactory *tf = new TurretFactory();
 	Texture texture;
+	Sound sound;
 	InformationWindow info;
 
 	std::vector<Button*> vbutton;
@@ -104,6 +107,10 @@ void Game::Initialize() {
 	TextureLoader tel = TextureLoader();
 	_RPT0(_CRT_WARN, "Texture initializing...\t");
 	tel.load("data\\texturelist.csv", &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+
+	// Loading Sounds
+	SoundLoader sl = SoundLoader();
+	sl.load("data\\soundlist.csv", &this->sound);
 
 	// Loading WaveData
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
@@ -210,7 +217,7 @@ void Game::Update() {
 
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		for (int j = 0; j < ffmul; j++) {
-			(*i)->attack(&venemy);
+			(*i)->attack(&venemy, this->sound);
 		}
 	}
 
