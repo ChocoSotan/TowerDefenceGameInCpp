@@ -138,6 +138,22 @@ int MortarTurret::destroy() {
 	return (int)round(this->costspent * 0.7);
 }
 
+const std::string MortarTurret::getStatusText() const {
+	std::stringstream ss;
+	ss << this->name << "\n\n"
+		<< "Type : " << this->type << "\n\n"
+		<< "Cost : " << this->constructcost << "\n\n"
+		<< "Damage : " << this->damage << "\n\n"
+		<< "FireRate : " << this->firerate << "\n\n"
+		<< "Range : " << this->range << "\n\n"
+		<< "SplashDamage : " << this->splashdamage << "\n\n"
+		<< "SplashRange : " << this->splashrange << "\n\n";
+	if (minrange != 0) {
+		ss << "MinRange : " << this->minrange << "\n\n";
+	}
+	return ss.str();
+}
+
 void BlastTurret::attack(std::vector<EnemyBase*> *targetlist) {
 	for (auto i = 0; i < (signed)targetlist->size(); i++) {
 		if (this->range > this->position.getAbsTo((*targetlist)[i]->getPosition())) {

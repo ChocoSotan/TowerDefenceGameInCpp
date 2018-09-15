@@ -94,7 +94,7 @@ public:
 	void draw(const Texture &texture) const override;
 	int destroy()override;
 
-
+	
 
 protected:
 };
@@ -119,6 +119,8 @@ public:
 	void setSplashRange(double splashrange) { this->splashrange = splashrange; }
 	void setMinRange(double minrange) { this->minrange = minrange; }
 	void draw(const Texture &texture) const override;
+
+	const std::string getStatusText() const override;
 
 protected:
 	double minrange;
