@@ -134,6 +134,8 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="InformationWindow.cpp" />
     <ClCompile Include="Gauge.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundLoader.cpp" />
     <ClCompile Include="TargetPriority.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Loader.cpp" />
@@ -153,6 +155,8 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Gauge.h" />
     <ClInclude Include="InformationWindow.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundLoader.h" />
     <ClInclude Include="TargetPriority.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />

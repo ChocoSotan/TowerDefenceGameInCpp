@@ -17,7 +17,7 @@ void Button::update(const Mouse &mouse) {
 	if (!mouse.isChangedState())return;
 
 	if (mouse.getLog() == MOUSE_INPUT_LOG_DOWN && (mouse.getBind() & MOUSE_INPUT_LEFT) != 0) {
-		if (mouse.getPosition().getX() < this->x || this->x + this->sx < mouse.getPosition().getX() || mouse.getPosition().getY() < this->y || this->y + this->sy < mouse.getPosition().getY()) {
+		if (mouse.getPosition().getX() < this->x || this->x + this->sx - 1 < mouse.getPosition().getX() || mouse.getPosition().getY() < this->y || this->y + this->sy - 1 < mouse.getPosition().getY()) {
 			wasclicked = false;
 		}
 		else {
@@ -26,7 +26,7 @@ void Button::update(const Mouse &mouse) {
 		return;
 	}
 	if (mouse.getLog() == MOUSE_INPUT_LOG_UP && (mouse.getBind() & MOUSE_INPUT_LEFT) != 0) {
-		if (mouse.getPosition().getX() < this->x || this->x + this->sx < mouse.getPosition().getX() || mouse.getPosition().getY() < this->y || this->y + this->sy < mouse.getPosition().getY()) {
+		if (mouse.getPosition().getX() < this->x || this->x + this->sx - 1 < mouse.getPosition().getX() || mouse.getPosition().getY() < this->y || this->y + this->sy - 1 < mouse.getPosition().getY()) {
 			isclicked = false;
 			return;
 		}

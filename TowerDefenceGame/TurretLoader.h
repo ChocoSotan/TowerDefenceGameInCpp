@@ -2,6 +2,10 @@
 
 #include "Loader.h"
 
+#include <vector>
+#include <string>
+#include "Turret.h"
+
 class TurretLoader : public Loader {
 public:
 	TurretLoader() {}

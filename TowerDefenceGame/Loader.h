@@ -72,12 +72,3 @@ public:
 
 	bool load(std::string filename, std::vector<Button*> &vbutton, std::vector<ToggleButton*> &vtbutton, Texture *texture);
 };
-
-class SoundLoader : public Loader {
-public:
-	SoundLoader() {}
-	~SoundLoader() {}
-
-	bool load(std::string filename);
-};
-

@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "TurretBarrel.h"
 #include "Texture.h"
+#include "Sound.h"
 
 #include <vector>
 #include <string>
@@ -31,7 +32,7 @@ public:
 	}
 	virtual ~TurretBase() {}
 
-	virtual void attack(std::vector<EnemyBase*> *targetlist) = 0;
+	virtual void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) = 0;
 	bool canConstruct(long long resource) const;
 	virtual void upgrade() = 0;
 	bool canUpgrade(long long resource) const;
@@ -89,7 +90,7 @@ public:
 		minrange = 0;
 	}
 	~BasicTurret() {}
-	void attack(std::vector<EnemyBase*> *targetlist) override;
+	void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) override;
 	void upgrade()override;
 	void draw(const Texture &texture) const override;
 	int destroy()override;
@@ -112,7 +113,7 @@ public:
 	~MortarTurret() {}
 	void upgrade()override;
 	int destroy()override;
-	void attack(std::vector<EnemyBase*> *targetlist) override;
+	void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) override;
 	double getSplashDamage() { return this->splashdamage; }
 	double getSplashRange() { return this->splashrange; }
 	void setSplashDamage(double splashdamage) {this->splashdamage=splashdamage; }
@@ -139,7 +140,7 @@ public:
 	virtual ~BlastTurret() {}
 	void upgrade()override;
 	int destroy()override;
-	void attack(std::vector<EnemyBase*> *targetlist) override;
+	void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) override;
 	void draw(const Texture &texture) const override;
 
 protected:
@@ -156,7 +157,7 @@ public:
 	}
 	~DotTurret() {}
 
-	void attack(std::vector<EnemyBase*> *targetlist) override;
+	void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) override;
 	void draw(const Texture &texture) const override;
 
 protected:
