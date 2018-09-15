@@ -31,6 +31,10 @@ const std::string TurretBase::getStatusText() const {
 }
 
 void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
+	if (this->firerate > this->waittime) {
+		this->waittime++;
+		return;
+	}
 	int targetindex;
 	targetindex = this->target->decisionOrder(*targetlist, *this);
 	if (targetindex == -1)return;
@@ -43,7 +47,7 @@ void BasicTurret::attack(std::vector<EnemyBase*> *targetlist) {
 
 	// take damage
 	(*targetlist)[targetindex]->setHitpoint((*targetlist)[targetindex]->getHitpoint() - this->damage);
-
+	this->waittime = 0;
 }
 
 void BasicTurret::draw(const Texture &texture) const {
@@ -82,6 +86,10 @@ int BasicTurret::destroy() {
 }
 
 void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
+	if (this->firerate > this->waittime) {
+		this->waittime++;
+		return;
+	}
 	//set target
 	int targetindex;
 	targetindex = this->target->decisionOrder(*targetlist, *this);
@@ -100,6 +108,7 @@ void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
 			(*targetlist)[i]->setHitpoint((*targetlist)[i]->getHitpoint() - this->splashdamage);
 		}
 	}
+	this->waittime = 0;
 }
 
 void MortarTurret::upgrade() {
@@ -155,11 +164,16 @@ const std::string MortarTurret::getStatusText() const {
 }
 
 void BlastTurret::attack(std::vector<EnemyBase*> *targetlist) {
+	if (this->firerate > this->waittime) {
+		this->waittime++;
+		return;
+	}
 	for (auto i = 0; i < (signed)targetlist->size(); i++) {
 		if (this->range > this->position.getAbsTo((*targetlist)[i]->getPosition())) {
 			(*targetlist)[i]->setHitpoint((*targetlist)[i]->getHitpoint() - this->damage);
 		}
 	}
+	this->waittime = 0;
 }
 
 void BlastTurret::upgrade() {
