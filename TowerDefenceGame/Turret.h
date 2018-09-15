@@ -78,8 +78,6 @@ protected:
 	Vector2D position;
 	TurretBarrel turretbarrel;
 	TargetPriority* target;
-
-	std::string basename;
 };
 
 /// <summary>

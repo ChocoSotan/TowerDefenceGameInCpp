@@ -88,8 +88,8 @@ void MortarTurret::attack(std::vector<EnemyBase*> *targetlist) {
 	if (targetindex == -1)return;
 
 	// set barrel angle
-	// this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
-	// turretbarrel.update(this->angle, this->position);
+	this->angle = getPosition().getAngleTo((*targetlist)[targetindex]->getPosition());
+	turretbarrel.update(this->angle, this->position);
 
 	//attack to the target
 	(*targetlist)[targetindex]->setHitpoint((*targetlist)[targetindex]->getHitpoint() - this->damage);
@@ -114,8 +114,24 @@ void MortarTurret::upgrade() {
 }
 
 void MortarTurret::draw(const Texture &texture) const {
-	DrawRotaGraph((int)position.getX(), (int)position.getY(), 1.0, angle, texture.getHandle("texture/Game/Turrets/TurretBases/MortarTurret.png"), TRUE);
-	turretbarrel.draw(texture, "texture/Game/Turrets/TurretBarrels/MortarTurretBarrel.png");
+	const std::vector<std::string> splashturretnames = {
+		"CanonTurret","MortarTurret",
+	};
+
+	std::string basepath = "texture/Game/Turrets/TurretBases/";
+	std::string barrelpath = "texture/Game/Turrets/TurretBarrels/";
+
+	for (int i = 0; i < (signed)splashturretnames.size(); i++) {
+		if (this->name.compare(splashturretnames[i]) == 0) {
+			basepath += splashturretnames[i];
+			basepath += ".png";
+			barrelpath += splashturretnames[i];
+			barrelpath += "Barrel.png";
+		}
+	}
+
+	DrawRotaGraph((int)position.getX(), (int)position.getY(), 1.0, angle, texture.getHandle(basepath), TRUE);
+	turretbarrel.draw(texture, barrelpath);
 }
 
 int MortarTurret::destroy() {
