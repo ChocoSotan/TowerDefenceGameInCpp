@@ -175,7 +175,8 @@ void BlastTurret::attack(std::vector<EnemyBase*> *targetlist, const Sound &sound
 		this->waittime++;
 		return;
 	}
-	for (int i = 0; i < targetlist->size(); i++) {
+	if (targetlist->size() == 0)return;
+	for (int i = 0; i < (int)targetlist->size(); i++) {
 		if (!(*targetlist)[i]->isAlive())continue;
 		if (this->range>this->position.getAbsTo((*targetlist)[i]->getPosition()))break;
 		else if (i == targetlist->size() - 1) return;

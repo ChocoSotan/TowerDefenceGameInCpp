@@ -47,7 +47,6 @@ int ClosestBase::decisionOrder(const std::vector<EnemyBase*> &targetlist, Turret
 		if (targetlist[i]->getDistanceToBase(vpath) < mindistancetobase) {
 			mindistancetobase = targetlist[i]->getDistanceToBase(vpath);
 			targetindex = i;
-			break;
 		}
 	}
 	if (targetindex == -1)return targetindex;
