@@ -45,8 +45,8 @@ public:
 	double getDamage() const { return this->damage; }
 	double getFireRate() const { return this->firerate; }
 	double getRange() const { return this->range; }
-	double getMinRange()const { return this->minrange; }
 	double getWaitTime()const { return this->waittime; }
+	double getMinRange()const { return this->minrange; }
 	int getGrade()const { return this->grade; }
 	int getConstructCost()const { return this->constructcost; }
 	int getUpgradeCost()const { return this->upgradecost; }
@@ -72,10 +72,9 @@ protected:
 	double damage;
 	double firerate;
 	double range;
-	double minrange;
 	double waittime;
 	double angle;
-
+	double minrange;
 	Vector2D position;
 	TurretBarrel turretbarrel;
 	TargetPriority* target;
@@ -87,7 +86,7 @@ protected:
 class BasicTurret : public TurretBase {
 public:
 	BasicTurret(std::string name, std::string type, double damage, double firerate, double range,int constructcost,int upgradecost,Vector2D position) : TurretBase(name, type, damage, firerate, range,constructcost,upgradecost,position) {
-		minrange = 0;
+		this->minrange = 0;
 	}
 	~BasicTurret() {}
 	void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) override;
@@ -124,7 +123,6 @@ public:
 	const std::string getStatusText() const override;
 
 protected:
-	double minrange;
 	double splashdamage;
 	double splashrange;
 };
@@ -135,7 +133,7 @@ protected:
 class BlastTurret : public TurretBase {
 public:
 	BlastTurret(std::string name, std::string type, double damage, double firerate, double range, int constructcost, int upgradecost,Vector2D position) : TurretBase(name, type, damage, firerate, range, constructcost, upgradecost,position) {
-
+		this->minrange = 0;
 	}
 	virtual ~BlastTurret() {}
 	void upgrade()override;

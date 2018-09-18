@@ -297,6 +297,13 @@ void Game::Draw() {
 			vterrain[i][j]->canPlaceTurret() ? DrawString(j * 64 + 80, i * 64 + 56, "TRUE", White) : DrawString(j * 64 + 80, i * 64 + 56, "FALSE", White);
 		}
 	}
+
+	for (auto i = vturret.begin(); i != vturret.end(); ++i) {
+		DrawCircle((*i)->getPosition().getX(), (*i)->getPosition().getY(),
+			(*i)->getRange(), Red, FALSE);
+		DrawCircle((*i)->getPosition().getX(), (*i)->getPosition().getY(),
+			(*i)->getMinRange(), Purple, FALSE);
+	}
 #endif
 }
 
