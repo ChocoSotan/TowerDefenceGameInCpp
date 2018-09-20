@@ -22,7 +22,7 @@ public:
 	};
 	virtual ~EnemyBase() {}
 
-	virtual void update(const std::vector<Vector2D> &vpath) = 0;
+	virtual void update(const std::vector<Vector2D> &vpath, int *health) = 0;
 	virtual void draw(const Texture &texture) = 0;
 	bool isAlive() const { return hitpoint > 0; }
 
@@ -67,7 +67,7 @@ public:
 		delete gauge;
 	}
 
-	void update(const std::vector<Vector2D> &vpath) override;
+	void update(const std::vector<Vector2D> &vpath, int *health) override;
 	void draw(const Texture &texture) override;
 
 	std::string getStatusText()const override;

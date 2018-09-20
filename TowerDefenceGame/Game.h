@@ -19,10 +19,11 @@
 #include "InformationWindow.h"
 #include "SoundLoader.h"
 #include "Sound.h"
+#include "Keyboard.h"
+
+#include "Debugger.h"
 
 #include <vector>
-
-#include "TargetPriority.h"
 
 // for DxLib's Color Code
 #define White GetColor(255,255,255)
@@ -51,6 +52,8 @@ private:
 
 
 private:
+	Debugger dbg;
+	Keyboard keyboard;
 	Mouse mouse;
 
 	std::vector<TurretBase*> vturret;
@@ -93,39 +96,41 @@ Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 }
 
 void Game::Initialize() {
+
 	// Loading Path
 	PathLoader pl = PathLoader();
-	_RPT0(_CRT_WARN, "Path initializing...\t");
-	pl.load("data\\stage\\01\\path.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	dbg.print("Initializing Pathes......");
+	pl.load("data\\stage\\01\\path.csv", this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Turrets
-	_RPT0(_CRT_WARN,"Turret initializing...\t");
-	tf->load("data\\turret\\turret.csv", this->vpath) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	dbg.print("Initializing Turrets......");
+	tf->load("data\\turret\\turret.csv", this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
 	this->vturret_ini = tf->getDataAll();
 
 	// Loading Textures
 	TextureLoader tel = TextureLoader();
-	_RPT0(_CRT_WARN, "Texture initializing...\t");
-	tel.load("data\\texturelist.csv", &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	dbg.print("Initializing Textures......");
+	tel.load("data\\texturelist.csv", &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Sounds
 	SoundLoader sl = SoundLoader();
-	sl.load("data\\soundlist.csv", &this->sound);
+	dbg.print("Initializing Sounds......");
+	sl.load("data\\soundlist.csv", &this->sound) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading WaveData
 	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
 
 	// Loading ButtonData
 	ButtonLoader bl = ButtonLoader();
-	_RPT0(_CRT_WARN, "Button initializing...\t");
-	bl.load("data\\buttonlist.csv", this->vbutton, this->vtbutton, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	dbg.print("Initializing Buttons.....");
+	bl.load("data\\buttonlist.csv", this->vbutton, this->vtbutton, &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Field
 	FieldLoader fl = FieldLoader();
-	_RPT0(_CRT_WARN, "Field initializing(canplace flag)...\t");
-	fl.load("data\\stage\\01\\map_canplace.csv", this->vterrain, Vector2D(80, 56), 64) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
-	_RPT0(_CRT_WARN, "Field initializing...(set texture)\t");
-	fl.initField("data\\stage\\01\\map_texture.csv", "data\\stage\\01\\map_textureid.csv", this->vterrain, &this->texture) ? _RPT0(_CRT_WARN, "Success!\n") : _RPT0(_CRT_WARN, "Failed...\n");
+	dbg.print("Initializing Fields(Place)......");
+	fl.load("data\\stage\\01\\map_canplace.csv", this->vterrain, Vector2D(80, 56), 64) ? dbg.print("Success!") : dbg.print("Failed...");
+	dbg.print("Initializing Fields(Set textures)......");
+	fl.initField("data\\stage\\01\\map_texture.csv", "data\\stage\\01\\map_textureid.csv", this->vterrain, &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	fonthandle.push_back(CreateFontToHandle("メイリオ", 14, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
 	fonthandle.push_back(CreateFontToHandle("メイリオ", 20, 0, DX_FONTTYPE_ANTIALIASING_EDGE));
@@ -136,19 +141,22 @@ void Game::Update() {
 	/* Mouse */
 	this->mouse.update();
 
+	/* Keyboard */
+	this->keyboard.update();
+
 	/* Button */
 	// button update
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) { (*i)->update(this->mouse); }
 	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
 	
 	// toggle pause
-	if (vbutton[0]->isClicked()) { isPaused = isPaused? false : true; }
+	if (vbutton[0]->isClicked() || keyboard.getPressingCount(KEY_INPUT_SPACE) == 1) { isPaused = isPaused? false : true; }
 
 	// toggle fast forward
-	if (vbutton[1]->isClicked()) { ffmul = ffmul == 1 ? 2 : 1; }
+	if (vbutton[1]->isClicked() || keyboard.getPressingCount(KEY_INPUT_F) == 1) { ffmul = ffmul == 1 ? 2 : 1; }
 
 	// next wave
-	if (vbutton[2]->isClicked()) { ws->nextWave(); }
+	if (vbutton[2]->isClicked() || keyboard.getPressingCount(KEY_INPUT_N) == 1) { ws->nextWave(); }
 
 	// construct turret
 	{
@@ -162,7 +170,7 @@ void Game::Update() {
 
 				int x = (int)floor((i - 13) / 11);
 				int y = (i - 13) % 11;
-				
+
 
 				if (!vterrain[x][y]->canPlaceTurret())break;
 
@@ -172,12 +180,15 @@ void Game::Update() {
 					break;
 				}
 				this->resource -= vturret_ini[selectedturret]->getConstructCost();
-				
+
 				vturret.push_back(tf->create(vturret_ini[selectedturret]->getName(), this->vpath));
-				
-				vturret[(signed)vturret.size()-1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
+
+				vturret[(signed)vturret.size() - 1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
 				vterrain[x][y]->changeCanPlaceTurret();
-				vtbutton[0]->clearChannel();
+
+				if (keyboard.getPressingCount(KEY_INPUT_LSHIFT) == 0) {
+					vtbutton[0]->clearChannel();
+				}
 			}
 		}
 		else {
@@ -208,7 +219,7 @@ void Game::Update() {
 			continue;
 		}
 		for (int j = 0; j < ffmul; j++) {
-			(*i)->update(vpath);
+			(*i)->update(vpath, &this->health);
 		}
 	}
 	for (int i = 0; i < (signed)venemy.size(); i++) {
@@ -221,15 +232,13 @@ void Game::Update() {
 		}
 	}
 
-	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+	if (this->health <= 0) {
+		MessageBox(nullptr, "You have defeated...", "Game Over", MB_OK);
 		mSceneChanger->ChangeMainScene(eEnd);
 	}
-	
-	// for debug
-	for (int i = 0; i < (signed)vbutton.size(); i++) {
-		if (vbutton[i]->isClicked()) {
-			_RPT1(_CRT_WARN, "BUTTON %d WAS CLICKED.\n", i);
-		}
+
+	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+		mSceneChanger->ChangeMainScene(eEnd);
 	}
 }
 
@@ -290,14 +299,6 @@ void Game::Draw() {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);
 	}
-
-#ifdef _DEBUG
-	for (int i = 0; i < (signed)vterrain.size(); i++) {
-		for (int j = 0; j < (signed)vterrain[i].size(); j++) {
-			vterrain[i][j]->canPlaceTurret() ? DrawString(j * 64 + 80, i * 64 + 56, "TRUE", White) : DrawString(j * 64 + 80, i * 64 + 56, "FALSE", White);
-		}
-	}
-#endif
 }
 
 void Game::Finalize() {

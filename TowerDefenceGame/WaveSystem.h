@@ -29,8 +29,10 @@ private:
 	Texture *texture;
 
 	short currentwave;
-	long long count;
+	
 	short interval;
+
+	long count;
 
 	int fonthandle;
 };

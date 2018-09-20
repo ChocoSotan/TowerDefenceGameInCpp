@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="InformationWindow.cpp" />
     <ClCompile Include="Gauge.cpp" />
     <ClCompile Include="Sound.cpp" />
@@ -153,8 +154,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Debugger.h" />
     <ClInclude Include="Gauge.h" />
     <ClInclude Include="InformationWindow.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundLoader.h" />
     <ClInclude Include="TargetPriority.h" />

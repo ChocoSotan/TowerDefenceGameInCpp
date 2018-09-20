@@ -11,7 +11,7 @@
 
 
 
-void NormalEnemy::update(const std::vector<Vector2D> &vpath) {
+void NormalEnemy::update(const std::vector<Vector2D> &vpath, int *health) {
 	Vector2D nextpos;
 	double nextangle;
 
@@ -53,6 +53,7 @@ void NormalEnemy::update(const std::vector<Vector2D> &vpath) {
 		// if the position will over the base
 		else {
 			// take damage for base
+			*health -= this->attackpower;
 			
 			// reset position to start
 			this->position = vpath[0];

@@ -27,7 +27,7 @@ public:
 };
 
 GameManager::GameManager() : mNextScene(eNone) {
-	mScene = (BaseScene*) new Game(this);
+	mScene = (BaseScene*) new Title(this);
 }
 
 void GameManager::Initialize() {

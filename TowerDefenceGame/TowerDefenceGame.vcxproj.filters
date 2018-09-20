@@ -51,9 +51,6 @@
     <ClCompile Include="Gauge.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TurretBarrel.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -84,6 +81,12 @@
     <ClCompile Include="SoundLoader.cpp">
       <Filter>Loader</Filter>
     </ClCompile>
+    <ClCompile Include="TurretBarrel.cpp">
+      <Filter>Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h">
@@ -93,9 +96,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Vector2D.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TurretBarrel.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
@@ -163,6 +163,15 @@
     </ClInclude>
     <ClInclude Include="SoundLoader.h">
       <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="TurretBarrel.h">
+      <Filter>Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="Debugger.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

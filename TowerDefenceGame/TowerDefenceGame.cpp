@@ -12,6 +12,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetGraphMode(1024, 768, 32);
 	SetWindowSize(1024, 768);
 	
+	DxLib::SetOutApplicationLogValidFlag(FALSE);
 	ChangeWindowMode(TRUE); 
 	SetDrawScreen(DX_SCREEN_BACK);
 	DxLib_Init();
