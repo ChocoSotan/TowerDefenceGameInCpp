@@ -203,5 +203,8 @@
     <ClInclude Include="ButtonLoader.h">
       <Filter>Loader</Filter>
     </ClInclude>
+    <ClInclude Include="IMouseOver.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
