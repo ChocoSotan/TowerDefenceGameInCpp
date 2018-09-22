@@ -13,14 +13,14 @@ WaveSystem::WaveSystem(short interval) {
 	count = 0;
 	currentwave = 0;
 	this->interval = interval;
-	this->fonthandle = CreateFontToHandle("メイリオ", 32, 0, DX_FONTTYPE_ANTIALIASING);
+	this->fonthandle = CreateFontToHandle("メイリオ", 40, 4, DX_FONTTYPE_ANTIALIASING);
 }
 
 
 WaveSystem::~WaveSystem() {
 }
 
-void WaveSystem::init(std::string filename, Vector2D &pos) {
+void WaveSystem::init(std::string filename, const Vector2D &pos) {
 	WaveLoader waveloader;
 	waveloader.load(filename, this->vwave, pos);
 }
@@ -35,7 +35,7 @@ void WaveSystem::update(std::vector<EnemyBase*> &venemy, long long *resource) {
 	vwave[currentwave]->push(venemy);
 	count = 0;
 
-	*resource *= 1.05;
+	*resource = (long long)(*resource * 1.05);
 
 	count++;
 	currentwave++;

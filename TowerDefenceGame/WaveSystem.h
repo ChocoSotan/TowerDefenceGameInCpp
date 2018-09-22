@@ -13,7 +13,7 @@ public:
 	WaveSystem(short interval);
 	~WaveSystem();
 
-	void init(std::string filename, Vector2D &pos);
+	void init(std::string filename, const Vector2D &pos);
 	void update(std::vector<EnemyBase*> &venemy, long long *resource);
 	long long getCount() { return this->count; }
 	void nextWave();

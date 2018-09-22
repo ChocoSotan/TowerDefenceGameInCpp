@@ -8,7 +8,7 @@
 class Wave {
 public:
 	Wave(std::vector<EnemyBase*> &venemy);
-	~Wave();
+	~Wave() {}
 
 	void push(std::vector<EnemyBase*> &venemy);
 	std::vector<EnemyBase*> getWaveInfo() { return this->venemy; }
