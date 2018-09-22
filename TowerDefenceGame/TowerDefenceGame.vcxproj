@@ -132,9 +132,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ButtonLoader.cpp" />
     <ClCompile Include="Debugger.cpp" />
+    <ClCompile Include="FieldLoader.cpp" />
     <ClCompile Include="InformationWindow.cpp" />
     <ClCompile Include="Gauge.cpp" />
+    <ClCompile Include="PathLoader.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundLoader.cpp" />
     <ClCompile Include="TargetPriority.cpp" />
@@ -143,6 +146,7 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="ToggleButton.cpp" />
     <ClCompile Include="TowerDefenceGame.cpp" />
     <ClCompile Include="Turret.cpp" />
@@ -150,14 +154,18 @@
     <ClCompile Include="TurretFactory.cpp" />
     <ClCompile Include="TurretLoader.cpp" />
     <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="WaveLoader.cpp" />
     <ClCompile Include="WaveSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ButtonLoader.h" />
     <ClInclude Include="Debugger.h" />
+    <ClInclude Include="FieldLoader.h" />
     <ClInclude Include="Gauge.h" />
     <ClInclude Include="InformationWindow.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="PathLoader.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundLoader.h" />
     <ClInclude Include="TargetPriority.h" />
@@ -171,6 +179,7 @@
     <ClInclude Include="Task.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="ToggleButton.h" />
     <ClInclude Include="Turret.h" />
@@ -179,6 +188,7 @@
     <ClInclude Include="TurretLoader.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Wave.h" />
+    <ClInclude Include="WaveLoader.h" />
     <ClInclude Include="WaveSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

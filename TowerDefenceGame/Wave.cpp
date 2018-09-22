@@ -5,7 +5,7 @@
 #include <vector>
 
 Wave::Wave(std::vector<EnemyBase*> &venemy) {
-	for (int i = 0; i < venemy.size(); i++) {
+	for (int i = 0; i < (signed)venemy.size(); i++) {
 		this->venemy.push_back(venemy[i]);
 	}
 }

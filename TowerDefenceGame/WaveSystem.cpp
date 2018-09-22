@@ -1,7 +1,7 @@
 #include "WaveSystem.h"
 
 #include "Enemy.h"
-#include "Loader.h"
+#include "WaveLoader.h"
 #include "Vector2D.h"
 
 #include <vector>

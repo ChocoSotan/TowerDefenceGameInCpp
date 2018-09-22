@@ -9,7 +9,7 @@
 
 class EnemyBase {
 public:
-	EnemyBase(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) {
+	EnemyBase(double hitpoint, double movespeed, long attackpower, long long resourcereward, const Vector2D &pos) {
 		this->hitpoint = hitpoint;
 		this->hitpoint_max = hitpoint;
 		this->movespeed = movespeed;
@@ -62,7 +62,7 @@ protected:
 
 class NormalEnemy : public EnemyBase {
 public:
-	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward, Vector2D &pos) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward, pos) {}
+	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward, const Vector2D &pos) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward, pos) {}
 	~NormalEnemy() {
 		delete gauge;
 	}

@@ -4,8 +4,12 @@
 #include "DxLib.h"
 
 #include "Debugger.h"
-#include "Loader.h"
+
 #include "Texture.h"
+#include "Button.h"
+
+#include "TextureLoader.h"
+
 #include "Mouse.h"
 
 #include <vector>

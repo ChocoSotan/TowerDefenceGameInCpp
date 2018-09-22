@@ -2,6 +2,7 @@
 
 #pragma warning(disable:4996)
 
+// Systems
 #include "Scene.h"
 #include "ISceneChanger.h"
 #include "DxLib.h"
@@ -9,18 +10,27 @@
 #include "Enemy.h"
 #include "Turret.h"
 #include "Terrain.h"
-
 #include "Texture.h"
 #include "Button.h"
-#include "Mouse.h"
-#include "Loader.h"
 #include "ToggleButton.h"
 #include "TurretFactory.h"
 #include "InformationWindow.h"
-#include "SoundLoader.h"
 #include "Sound.h"
-#include "Keyboard.h"
+#include "Wave.h"
+#include "WaveSystem.h"
 
+#include "Keyboard.h"
+#include "Mouse.h"
+
+// Loaders
+#include "Loader.h"
+#include "FieldLoader.h"
+#include "PathLoader.h"
+#include "SoundLoader.h"
+#include "ButtonLoader.h"
+#include "TextureLoader.h"
+
+// Debugger
 #include "Debugger.h"
 
 #include <vector>
