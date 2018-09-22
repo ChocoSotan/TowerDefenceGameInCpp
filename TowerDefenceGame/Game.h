@@ -34,6 +34,9 @@
 #include "Debugger.h"
 
 #include <vector>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 // for DxLib's Color Code
 #define White GetColor(255,255,255)
@@ -48,7 +51,7 @@
 
 class Game : public BaseScene {
 public:
-	Game(ISceneChanger *changer);
+	Game(ISceneChanger *changer, const int stage);
 	~Game() {}
 
 	void Initialize() override;
@@ -82,6 +85,9 @@ private:
 	std::vector<Button*> vbutton;
 	std::vector<ToggleButton*> vtbutton;
 
+	// stage no
+	int stage;
+
 	// option flags
 	bool isPaused;
 	int ffmul;
@@ -97,7 +103,8 @@ private:
 
 };
 
-Game::Game(ISceneChanger *changer) : BaseScene(changer) {
+Game::Game(ISceneChanger *changer, const int stage) : BaseScene(changer) {
+	this->stage = stage;
 	this->isPaused = true;
 	this->ffmul = 1;
 	resource = 100;			// initial resource
@@ -110,7 +117,9 @@ void Game::Initialize() {
 	// Loading Path
 	PathLoader pl = PathLoader();
 	dbg.print("Initializing Pathes......");
-	pl.load("data\\stage\\01\\path.csv", this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
+	std::stringstream ss;
+	ss << "data\\stage\\" << std::setfill('0') << std::setw(2) << std::right << this->stage << "\\path.csv";
+	pl.load(ss.str(), this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Turrets
 	dbg.print("Initializing Turrets......");
@@ -220,7 +229,7 @@ void Game::Update() {
 	if (isPaused) return;
 
 	for (int i = 0; i < ffmul; i++) {
-		ws->update(this->venemy);
+		ws->update(this->venemy,&this->resource);
 	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {

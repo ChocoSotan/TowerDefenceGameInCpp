@@ -25,7 +25,7 @@ void WaveSystem::init(std::string filename, Vector2D &pos) {
 	waveloader.load(filename, this->vwave, pos);
 }
 
-void WaveSystem::update(std::vector<EnemyBase*> &venemy) {
+void WaveSystem::update(std::vector<EnemyBase*> &venemy, long long *resource) {
 	if (vwave.size() == currentwave)return;
 	if (count % interval != 0) {
 		count++;
@@ -34,6 +34,8 @@ void WaveSystem::update(std::vector<EnemyBase*> &venemy) {
 
 	vwave[currentwave]->push(venemy);
 	count = 0;
+
+	*resource *= 1.05;
 
 	count++;
 	currentwave++;

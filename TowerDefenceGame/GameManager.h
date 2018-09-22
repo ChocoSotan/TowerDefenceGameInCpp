@@ -47,7 +47,7 @@ void GameManager::Update() {
 			mScene = (BaseScene*) new Title(this);
 			break;
 		case eGame:
-			mScene = (BaseScene*) new Game(this);
+			mScene = (BaseScene*) new Game(this, 1);
 			break;
 		case eOption:
 			//mScene = (BaseScene*) new TitleOption(this);

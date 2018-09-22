@@ -30,11 +30,13 @@ private:
 	TextureLoader tl;
 	Mouse mouse;
 
+	// buttons
 	Button *button_newgame;
 	Button *button_left;
 	Button *button_right;
 	Button *button_end;
 
+	// fonts
 	std::vector<int> fonthandle;
 
 	int m_stage;
@@ -50,7 +52,6 @@ void Title::Initialize() {
 	// Loading Texture
 	db.print("Initializing texture......");
 	tl.load("data/tl/texturelist.csv", &this->texture) ? db.print("Success!") : db.print("Failed...");
-
 
 	// load title paint
 	// texture.pool("texture/title/title.png");

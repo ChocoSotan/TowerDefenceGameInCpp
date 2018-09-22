@@ -14,7 +14,7 @@ public:
 	~WaveSystem();
 
 	void init(std::string filename, Vector2D &pos);
-	void update(std::vector<EnemyBase*> &venemy);
+	void update(std::vector<EnemyBase*> &venemy, long long *resource);
 	long long getCount() { return this->count; }
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
