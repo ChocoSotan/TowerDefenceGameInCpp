@@ -1,7 +1,7 @@
 #Type(Key),#Name,#Power,#FireRate,#Range,#Cost,#UpgradeCost,#SplashDamage,#SplashRange,#MinRange
-Basic,BasicTurret,8,60,140,40,80,-,-,-
-Basic,MachinegunTurret,4,12,120,60,100,-,-,-
-Basic,SniperTurret,20,80,220,150,240,-,-,-
-Splash,CanonTurret,10,72,150,120,200,3,20,0
-Splash,MortarTurret,6,60,180,140,260,6,25,100
-AoE,BlastTurret,8,50,110,220,300,-,-,-
+Basic,BasicTurret,10,60,200,10,45,-,-,-
+Basic,MachinegunTurret,6,12,140,30,75,-,-,-
+Basic,SniperTurret,18,120,380,25,225,-,-,-
+Splash,CanonTurret,6,90,260,15,225,2,60,0
+Splash,MortarTurret,10,75,160,20,270,4,40,100
+AoE,BlastTurret,4,60,140,15,300,-,-,-
