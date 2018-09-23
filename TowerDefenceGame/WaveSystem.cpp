@@ -28,7 +28,7 @@ void WaveSystem::init(std::string filename, const Vector2D &pos) {
 
 void WaveSystem::update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest) {
 	if (vwave.size() == m_currentwave)return;
-	if (m_count % m_interval_wave != 0) {
+	if (m_count % m_interval_wave != 0 || m_count == 0) {
 		m_count++;
 		return;
 	}
@@ -55,14 +55,14 @@ void WaveSystem::draw(const Texture &texture, const Vector2D &pos) {
 	GetGraphSize(texture.getHandle(filename), &sx, &sy);
 
 	for (int i = 0; i < (signed)vwave.size() - m_currentwave; i++) {
-		DrawGraph((int)pos.getX(), (int)pos.getY() + i * sy, texture.getHandle(filename), FALSE);
+		DrawGraph((int)pos.getX(), (int)pos.getY() + (i + 1) * sy - (sy * m_count / m_interval_wave), texture.getHandle(filename), FALSE);
 
 		if (m_currentwave + i + 1 < 10) {
-			DrawFormatStringToHandle((int)pos.getX() + sx / 3, (int)pos.getY() + i * sy + sy / 3 - ((int)m_count / m_interval_wave) * sy, GetColor(255, 255, 255),
+			DrawFormatStringToHandle((int)pos.getX() + sx / 3, (int)pos.getY() + (i+1) * sy + sy / 3 - ((int)m_count / m_interval_wave) * sy - (sy * m_count / m_interval_wave), GetColor(255, 255, 255),
 				this->m_fonthandle, "%d", m_currentwave + i + 1);
 		}
 		else {
-			DrawFormatStringToHandle((int)pos.getX() + sx / 5, (int)pos.getY() + i * sy + sy / 3 - ((int)m_count / m_interval_wave) * sy, GetColor(255, 255, 255),
+			DrawFormatStringToHandle((int)pos.getX() + sx / 5, (int)pos.getY() + (i+1) * sy + sy / 3 - ((int)m_count / m_interval_wave) * sy - (sy * m_count / m_interval_wave), GetColor(255, 255, 255),
 				this->m_fonthandle, "%d", m_currentwave + i + 1);
 		}
 	}
