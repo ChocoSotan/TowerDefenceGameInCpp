@@ -10,17 +10,17 @@
 
 class WaveSystem final {
 public:
-	WaveSystem(short interval);
+	WaveSystem(short interval_wave, short interval_enemy);
 	~WaveSystem();
 
 	void init(std::string filename, const Vector2D &pos);
-	void update(std::vector<EnemyBase*> &venemy, long long *resource);
-	long long getCount() { return this->count; }
+	void update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest);
+	long long getCount() { return this->m_count; }
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
 
 	bool isFinishedSendEnemy() {
-		return currentwave == (signed)vwave.size() ?  true : false;
+		return m_currentwave == (signed)vwave.size() ?  true : false;
 	}
 	
 private:
@@ -28,12 +28,13 @@ private:
 	std::vector<Wave*> vwave;
 	Texture *texture;
 
-	short currentwave;
+	short m_currentwave;
 	
-	short interval;
+	short m_interval_wave;
+	short m_interval_enemy;
 
-	long count;
+	long m_count;
 
-	int fonthandle;
+	int m_fonthandle;
 };
 

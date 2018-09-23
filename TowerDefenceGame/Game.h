@@ -76,7 +76,7 @@ private:
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws = new WaveSystem(300);
+	WaveSystem *ws = new WaveSystem(300,20);
 	TurretFactory *tf = new TurretFactory();
 	Texture texture;
 	Sound sound;
@@ -229,7 +229,7 @@ void Game::Update() {
 	if (isPaused) return;
 
 	for (int i = 0; i < ffmul; i++) {
-		ws->update(this->venemy,&this->resource);
+		ws->update(&this->venemy, &this->resource, 1.05);
 	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
