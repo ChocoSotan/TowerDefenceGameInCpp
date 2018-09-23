@@ -27,7 +27,7 @@ void WaveSystem::init(std::string filename, const Vector2D &pos) {
 }
 
 void WaveSystem::update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest) {
-	if (vwave.size() == m_currentwave)return;
+	if (vwave.size() == m_currentwave && this->vpenemy.empty())return;
 
 	for (int i = 0; i < vpenemy.size(); i++) {
 		if (vpenemy[i].second <= 0) {

@@ -18,7 +18,10 @@ public:
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
 
-	bool isFinishedSendEnemy() { return m_currentwave == (signed)vwave.size() ?  true : false; }
+	bool isFinishedSendEnemy() {
+		if (m_currentwave == (signed)vwave.size() && this->vpenemy.empty())return true;
+		else return false;
+	}
 
 	// getter
 	long long getCount() const { return this->m_count; }
