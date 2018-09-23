@@ -257,11 +257,15 @@ void Game::Update() {
 	}
 
 	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+		MessageBox(nullptr, "Game clear !!", "Game Over", MB_OK);
 		mSceneChanger->ChangeMainScene(eEnd);
 	}
 }
 
 void Game::Draw() {
+	// WaveGuage
+	ws->draw(this->texture, Vector2D(8, 56));
+
 	// overall
 	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
 
@@ -280,8 +284,7 @@ void Game::Draw() {
 		}
 	}
 
-	// WaveGuage
-	ws->draw(this->texture, Vector2D(8, 56));
+	
 
 	// Money
 	DrawStringToHandle(530, 8, "Money", Black, fonthandle[0]);
