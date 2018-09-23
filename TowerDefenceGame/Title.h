@@ -53,9 +53,6 @@ void Title::Initialize() {
 	db.print("Initializing texture......");
 	tl.load("data/tl/texturelist.csv", &this->texture) ? db.print("Success!") : db.print("Failed...");
 
-	// load title paint
-	// texture.pool("texture/title/title.png");
-
 	button_newgame = new Button(384, 364);
 	button_end = new Button(384, 364+192);
 	button_right = new Button(578+128, 364+64);
@@ -95,7 +92,7 @@ void Title::Update() {
 }
 
 void Title::Draw() {
-	// DrawGraph(0, 0, texture.getHandle("texture/title/title.png"), FALSE);
+	DrawGraph(0, 0, texture.getHandle("texture/Title/title.png"), FALSE);
 
 	button_newgame->draw();
 	button_end->draw();
