@@ -87,6 +87,21 @@
     <ClCompile Include="Debugger.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="FieldLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="PathLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h">
@@ -171,6 +186,24 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldLoader.h">
+      <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="PathLoader.h">
+      <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveLoader.h">
+      <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureLoader.h">
+      <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonLoader.h">
+      <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="IMouseOver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

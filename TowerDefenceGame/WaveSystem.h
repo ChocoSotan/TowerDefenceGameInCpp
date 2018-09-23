@@ -10,30 +10,38 @@
 
 class WaveSystem final {
 public:
-	WaveSystem(short interval);
+	WaveSystem(short interval_wave, short interval_enemy);
 	~WaveSystem();
 
-	void init(std::string filename, Vector2D &pos);
-	void update(std::vector<EnemyBase*> &venemy);
-	long long getCount() { return this->count; }
+	void init(std::string filename, const Vector2D &pos);
+	void update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest);
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
 
 	bool isFinishedSendEnemy() {
-		return currentwave == (signed)vwave.size() ?  true : false;
+		if (m_currentwave == (signed)vwave.size() && this->vpenemy.empty())return true;
+		else return false;
 	}
-	
+
+	// getter
+	long long getCount() const { return this->m_count; }
+	short getCurrentWave() const { return this->m_currentwave; }
+	size_t getMaxWave() const { return this->vwave.size(); }
+	size_t getReservedEnemySize() const { return this->vpenemy.size(); }
+
 private:
-	std::vector<EnemyBase*> *pvenemy;
+	std::vector<std::pair<EnemyBase*, short>> vpenemy;
+
 	std::vector<Wave*> vwave;
 	Texture *texture;
 
-	short currentwave;
+	short m_currentwave;
 	
-	short interval;
+	short m_interval_wave;
+	short m_interval_enemy;
 
-	long count;
+	long m_count;
 
-	int fonthandle;
+	int m_fonthandle;
 };
 

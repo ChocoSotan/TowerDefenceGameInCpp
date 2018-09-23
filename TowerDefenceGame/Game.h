@@ -2,6 +2,7 @@
 
 #pragma warning(disable:4996)
 
+// Systems
 #include "Scene.h"
 #include "ISceneChanger.h"
 #include "DxLib.h"
@@ -9,21 +10,33 @@
 #include "Enemy.h"
 #include "Turret.h"
 #include "Terrain.h"
-
 #include "Texture.h"
 #include "Button.h"
-#include "Mouse.h"
-#include "Loader.h"
 #include "ToggleButton.h"
 #include "TurretFactory.h"
 #include "InformationWindow.h"
-#include "SoundLoader.h"
 #include "Sound.h"
-#include "Keyboard.h"
+#include "Wave.h"
+#include "WaveSystem.h"
 
+#include "Keyboard.h"
+#include "Mouse.h"
+
+// Loaders
+#include "Loader.h"
+#include "FieldLoader.h"
+#include "PathLoader.h"
+#include "SoundLoader.h"
+#include "ButtonLoader.h"
+#include "TextureLoader.h"
+
+// Debugger
 #include "Debugger.h"
 
 #include <vector>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 // for DxLib's Color Code
 #define White GetColor(255,255,255)
@@ -38,7 +51,7 @@
 
 class Game : public BaseScene {
 public:
-	Game(ISceneChanger *changer);
+	Game(ISceneChanger *changer, const int stage);
 	~Game() {}
 
 	void Initialize() override;
@@ -63,7 +76,7 @@ private:
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws = new WaveSystem(300);
+	WaveSystem *ws = new WaveSystem(300,40);
 	TurretFactory *tf = new TurretFactory();
 	Texture texture;
 	Sound sound;
@@ -71,6 +84,9 @@ private:
 
 	std::vector<Button*> vbutton;
 	std::vector<ToggleButton*> vtbutton;
+
+	// stage no
+	int stage;
 
 	// option flags
 	bool isPaused;
@@ -87,7 +103,8 @@ private:
 
 };
 
-Game::Game(ISceneChanger *changer) : BaseScene(changer) {
+Game::Game(ISceneChanger *changer, const int stage) : BaseScene(changer) {
+	this->stage = stage;
 	this->isPaused = true;
 	this->ffmul = 1;
 	resource = 100;			// initial resource
@@ -100,7 +117,9 @@ void Game::Initialize() {
 	// Loading Path
 	PathLoader pl = PathLoader();
 	dbg.print("Initializing Pathes......");
-	pl.load("data\\stage\\01\\path.csv", this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
+	std::stringstream ss;
+	ss << "data\\stage\\" << std::setfill('0') << std::setw(2) << std::right << this->stage << "\\path.csv";
+	pl.load(ss.str(), this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Turrets
 	dbg.print("Initializing Turrets......");
@@ -210,7 +229,7 @@ void Game::Update() {
 	if (isPaused) return;
 
 	for (int i = 0; i < ffmul; i++) {
-		ws->update(this->venemy);
+		ws->update(&this->venemy, &this->resource, 1.05);
 	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
@@ -238,12 +257,17 @@ void Game::Update() {
 	}
 
 	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+		MessageBox(nullptr, "Game clear !!", "Game Over", MB_OK);
 		mSceneChanger->ChangeMainScene(eEnd);
 	}
 }
 
 void Game::Draw() {
-	
+	// WaveGuage
+	ws->draw(this->texture, Vector2D(8, 56));
+
+	// overall
+	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
 
 	// terrain
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
@@ -251,9 +275,6 @@ void Game::Draw() {
 			vterrain[j][i]->draw();
 		}
 	}
-
-	// WaveGuage
-	ws->draw(this->texture, Vector2D(8, 56));
 
 	// field
 	const int Boxsize = 64;
@@ -265,17 +286,18 @@ void Game::Draw() {
 
 	
 
-	// overall
-	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
-
 	// Money
 	DrawStringToHandle(530, 8, "Money", Black, fonthandle[0]);
 	DrawFormatStringToHandle(560,26,Black,fonthandle[1],"%d",this->resource);
 
 
 	// Health
-	DrawFormatStringToHandle(666, 8, Black, fonthandle[0], "Health",this->health);
+	DrawStringToHandle(666, 8,"Health", Black, fonthandle[0]);
 	DrawFormatStringToHandle(706, 26, Black, fonthandle[1], "%d", this->health);
+
+	// Number of Enemy
+	DrawStringToHandle(394, 8, "Enemy", Black, fonthandle[0]);
+	DrawFormatStringToHandle(418, 26, Black, fonthandle[1], "%d / %d",(int)this->venemy.size(),ws->getReservedEnemySize());
 
 	// turret construction title
 	DrawStringToHandle(810, 74, "TURRET", Black, fonthandle[2], White);
@@ -283,11 +305,6 @@ void Game::Draw() {
 	// turrets
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		(*i)->draw(this->texture);
-	}
-
-	// button
-	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
-		(*i)->draw();
 	}
 
 	// info
@@ -298,6 +315,11 @@ void Game::Draw() {
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);
+	}
+
+	// button
+	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
+		(*i)->draw();
 	}
 }
 
