@@ -15,16 +15,20 @@ public:
 
 	void init(std::string filename, const Vector2D &pos);
 	void update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest);
-	long long getCount() { return this->m_count; }
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
 
-	bool isFinishedSendEnemy() {
-		return m_currentwave == (signed)vwave.size() ?  true : false;
-	}
-	
+	bool isFinishedSendEnemy() { return m_currentwave == (signed)vwave.size() ?  true : false; }
+
+	// getter
+	long long getCount() const { return this->m_count; }
+	short getCurrentWave() const { return this->m_currentwave; }
+	size_t getMaxWave() const { return this->vwave.size(); }
+	size_t getReservedEnemySize() const { return this->vpenemy.size(); }
+
 private:
-	std::vector<EnemyBase*> *pvenemy;
+	std::vector<std::pair<EnemyBase*, short>> vpenemy;
+
 	std::vector<Wave*> vwave;
 	Texture *texture;
 

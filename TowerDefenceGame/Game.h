@@ -76,7 +76,7 @@ private:
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws = new WaveSystem(300,20);
+	WaveSystem *ws = new WaveSystem(300,40);
 	TurretFactory *tf = new TurretFactory();
 	Texture texture;
 	Sound sound;
