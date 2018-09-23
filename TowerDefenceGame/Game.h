@@ -262,7 +262,8 @@ void Game::Update() {
 }
 
 void Game::Draw() {
-	
+	// overall
+	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
 
 	// terrain
 	for (int i = 0; i < (signed)vterrain.size(); i++) {
@@ -270,9 +271,6 @@ void Game::Draw() {
 			vterrain[j][i]->draw();
 		}
 	}
-
-	// WaveGuage
-	ws->draw(this->texture, Vector2D(8, 56));
 
 	// field
 	const int Boxsize = 64;
@@ -282,10 +280,8 @@ void Game::Draw() {
 		}
 	}
 
-	
-
-	// overall
-	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
+	// WaveGuage
+	ws->draw(this->texture, Vector2D(8, 56));
 
 	// Money
 	DrawStringToHandle(530, 8, "Money", Black, fonthandle[0]);
@@ -293,8 +289,12 @@ void Game::Draw() {
 
 
 	// Health
-	DrawFormatStringToHandle(666, 8, Black, fonthandle[0], "Health",this->health);
+	DrawStringToHandle(666, 8,"Health", Black, fonthandle[0]);
 	DrawFormatStringToHandle(706, 26, Black, fonthandle[1], "%d", this->health);
+
+	// Number of Enemy
+	DrawStringToHandle(394, 8, "Enemy", Black, fonthandle[0]);
+	DrawFormatStringToHandle(418, 26, Black, fonthandle[1], "%d / %d",(int)this->venemy.size(),ws->getReservedEnemySize());
 
 	// turret construction title
 	DrawStringToHandle(810, 74, "TURRET", Black, fonthandle[2], White);
@@ -302,11 +302,6 @@ void Game::Draw() {
 	// turrets
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		(*i)->draw(this->texture);
-	}
-
-	// button
-	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
-		(*i)->draw();
 	}
 
 	// info
@@ -317,6 +312,11 @@ void Game::Draw() {
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
 		if (!(*i)->isAlive())continue;
 		(*i)->draw(this->texture);
+	}
+
+	// button
+	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
+		(*i)->draw();
 	}
 }
 
