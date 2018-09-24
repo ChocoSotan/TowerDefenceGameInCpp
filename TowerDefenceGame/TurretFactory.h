@@ -13,7 +13,7 @@ public:
 	~TurretFactory() {}
 
 	TurretBase* create(const std::string name, const std::vector<Vector2D> &vpath);
-	bool load(const std::string filename, const std::vector<Vector2D> &vpath);
+	bool load(const std::string &filename, const std::vector<Vector2D> &vpath);
 	const TurretBase* getDataByName(const std::string name) const;
 	const std::vector<const TurretBase*> getDataAll() const;
 

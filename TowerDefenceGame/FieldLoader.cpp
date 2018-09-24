@@ -8,7 +8,7 @@
 #include <fstream>
 
 
-bool FieldLoader::load(std::string filename, std::vector<std::vector<TerrainBase*>> &vec, const Vector2D &pos, const int size) {
+bool FieldLoader::load(const std::string &filename, std::vector<std::vector<TerrainBase*>> &vec, const Vector2D &pos, const int size) {
 	using namespace std;
 	ifstream ifs(filename);
 	string line;

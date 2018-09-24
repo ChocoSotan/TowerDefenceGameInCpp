@@ -25,3 +25,10 @@ bool Sound::pool(const std::string &filename) {
 	this->sounds.insert(std::make_pair(filename, handle));
 	return true;
 }
+
+bool Sound::deleteHandleAll() {
+	for (auto i = sounds.begin(); i != sounds.end(); ++i) {
+		if (DeleteSoundMem((*i).second) == -1)return false;
+	}
+	return true;
+}

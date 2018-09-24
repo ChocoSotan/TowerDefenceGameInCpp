@@ -13,5 +13,5 @@ public:
 	WaveLoader() {}
 	~WaveLoader() {}
 
-	bool load(std::string filename, std::vector<Wave*> &vec, const Vector2D &pos);
+	bool load(const std::string &filename, std::vector<Wave*> &vec, const Vector2D &pos);
 };

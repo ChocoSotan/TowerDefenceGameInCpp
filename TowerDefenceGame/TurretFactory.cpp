@@ -39,7 +39,7 @@ TurretBase* TurretFactory::create(const std::string name, const std::vector<Vect
 	return nullptr;
 }
 
-bool TurretFactory::load(const std::string filename, const std::vector<Vector2D> &vpath) {
+bool TurretFactory::load(const std::string &filename, const std::vector<Vector2D> &vpath) {
 	if (!tl.load(filename, &this->vbasicturret, &this->vmortarturret, &this->vblastturret))return false;
 	for (auto i = vbasicturret.begin(); i != vbasicturret.end(); ++i) {
 		i->changePriority(new ClosestBase(vpath));

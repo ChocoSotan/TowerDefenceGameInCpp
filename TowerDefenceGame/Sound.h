@@ -10,6 +10,7 @@ public:
 
 	bool play(const std::string &filename) const;
 	bool pool(const std::string &filename);
+	bool deleteHandleAll();
 
 private:
 	std::map<std::string, int> sounds;

@@ -8,7 +8,7 @@
 
 
 
-bool PathLoader::load(std::string filename, std::vector<Vector2D> &vpath) {
+bool PathLoader::load(const std::string &filename, std::vector<Vector2D> &vpath) {
 	using namespace std;
 	ifstream ifs(filename);
 	string line;

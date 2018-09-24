@@ -10,7 +10,7 @@
 /// </summary>
 class TerrainBase {
 public:
-	TerrainBase(bool canplaceturret, Vector2D pos) {
+	TerrainBase(bool canplaceturret, const Vector2D &pos) {
 		this->canplaceturret = canplaceturret;
 		this->position = pos;
 	}
@@ -19,7 +19,7 @@ public:
 	bool canPlaceTurret() { return canplaceturret; }
 	void changeCanPlaceTurret() { canplaceturret = canplaceturret ? false : true; }
 
-	bool init(Texture *texture, std::string filename);
+	bool init(Texture *texture, const std::string &filename);
 	void draw();
 
 protected:
@@ -31,7 +31,7 @@ protected:
 
 class BasicTerrain : public TerrainBase {
 public:
-	BasicTerrain(bool canplaceturret, Vector2D pos) : TerrainBase(canplaceturret, pos) { }
+	BasicTerrain(bool canplaceturret, const Vector2D &pos) : TerrainBase(canplaceturret, pos) { }
 	~BasicTerrain() {}
 
 

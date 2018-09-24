@@ -31,10 +31,10 @@ private:
 	Mouse mouse;
 
 	// buttons
-	Button *button_newgame;
-	Button *button_left;
-	Button *button_right;
-	Button *button_end;
+	Button button_newgame = Button(384, 364);
+	Button button_left = Button(320 - 64, 364 + 64);
+	Button button_right = Button(578 + 128, 364 + 64);
+	Button button_end = Button(384, 364 + 192);
 
 	// fonts
 	std::vector<int> fonthandle;
@@ -53,15 +53,10 @@ void Title::Initialize() {
 	db.print("Initializing texture......");
 	tl.load("data/texturelist/title.csv", &this->texture) ? db.print("Success!") : db.print("Failed...");
 
-	button_newgame = new Button(384, 364);
-	button_end = new Button(384, 364+192);
-	button_right = new Button(578+128, 364+64);
-	button_left = new Button(320-64, 364+64);
-
-	button_newgame->init(&this->texture, "texture/Title/button/newgame.png");
-	button_left->init(&this->texture, "texture/Title/button/left.png");
-	button_right->init(&this->texture, "texture/Title/button/right.png");
-	button_end->init(&this->texture, "texture/Title/button/endgame.png");
+	button_newgame.init(this->texture, "texture/Title/button/newgame.png");
+	button_left.init(this->texture, "texture/Title/button/left.png");
+	button_right.init(this->texture, "texture/Title/button/right.png");
+	button_end.init(this->texture, "texture/Title/button/endgame.png");
 
 	// fonts
 	this->fonthandle.push_back(CreateFontToHandle("ƒƒCƒŠƒI", 64, 1));
@@ -70,23 +65,23 @@ void Title::Initialize() {
 void Title::Update() {
 	mouse.update();
 
-	button_newgame->update(this->mouse);
-	button_left->update(this->mouse);
-	button_right->update(this->mouse);
-	button_end->update(this->mouse);
+	button_newgame.update(this->mouse);
+	button_left.update(this->mouse);
+	button_right.update(this->mouse);
+	button_end.update(this->mouse);
 
-	if (button_newgame->isClicked()) {
+	if (button_newgame.isClicked()) {
 		db.print("Pressed new game button.");
 		this->mSceneChanger->ChangeMainScene(eGame);
 	}
-	if (button_end->isClicked()) {
+	if (button_end.isClicked()) {
 		db.print("Pressed end game button.");
 		this->mSceneChanger->ChangeMainScene(eEnd);
 	}
-	if (button_right->isClicked()) {
+	if (button_right.isClicked()) {
 		this->m_stage = this->m_stage % m_stage_max + 1;
 	}
-	if (button_left->isClicked()) {
+	if (button_left.isClicked()) {
 		this->m_stage = (this->m_stage + m_stage_max) % m_stage_max + 1;
 	}
 }
@@ -94,14 +89,17 @@ void Title::Update() {
 void Title::Draw() {
 	DrawGraph(0, 0, texture.getHandle("texture/Title/title.png"), FALSE);
 
-	button_newgame->draw();
-	button_end->draw();
-	button_left->draw();
-	button_right->draw();
+	button_newgame.draw(this->texture);
+	button_end.draw(this->texture);
+	button_left.draw(this->texture);
+	button_right.draw(this->texture);
 
 	DrawFormatStringToHandle(320+64, 364 + 64, GetColor(255, 255, 255), this->fonthandle[0], "Stage %d", this->m_stage);
 }
 
 void Title::Finalize() {
 	texture.deleteHandleAll();
+	for (auto i = this->fonthandle.begin(); i != fonthandle.end(); ++i) {
+		DeleteFontToHandle((*i));
+	}
 }

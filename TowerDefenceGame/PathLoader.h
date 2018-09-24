@@ -11,5 +11,5 @@ public:
 	PathLoader() {}
 	~PathLoader() {}
 
-	bool load(std::string filename, std::vector<Vector2D> &vpath);
+	bool load(const std::string &filename, std::vector<Vector2D> &vpath);
 };
