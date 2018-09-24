@@ -19,7 +19,7 @@ public:
 	void draw(const Texture &texture, const Vector2D &pos);
 
 	bool isFinishedSendEnemy() {
-		if (m_currentwave == (signed)vwave.size() && this->vpenemy.empty())return true;
+		if (vwave.empty() && vpenemy.empty())return true;
 		else return false;
 	}
 
