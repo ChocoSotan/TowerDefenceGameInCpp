@@ -51,7 +51,7 @@ Title::Title(ISceneChanger *changer) : BaseScene(changer) {
 void Title::Initialize() {
 	// Loading Texture
 	db.print("Initializing texture......");
-	tl.load("data/tl/texturelist.csv", &this->texture) ? db.print("Success!") : db.print("Failed...");
+	tl.load("data/texturelist/title.csv", &this->texture) ? db.print("Success!") : db.print("Failed...");
 
 	button_newgame = new Button(384, 364);
 	button_end = new Button(384, 364+192);

@@ -167,6 +167,7 @@
     <ClInclude Include="InformationWindow.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="PathLoader.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundLoader.h" />
     <ClInclude Include="TargetPriority.h" />

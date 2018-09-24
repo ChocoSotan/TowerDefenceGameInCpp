@@ -129,7 +129,7 @@ void Game::Initialize() {
 	// Loading Textures
 	TextureLoader tel = TextureLoader();
 	dbg.print("Initializing Textures......");
-	tel.load("data\\texturelist.csv", &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
+	tel.load("data\\texturelist\\game.csv", &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Sounds
 	SoundLoader sl = SoundLoader();
