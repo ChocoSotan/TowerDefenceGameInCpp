@@ -1,5 +1,6 @@
 #include"TargetPriority.h"
 #include"Vector2D.h"
+#include"Turret.h"
 
 int ClosestTurret::decisionOrder(const std::vector<EnemyBase*> &targetlist, TurretBase &turret) const {
 	if (targetlist.empty())return -1;

@@ -5,12 +5,13 @@
 #include "TurretBarrel.h"
 #include "Texture.h"
 #include "Sound.h"
+#include"TargetPriority.h"
 
 #include <vector>
 #include <string>
 #include <math.h>
 
-class TargetPriority;
+//class TargetPriority;
 
 class TurretBase {
 public:
@@ -31,7 +32,7 @@ public:
 		this->target = nullptr;
 	}
 	virtual ~TurretBase() {
-		// delete this->target;
+		delete this->target;
 	}
 
 	virtual void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) = 0;

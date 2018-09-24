@@ -1,9 +1,9 @@
 #pragma once
 #include"Enemy.h"
-#include"Turret.h"
+//#include"Turret.h"
 #include"DxLib.h"
 class TurretBase;
-class MortarTurret;
+//class MortarTurret;
 class TargetPriority {
 public:
 	TargetPriority(const std::vector<Vector2D> &vpath) {
