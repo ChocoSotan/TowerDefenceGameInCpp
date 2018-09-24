@@ -6,7 +6,7 @@
 #include <vector>
 #include <fstream>
 
-bool TextureLoader::load(std::string filename, Texture *texture) {
+bool TextureLoader::load(const std::string &filename, Texture *texture) {
 	using namespace std;
 
 	ifstream ifs(filename);

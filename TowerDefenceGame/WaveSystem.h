@@ -13,7 +13,7 @@ public:
 	WaveSystem(short interval_wave, short interval_enemy);
 	~WaveSystem();
 
-	void init(std::string filename, const Vector2D &pos);
+	void init(const std::string &filename, const Vector2D &pos);
 	void update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest);
 	void nextWave();
 	void draw(const Texture &texture, const Vector2D &pos);
@@ -21,6 +21,15 @@ public:
 	bool isFinishedSendEnemy() {
 		if (m_currentwave == (signed)vwave.size() && this->vpenemy.empty())return true;
 		else return false;
+	}
+
+	void deleteAllEnemy() {
+		for (auto i = vwave.begin(); i != vwave.end(); ++i) {
+			(*i)->deleteEnemy();
+		}
+		for (auto i = vpenemy.begin(); i != vpenemy.end(); ++i) {
+			delete (*i).first;
+		}
 	}
 
 	// getter

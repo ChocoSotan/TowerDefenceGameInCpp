@@ -10,7 +10,7 @@ public:
 
 protected:
 	// split string by delimiter and store to container
-	void splitString(const std::string &line, std::vector<std::string> &container, const char delim = ',');
+	void splitString(const std::string &line, std::vector<std::string> &container, const char delim = ',') const;
 	
 	
 };

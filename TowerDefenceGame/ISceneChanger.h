@@ -3,6 +3,7 @@
 typedef enum {
 	eTitle,
 	eGame,
+	eResult,
 	eOption,
 	eKeyConfig,
 	eEnd,

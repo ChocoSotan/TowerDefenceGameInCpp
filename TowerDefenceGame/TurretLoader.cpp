@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 
-bool TurretLoader::load(std::string filename, std::vector<BasicTurret> *vbasicturret, std::vector<MortarTurret> *vmortarturret, std::vector<BlastTurret> *vblastturret) {
+bool TurretLoader::load(const std::string &filename, std::vector<BasicTurret> *vbasicturret, std::vector<MortarTurret> *vmortarturret, std::vector<BlastTurret> *vblastturret) {
 	using namespace std;
 	ifstream ifs(filename);
 	string line;

@@ -8,7 +8,7 @@
 #include <vector>
 #include <fstream>
 
-bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, std::vector<ToggleButton*> &vtbutton, Texture *texture) {
+bool ButtonLoader::load(const std::string &filename, std::vector<Button*> *vbutton, std::vector<ToggleButton*> &vtbutton, const Texture &texture) const {
 	using namespace std;
 
 	ifstream ifs(filename);
@@ -39,7 +39,7 @@ bool ButtonLoader::load(std::string filename, std::vector<Button*> &vbutton, std
 
 
 		button->init(texture, buttonfilename);
-		vbutton.push_back(button);
+		vbutton->push_back(button);
 
 		buttonfilename.clear();
 		buffer.clear();

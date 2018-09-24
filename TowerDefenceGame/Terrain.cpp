@@ -3,7 +3,7 @@
 #include "DxLib.h"
 
 
-bool TerrainBase::init(Texture *texture, std::string filename) {
+bool TerrainBase::init(Texture *texture, const std::string &filename) {
 	this->texture = texture;
 	this->filename = filename;
 	return true;
@@ -11,9 +11,7 @@ bool TerrainBase::init(Texture *texture, std::string filename) {
 
 
 void TerrainBase::draw() {
-	DrawGraph((int)position.getX(), 
-		(int)position.getY(), 
-		texture->getHandle(filename), FALSE);
+	DrawGraph((int)position.getX(), (int)position.getY(), texture->getHandle(filename), FALSE);
 }
 
 

@@ -14,7 +14,7 @@
 
 
 // split string by delimiter and store to container
-void Loader::splitString(const std::string &line, std::vector<std::string> &container, const char delim) {
+void Loader::splitString(const std::string &line, std::vector<std::string> &container, const char delim) const {
 	std::istringstream iss(line);
 	std::string str;
 

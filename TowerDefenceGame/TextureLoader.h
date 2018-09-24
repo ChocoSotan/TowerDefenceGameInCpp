@@ -10,5 +10,5 @@ public:
 	TextureLoader() {}
 	~TextureLoader() {}
 
-	bool load(std::string filename, Texture *texture);
+	bool load(const std::string &filename, Texture *texture);
 };

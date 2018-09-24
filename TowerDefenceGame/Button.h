@@ -18,11 +18,11 @@ public:
 	}
 	virtual ~Button() {}
 
-	void draw() const;
+	void draw(const Texture &texture) const;
 	virtual void update(const Mouse &mouse);
 	bool isClicked() const;
-	bool init(Texture *texture, std::vector<std::string> vfilename);
-	bool init(Texture *texture, std::string filename);
+	bool init(const Texture &texture, const std::vector<std::string> &vfilename);
+	bool init(const Texture &texture, const std::string &filename);
 
 	void proceedCount() { count = (count + 1) % (int)vfilename.size(); }
 	void setCount(int count) { this->count = count; }
@@ -34,7 +34,6 @@ protected:
 	int sx, sy;
 	bool isclicked;
 	bool wasclicked;
-	Texture *texture;
 	std::vector<std::string> vfilename;
 	int count;
 };

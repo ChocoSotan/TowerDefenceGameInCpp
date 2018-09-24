@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-void Button::draw() const {
-	DrawGraph(x, y, texture->getHandle(vfilename[count]), TRUE);
+void Button::draw(const Texture &texture) const {
+	DrawGraph(x, y, texture.getHandle(vfilename[count]), TRUE);
 }
 
 bool Button::isClicked() const {
@@ -38,20 +38,18 @@ void Button::update(const Mouse &mouse) {
 	}
 }
 
-bool Button::init(Texture *texture, std::vector<std::string> vfilename) {
+bool Button::init(const Texture &texture, const std::vector<std::string> &vfilename) {
 	for (auto i = vfilename.begin(); i != vfilename.end(); i++) {
-		if (texture->getHandle(*i) == -1)return false;
+		if (texture.getHandle(*i) == -1)return false;
 	}
-	this->texture = texture;
 	this->vfilename = vfilename;
-	if (GetGraphSize(texture->getHandle(vfilename[0]), &sx, &sy) == -1)return false;
+	if (GetGraphSize(texture.getHandle(vfilename[0]), &sx, &sy) == -1)return false;
 	return true;
 }
 
-bool Button::init(Texture * texture, std::string filename) {
-	if (texture->getHandle(filename) == -1)return false;
-	this->texture = texture;
+bool Button::init(const Texture &texture, const std::string &filename) {
+	if (texture.getHandle(filename) == -1)return false;
 	this->vfilename.push_back(filename);
-	if (GetGraphSize(texture->getHandle(vfilename[0]), &sx, &sy) == -1)return false;
+	if (GetGraphSize(texture.getHandle(vfilename[0]), &sx, &sy) == -1)return false;
 	return true;
 }

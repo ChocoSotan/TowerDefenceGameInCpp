@@ -72,12 +72,13 @@ private:
 	std::vector<TurretBase*> vturret;
 	std::vector<const TurretBase*> vturret_ini;		// to copy to vturret
 	std::vector<EnemyBase*> venemy;
+	std::vector<EnemyBase*> tomb;
 	std::vector<Wave*> vwave;
 	std::vector<Vector2D> vpath;
 	std::vector<std::vector<TerrainBase*>> vterrain;
 	
-	WaveSystem *ws = new WaveSystem(300,40);
-	TurretFactory *tf = new TurretFactory();
+	WaveSystem ws = WaveSystem(300,40);
+	TurretFactory tf = TurretFactory();
 	Texture texture;
 	Sound sound;
 	InformationWindow info;
@@ -109,7 +110,7 @@ Game::Game(ISceneChanger *changer, const int stage) : BaseScene(changer) {
 	this->ffmul = 1;
 	resource = 100;			// initial resource
 	health = 20;			// initial health
-
+	sizeof(NormalEnemy);
 }
 
 void Game::Initialize() {
@@ -123,13 +124,13 @@ void Game::Initialize() {
 
 	// Loading Turrets
 	dbg.print("Initializing Turrets......");
-	tf->load("data\\turret\\turret.csv", this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
-	this->vturret_ini = tf->getDataAll();
+	tf.load("data\\turret\\turret.csv", this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
+	this->vturret_ini = tf.getDataAll();
 
 	// Loading Textures
 	TextureLoader tel = TextureLoader();
 	dbg.print("Initializing Textures......");
-	tel.load("data\\texturelist.csv", &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
+	tel.load("data\\texturelist\\game.csv", &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Sounds
 	SoundLoader sl = SoundLoader();
@@ -137,12 +138,12 @@ void Game::Initialize() {
 	sl.load("data\\soundlist.csv", &this->sound) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading WaveData
-	ws->init("data\\stage\\01\\wave.csv", vpath[0]);
+	ws.init("data\\stage\\01\\wave.csv", vpath[0]);
 
 	// Loading ButtonData
 	ButtonLoader bl = ButtonLoader();
 	dbg.print("Initializing Buttons.....");
-	bl.load("data\\buttonlist.csv", this->vbutton, this->vtbutton, &this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
+	bl.load("data\\buttonlist.csv", &this->vbutton, this->vtbutton, this->texture) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Field
 	FieldLoader fl = FieldLoader();
@@ -175,7 +176,7 @@ void Game::Update() {
 	if (vbutton[1]->isClicked() || keyboard.getPressingCount(KEY_INPUT_F) == 1) { ffmul = ffmul == 1 ? 2 : 1; }
 
 	// next wave
-	if (vbutton[2]->isClicked() || keyboard.getPressingCount(KEY_INPUT_N) == 1) { ws->nextWave(); }
+	if (vbutton[2]->isClicked() || keyboard.getPressingCount(KEY_INPUT_N) == 1) { ws.nextWave(); }
 
 	// construct turret
 	{
@@ -200,7 +201,7 @@ void Game::Update() {
 				}
 				this->resource -= vturret_ini[selectedturret]->getConstructCost();
 
-				vturret.push_back(tf->create(vturret_ini[selectedturret]->getName(), this->vpath));
+				vturret.push_back(tf.create(vturret_ini[selectedturret]->getName(), this->vpath));
 
 				vturret[(signed)vturret.size() - 1]->setPosition(Vector2D(vbutton[i]->getPosition().getX() + 32, vbutton[i]->getPosition().getY() + 32));
 				vterrain[x][y]->changeCanPlaceTurret();
@@ -229,7 +230,7 @@ void Game::Update() {
 	if (isPaused) return;
 
 	for (int i = 0; i < ffmul; i++) {
-		ws->update(&this->venemy, &this->resource, 1.05);
+		ws.update(&this->venemy, &this->resource, 1.05);
 	}
 
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
@@ -242,7 +243,9 @@ void Game::Update() {
 		}
 	}
 	for (int i = 0; i < (signed)venemy.size(); i++) {
-		if (!venemy[i]->isAlive())this->venemy.erase(this->venemy.begin() + i);
+		if (venemy[i]->isAlive())continue;
+		tomb.push_back(venemy[i]);
+		this->venemy.erase(this->venemy.begin() + i);
 	}
 
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
@@ -253,18 +256,18 @@ void Game::Update() {
 
 	if (this->health <= 0) {
 		MessageBox(nullptr, "You have defeated...", "Game Over", MB_OK);
-		mSceneChanger->ChangeMainScene(eEnd);
+		mSceneChanger->ChangeMainScene(eResult);
 	}
 
-	if (ws->isFinishedSendEnemy() && venemy.size() == 0) {
+	if (ws.isFinishedSendEnemy() && venemy.size() == 0) {
 		MessageBox(nullptr, "Game clear !!", "Game Over", MB_OK);
-		mSceneChanger->ChangeMainScene(eEnd);
+		mSceneChanger->ChangeMainScene(eResult);
 	}
 }
 
 void Game::Draw() {
 	// WaveGuage
-	ws->draw(this->texture, Vector2D(8, 56));
+	ws.draw(this->texture, Vector2D(8, 56));
 
 	// overall
 	DrawGraph(0, 0, texture.getHandle("texture/Game/Field/overall.png"), TRUE);
@@ -297,7 +300,7 @@ void Game::Draw() {
 
 	// Number of Enemy
 	DrawStringToHandle(394, 8, "Enemy", Black, fonthandle[0]);
-	DrawFormatStringToHandle(418, 26, Black, fonthandle[1], "%d / %d",(int)this->venemy.size(),ws->getReservedEnemySize());
+	DrawFormatStringToHandle(418, 26, Black, fonthandle[1], "%d / %d",(int)this->venemy.size(),ws.getReservedEnemySize());
 
 	// turret construction title
 	DrawStringToHandle(810, 74, "TURRET", Black, fonthandle[2], White);
@@ -319,7 +322,7 @@ void Game::Draw() {
 
 	// button
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
-		(*i)->draw();
+		(*i)->draw(this->texture);
 	}
 }
 
@@ -341,10 +344,19 @@ void Game::Finalize() {
 	for (auto i = vwave.begin(); i != vwave.end(); ++i) {
 		delete (*i);
 	}
+	for (auto i = venemy.begin(); i != venemy.end(); ++i) {
+		delete (*i);
+	}
+	for (auto i = tomb.begin(); i != tomb.end(); ++i) {
+		delete (*i);
+	}
+	for (auto i = this->fonthandle.begin(); i != fonthandle.end(); ++i) {
+		DeleteFontToHandle((*i));
+	}
 
-	
-	delete this->ws;
-	delete this->tf;
+	ws.deleteAllEnemy();
+
 	texture.deleteHandleAll();
+	sound.deleteHandleAll();
 	MessageBox(nullptr, "Thank you for playing.", "Game Over", MB_OK);
 }

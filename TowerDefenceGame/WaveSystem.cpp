@@ -8,6 +8,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "Debugger.h"
+
 
 WaveSystem::WaveSystem(short interval_wave, short interval_enemy) {
 	m_count = 0;
@@ -21,13 +23,13 @@ WaveSystem::WaveSystem(short interval_wave, short interval_enemy) {
 WaveSystem::~WaveSystem() {
 }
 
-void WaveSystem::init(std::string filename, const Vector2D &pos) {
+void WaveSystem::init(const std::string &filename, const Vector2D &pos) {
 	WaveLoader waveloader;
 	waveloader.load(filename, this->vwave, pos);
 }
 
 void WaveSystem::update(std::vector<EnemyBase*> *venemy, long long *resource, const double interest) {
-	if (vwave.size() == m_currentwave && this->vpenemy.empty())return;
+	if (vwave.empty() && this->vpenemy.empty())return;
 
 	for (int i = 0; i < vpenemy.size(); i++) {
 		if (vpenemy[i].second <= 0) {
@@ -45,19 +47,32 @@ void WaveSystem::update(std::vector<EnemyBase*> *venemy, long long *resource, co
 	}
 
 	std::vector<EnemyBase*> tv;
-	vwave[m_currentwave]->push(&tv);
+	//vwave[m_currentwave]->push(&tv);
+	(*vwave.begin())->push(&tv);
+
+	vwave.erase(vwave.begin());
+	
+
 	for (int i = 0; i < (signed)tv.size(); i++) {
 		this->vpenemy.push_back(std::make_pair(tv[i], i * m_interval_enemy));
 	}
+
+	
 
 	// nextwave
 	*resource = (long long)(*resource * interest);
 	m_count = 0;
 	m_currentwave++;
+
+	Debugger dbg;
+	std::stringstream ss;
+	ss << (int)this->vwave.size();
+	dbg.print(ss.str());
 }
 
 
 void WaveSystem::nextWave() {
+	if (vwave.empty())return;
 	while (m_count % m_interval_wave < m_interval_wave - 1) {
 		m_count++;
 	}
@@ -68,7 +83,7 @@ void WaveSystem::draw(const Texture &texture, const Vector2D &pos) {
 	int sx, sy;
 	GetGraphSize(texture.getHandle(filename), &sx, &sy);
 
-	for (int i = 0; i < (signed)vwave.size() - m_currentwave; i++) {
+	for (int i = 0; i < (signed)vwave.size(); i++) {
 		DrawGraph((int)pos.getX(), (int)pos.getY() + (i + 1) * sy - (sy * m_count / m_interval_wave), texture.getHandle(filename), FALSE);
 
 		if (m_currentwave + i < 9) {

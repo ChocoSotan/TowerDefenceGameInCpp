@@ -7,7 +7,7 @@
 #include <vector>
 #include <fstream>
 
-bool WaveLoader::load(std::string filename, std::vector<Wave*> &vec, const Vector2D &pos) {
+bool WaveLoader::load(const std::string &filename, std::vector<Wave*> &vec, const Vector2D &pos) {
 	using namespace std;
 
 	ifstream ifs(filename);

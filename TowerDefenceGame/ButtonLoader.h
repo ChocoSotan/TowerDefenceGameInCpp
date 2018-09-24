@@ -14,5 +14,5 @@ public:
 	ButtonLoader() {}
 	~ButtonLoader() {}
 
-	bool load(std::string filename, std::vector<Button*> &vbutton, std::vector<ToggleButton*> &vtbutton, Texture *texture);
+	bool load(const std::string &filename, std::vector<Button*> *vbutton, std::vector<ToggleButton*> &vtbutton, const Texture &texture) const;
 };

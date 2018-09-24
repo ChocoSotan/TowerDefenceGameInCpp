@@ -6,6 +6,7 @@
 
 #include "Title.h"
 #include "Game.h"
+#include "Result.h"
 
 #include "DxLib.h"
 
@@ -48,6 +49,9 @@ void GameManager::Update() {
 			break;
 		case eGame:
 			mScene = (BaseScene*) new Game(this, 1);
+			break;
+		case eResult:
+			mScene = (BaseScene*) new Result(this);
 			break;
 		case eOption:
 			//mScene = (BaseScene*) new TitleOption(this);
