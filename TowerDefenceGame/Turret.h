@@ -30,7 +30,9 @@ public:
 		this->waittime = 0;
 		this->target = nullptr;
 	}
-	virtual ~TurretBase() {}
+	virtual ~TurretBase() {
+		// delete this->target;
+	}
 
 	virtual void attack(std::vector<EnemyBase*> *targetlist, const Sound &sound) = 0;
 	bool canConstruct(long long resource) const;

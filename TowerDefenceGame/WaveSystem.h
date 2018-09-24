@@ -23,12 +23,15 @@ public:
 		else return false;
 	}
 
-	void deleteAllEnemy() {
+	void finalize() {
 		for (auto i = vwave.begin(); i != vwave.end(); ++i) {
 			(*i)->deleteEnemy();
 		}
 		for (auto i = vpenemy.begin(); i != vpenemy.end(); ++i) {
 			delete (*i).first;
+		}
+		for (auto i = this->vwave.begin(); i != vwave.end(); ++i) {
+			delete *i;
 		}
 	}
 

@@ -64,7 +64,7 @@ class NormalEnemy : public EnemyBase {
 public:
 	NormalEnemy(double hitpoint, double movespeed, long attackpower, long long resourcereward, const Vector2D &pos) : EnemyBase(hitpoint, movespeed, attackpower, resourcereward, pos) {}
 	~NormalEnemy() {
-		delete gauge;
+
 	}
 
 	void update(const std::vector<Vector2D> &vpath, int *health) override;
@@ -73,6 +73,6 @@ public:
 	std::string getStatusText()const override;
 
 protected:
-	Gauge *gauge = new Gauge(30, 2, GetColor(0, 255, 0), GetColor(255, 0, 0));
+	Gauge gauge = Gauge(30, 2, GetColor(0, 255, 0), GetColor(255, 0, 0));
 
 };

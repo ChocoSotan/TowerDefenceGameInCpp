@@ -7,6 +7,10 @@
 #include <vector>
 #include <fstream>
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#define new ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif // _DEBUG
 
 bool FieldLoader::load(const std::string &filename, std::vector<std::vector<TerrainBase*>> &vec, const Vector2D &pos, const int size) {
 	using namespace std;

@@ -8,6 +8,13 @@
 #include <vector>
 #include <fstream>
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#define new ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif // _DEBUG
+
+
+
 bool ButtonLoader::load(const std::string &filename, std::vector<Button*> *vbutton, std::vector<ToggleButton*> &vtbutton, const Texture &texture) const {
 	using namespace std;
 

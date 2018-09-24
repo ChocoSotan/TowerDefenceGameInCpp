@@ -7,6 +7,11 @@
 #include <vector>
 #include <string>
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#define new ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif // _DEBUG
+
 TurretBase* TurretFactory::create(const std::string name, const std::vector<Vector2D> &vpath) {
 	const std::vector<std::string> type = {
 		"Normal",

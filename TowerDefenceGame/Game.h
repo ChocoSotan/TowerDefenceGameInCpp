@@ -354,7 +354,7 @@ void Game::Finalize() {
 		DeleteFontToHandle((*i));
 	}
 
-	ws.deleteAllEnemy();
+	ws.finalize();
 
 	texture.deleteHandleAll();
 	sound.deleteHandleAll();
