@@ -59,7 +59,7 @@ void Title::Initialize() {
 	button_end.init(this->texture, "texture/Title/button/endgame.png");
 
 	// fonts
-	this->fonthandle.push_back(CreateFontToHandle("メイリオ", 64, 1));
+	this->fonthandle.push_back(CreateFontToHandle("メイリオ", 64, 1,DX_FONTTYPE_ANTIALIASING_EDGE));
 }
 
 void Title::Update() {

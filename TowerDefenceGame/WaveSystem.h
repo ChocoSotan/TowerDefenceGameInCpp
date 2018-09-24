@@ -19,16 +19,19 @@ public:
 	void draw(const Texture &texture, const Vector2D &pos);
 
 	bool isFinishedSendEnemy() {
-		if (m_currentwave == (signed)vwave.size() && this->vpenemy.empty())return true;
+		if (vwave.empty() && vpenemy.empty())return true;
 		else return false;
 	}
 
-	void deleteAllEnemy() {
+	void finalize() {
 		for (auto i = vwave.begin(); i != vwave.end(); ++i) {
 			(*i)->deleteEnemy();
 		}
 		for (auto i = vpenemy.begin(); i != vpenemy.end(); ++i) {
 			delete (*i).first;
+		}
+		for (auto i = this->vwave.begin(); i != vwave.end(); ++i) {
+			delete *i;
 		}
 	}
 

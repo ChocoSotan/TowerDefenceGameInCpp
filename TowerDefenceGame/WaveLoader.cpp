@@ -7,6 +7,11 @@
 #include <vector>
 #include <fstream>
 
+#ifdef _DEBUG
+#include <crtdbg.h>
+#define new ::new(_NORMAL_BLOCK, __FILE__, __LINE__)
+#endif // _DEBUG
+
 bool WaveLoader::load(const std::string &filename, std::vector<Wave*> &vec, const Vector2D &pos) {
 	using namespace std;
 

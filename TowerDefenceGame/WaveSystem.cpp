@@ -50,6 +50,7 @@ void WaveSystem::update(std::vector<EnemyBase*> *venemy, long long *resource, co
 	//vwave[m_currentwave]->push(&tv);
 	(*vwave.begin())->push(&tv);
 
+	delete *vwave.begin();
 	vwave.erase(vwave.begin());
 	
 

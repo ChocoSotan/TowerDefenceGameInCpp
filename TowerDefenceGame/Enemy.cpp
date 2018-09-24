@@ -82,7 +82,7 @@ void NormalEnemy::update(const std::vector<Vector2D> &vpath, int *health) {
 
 
 	// gauge
-	this->gauge->update(this->hitpoint_max, this->hitpoint);
+	this->gauge.update(this->hitpoint_max, this->hitpoint);
 }
 
 double EnemyBase::getDistanceToBase(const std::vector<Vector2D> &vpath) const {
@@ -108,5 +108,5 @@ std::string NormalEnemy::getStatusText() const {
 
 void NormalEnemy::draw(const Texture &texture) {
 	DrawRotaGraph((int)this->position.getX(), (int)this->getPosition().getY(), 1.0, this->angle, texture.getHandle("texture/Game/Enemies/Normal/Normal.png"), TRUE);
-	this->gauge->draw(this->position + Vector2D(-15,-22));
+	this->gauge.draw(this->position + Vector2D(-15,-22));
 }
