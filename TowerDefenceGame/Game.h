@@ -168,12 +168,34 @@ void Game::Update() {
 	// button update
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) { (*i)->update(this->mouse); }
 	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
-	
+
 	// toggle pause
-	if (vbutton[0]->isClicked() || keyboard.getPressingCount(KEY_INPUT_SPACE) == 1) { isPaused = isPaused? false : true; }
+	if (vbutton[0]->isClicked()){
+		isPaused = isPaused ? false : true;
+	}
+	if(keyboard.getPressingCount(KEY_INPUT_SPACE) == 1) {
+		if (isPaused) {
+			isPaused = false;
+		}
+		else {
+			isPaused = true;
+		}
+		vbutton[0]->proceedCount();
+	}
 
 	// toggle fast forward
-	if (vbutton[1]->isClicked() || keyboard.getPressingCount(KEY_INPUT_F) == 1) { ffmul = ffmul == 1 ? 2 : 1; }
+	if (vbutton[1]->isClicked()) {
+		ffmul = ffmul == 1 ? 2 : 1;
+	}
+	if(keyboard.getPressingCount(KEY_INPUT_F) == 1) { 
+		if (ffmul == 1) {
+			ffmul = 2;
+		}
+		else {
+			ffmul = 1;
+		}
+		vbutton[1]->proceedCount();
+	}
 
 	// next wave
 	if (vbutton[2]->isClicked() || keyboard.getPressingCount(KEY_INPUT_N) == 1) { ws.nextWave(); }
