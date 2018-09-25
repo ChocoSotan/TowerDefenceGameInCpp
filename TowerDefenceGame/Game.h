@@ -174,26 +174,16 @@ void Game::Update() {
 		isPaused = isPaused ? false : true;
 	}
 	if(keyboard.getPressingCount(KEY_INPUT_SPACE) == 1) {
-		if (isPaused) {
-			isPaused = false;
-		}
-		else {
-			isPaused = true;
-		}
+		isPaused = isPaused ? false : true;
 		vbutton[0]->proceedCount();
 	}
 
 	// toggle fast forward
 	if (vbutton[1]->isClicked()) {
-		ffmul = ffmul == 1 ? 2 : 1;
+		ffmul = ffmul % 2 + 1;
 	}
 	if(keyboard.getPressingCount(KEY_INPUT_F) == 1) { 
-		if (ffmul == 1) {
-			ffmul = 2;
-		}
-		else {
-			ffmul = 1;
-		}
+		ffmul = ffmul % 2 + 1;
 		vbutton[1]->proceedCount();
 	}
 
@@ -277,12 +267,10 @@ void Game::Update() {
 	}
 
 	if (this->health <= 0) {
-		MessageBox(nullptr, "You have defeated...", "Game Over", MB_OK);
 		mSceneChanger->ChangeMainScene(eResult);
 	}
 
 	if (ws.isFinishedSendEnemy() && venemy.size() == 0) {
-		MessageBox(nullptr, "Game clear !!", "Game Over", MB_OK);
 		mSceneChanger->ChangeMainScene(eResult);
 	}
 }
@@ -380,5 +368,4 @@ void Game::Finalize() {
 
 	texture.deleteHandleAll();
 	sound.deleteHandleAll();
-	MessageBox(nullptr, "Thank you for playing.", "Game Over", MB_OK);
 }
