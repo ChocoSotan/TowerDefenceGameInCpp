@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "Texture.h"
 #include "Mouse.h"
+#include "IMouseOver.h"
 
 #include <string>
 #include <vector>
@@ -12,6 +13,13 @@ public:
 	Button(int x, int y) {
 		this->x = x;
 		this->y = y;
+		wasclicked = false;
+		isclicked = false;
+		count = 0;
+	}
+	Button(const Vector2D &pos) {
+		this->x = pos.getX();
+		this->y = pos.getY();
 		wasclicked = false;
 		isclicked = false;
 		count = 0;
@@ -38,3 +46,17 @@ protected:
 	int count;
 };
 
+class MouseOverButton :public Button {
+public:
+	MouseOverButton(int x,int y):Button(x,y) {
+
+	}
+	MouseOverButton(const Vector2D &pos) :Button(pos) {
+
+	}
+	void update(const Mouse &mouse)override;
+	bool isMouseOver() { return mouseover.isMouseOver(); }
+
+private:
+	MouseOver mouseover;
+};
