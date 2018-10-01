@@ -25,8 +25,8 @@ private:
 	Mouse mouse;
 
 	// buttons
-	Button button_title = Button(512-98,384);
-	Button button_end = Button(512-98,384+64*2);
+	Button button_title = Button(512-128,384);
+	Button button_end = Button(512-128,384+64*2);
 
 
 	// fonts
@@ -73,4 +73,5 @@ void Result::Finalize() {
 	for (auto i = this->fonthandle.begin(); i != fonthandle.end(); ++i) {
 		DeleteFontToHandle((*i));
 	}
+	texture.deleteHandleAll();
 }
