@@ -53,6 +53,14 @@ bool Button::init(const Texture &texture, const std::string &filename) {
 	if (GetGraphSize(texture.getHandle(vfilename[0]), &sx, &sy) == -1)return false;
 	return true;
 }
+
+
+
+
+
+
+
+
 void MouseOverButton::update(const Mouse &mouse) {
-	mouseover.update(mouse,Vector2D(this->x,this->y),this->sx,this->sy);
+	mouseover.update(mouse, Vector2D(this->x, this->y), this->sx, this->sy);
 }

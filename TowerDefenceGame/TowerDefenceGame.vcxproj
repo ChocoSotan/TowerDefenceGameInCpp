@@ -160,10 +160,11 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonLoader.h" />
+    <ClInclude Include="Counter.h" />
     <ClInclude Include="Debugger.h" />
     <ClInclude Include="FieldLoader.h" />
     <ClInclude Include="Gauge.h" />
-    <ClInclude Include="IMouseOver.h" />
+    <ClInclude Include="MouseOver.h" />
     <ClInclude Include="InformationWindow.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="PathLoader.h" />

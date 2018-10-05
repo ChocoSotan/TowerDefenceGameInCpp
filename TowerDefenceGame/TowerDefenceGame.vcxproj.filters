@@ -203,10 +203,13 @@
     <ClInclude Include="ButtonLoader.h">
       <Filter>Loader</Filter>
     </ClInclude>
-    <ClInclude Include="IMouseOver.h">
+    <ClInclude Include="Result.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Result.h">
+    <ClInclude Include="MouseOver.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Counter.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

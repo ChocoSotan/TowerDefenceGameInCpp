@@ -10,17 +10,24 @@
 #include "Enemy.h"
 #include "Turret.h"
 #include "Terrain.h"
-#include "Texture.h"
+#include "Counter.h"
+
+// Miscs
 #include "Button.h"
 #include "ToggleButton.h"
-#include "TurretFactory.h"
 #include "InformationWindow.h"
-#include "Sound.h"
 #include "Wave.h"
 #include "WaveSystem.h"
 
+// Factories
+#include "TurretFactory.h"
+
 #include "Keyboard.h"
 #include "Mouse.h"
+
+// Resources
+#include "Sound.h"
+#include "Texture.h"
 
 // Loaders
 #include "Loader.h"
@@ -51,7 +58,7 @@
 
 class Game : public BaseScene {
 public:
-	Game(ISceneChanger *changer, const int stage);
+	Game(ISceneChanger *changer);
 	~Game() {}
 
 	void Initialize() override;
@@ -102,10 +109,12 @@ private:
 	// fonts
 	std::vector<int> fonthandle;
 
+private:
+	LimitedCounter counter = LimitedCounter(120);
+
 };
 
-Game::Game(ISceneChanger *changer, const int stage) : BaseScene(changer) {
-	this->stage = stage;
+Game::Game(ISceneChanger *changer) : BaseScene(changer) {
 	this->isPaused = true;
 	this->ffmul = 1;
 	resource = 100;			// initial resource
@@ -119,7 +128,7 @@ void Game::Initialize() {
 	PathLoader pl = PathLoader();
 	dbg.print("Initializing Pathes......");
 	std::stringstream ss;
-	ss << "data\\stage\\" << std::setfill('0') << std::setw(2) << std::right << this->stage << "\\path.csv";
+	ss << "data\\stage\\" << "01" << "\\path.csv";
 	pl.load(ss.str(), this->vpath) ? dbg.print("Success!") : dbg.print("Failed...");
 
 	// Loading Turrets
@@ -170,10 +179,10 @@ void Game::Update() {
 	for (auto i = vtbutton.begin(); i != vtbutton.end(); i++) { (*i)->update(); }
 
 	// toggle pause
-	if (vbutton[0]->isClicked()){
+	if (vbutton[0]->isClicked()) {
 		isPaused = isPaused ? false : true;
 	}
-	if(keyboard.getPressingCount(KEY_INPUT_SPACE) == 1) {
+	if (keyboard.getPressingCount(KEY_INPUT_SPACE) == 1) {
 		isPaused = isPaused ? false : true;
 		vbutton[0]->proceedCount();
 	}
@@ -182,7 +191,7 @@ void Game::Update() {
 	if (vbutton[1]->isClicked()) {
 		ffmul = ffmul % 2 + 1;
 	}
-	if(keyboard.getPressingCount(KEY_INPUT_F) == 1) { 
+	if (keyboard.getPressingCount(KEY_INPUT_F) == 1) {
 		ffmul = ffmul % 2 + 1;
 		vbutton[1]->proceedCount();
 	}
@@ -233,7 +242,7 @@ void Game::Update() {
 				if (vterrain[x][y]->canPlaceTurret())break;
 
 				// upgrade
-				
+
 			}
 		}
 	}
@@ -259,23 +268,33 @@ void Game::Update() {
 		tomb.push_back(venemy[i]);
 		this->venemy.erase(this->venemy.begin() + i);
 	}
-
 	for (auto i = vturret.begin(); i != vturret.end(); i++) {
 		for (int j = 0; j < ffmul; j++) {
 			(*i)->attack(&venemy, this->sound);
 		}
 	}
 
-	if (this->health <= 0) {
-		mSceneChanger->ChangeMainScene(eResult);
+	if (this->health <= 0 || (ws.isFinishedSendEnemy() && venemy.empty())) {
+		if (this->health <= 0)health = 0;
+		counter.update();
+		SetDrawBright(255-counter.getCount()*2, 255 - counter.getCount()*2, 255 - counter.getCount()*2);
 	}
 
-	if (ws.isFinishedSendEnemy() && venemy.size() == 0) {
-		mSceneChanger->ChangeMainScene(eResult);
+	if (counter.isLimit()) {
+		if (this->health <= 0) {
+			mSceneChanger->ChangeMainScene(eResult);
+		}
+		else {
+			mSceneChanger->ChangeMainScene(eResult);
+		}
 	}
 }
 
 void Game::Draw() {
+
+	
+
+
 	// WaveGuage
 	ws.draw(this->texture, Vector2D(8, 56));
 
@@ -297,20 +316,20 @@ void Game::Draw() {
 		}
 	}
 
-	
+
 
 	// Money
 	DrawStringToHandle(530, 8, "Money", Black, fonthandle[0]);
-	DrawFormatStringToHandle(560,26,Black,fonthandle[1],"%d",this->resource);
+	DrawFormatStringToHandle(560, 26, Black, fonthandle[1], "%d", this->resource);
 
 
 	// Health
-	DrawStringToHandle(666, 8,"Health", Black, fonthandle[0]);
+	DrawStringToHandle(666, 8, "Health", Black, fonthandle[0]);
 	DrawFormatStringToHandle(706, 26, Black, fonthandle[1], "%d", this->health);
 
 	// Number of Enemy
 	DrawStringToHandle(394, 8, "Enemy", Black, fonthandle[0]);
-	DrawFormatStringToHandle(418, 26, Black, fonthandle[1], "%d / %d",(int)this->venemy.size(),ws.getReservedEnemySize());
+	DrawFormatStringToHandle(418, 26, Black, fonthandle[1], "%d / %d", (int)this->venemy.size(), ws.getReservedEnemySize());
 
 	// turret construction title
 	DrawStringToHandle(810, 74, "TURRET", Black, fonthandle[2], White);
@@ -322,7 +341,7 @@ void Game::Draw() {
 
 	// info
 	DrawStringToHandle(844, 350, "INFO", Black, fonthandle[2], White);
-	if(vtbutton[0]->getChannel() != -1)info.draw(Vector2D(830, 420), Black, INFOTYPE_NONEBORDER, INFOTYPE_CLEARBACK, eTextAlignmentLeft);
+	if (vtbutton[0]->getChannel() != -1)info.draw(Vector2D(830, 420), Black, INFOTYPE_NONEBORDER, INFOTYPE_CLEARBACK, eTextAlignmentLeft);
 
 	// enemy
 	for (auto i = venemy.begin(); i != venemy.end(); i++) {
@@ -334,6 +353,7 @@ void Game::Draw() {
 	for (auto i = vbutton.begin(); i != vbutton.end(); i++) {
 		(*i)->draw(this->texture);
 	}
+
 }
 
 void Game::Finalize() {
@@ -368,4 +388,6 @@ void Game::Finalize() {
 
 	texture.deleteHandleAll();
 	sound.deleteHandleAll();
+
+	SetDrawBright(255, 255, 255);
 }

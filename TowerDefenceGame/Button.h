@@ -3,7 +3,8 @@
 #include "DxLib.h"
 #include "Texture.h"
 #include "Mouse.h"
-#include "IMouseOver.h"
+#include "MouseOver.h"
+#include "InformationWindow.h"
 
 #include <string>
 #include <vector>
@@ -48,7 +49,7 @@ protected:
 
 class MouseOverButton :public Button {
 public:
-	MouseOverButton(int x,int y):Button(x,y) {
+	MouseOverButton(int x,int y) : Button(x,y) {
 
 	}
 	MouseOverButton(const Vector2D &pos) :Button(pos) {
@@ -59,4 +60,5 @@ public:
 
 private:
 	MouseOver mouseover;
+	InformationWindow info;
 };
